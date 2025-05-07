@@ -1,21 +1,32 @@
 package com.screen;
+
 import javax.swing.*;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 /*
- * Basic Window to draw all things
+ * Basic Window to contain the canvas
  */
 
 public class MainWindow extends JFrame {
-    public MainWindow(String name){
+    public MainWindow(int width , int height , String name){
+        
+        //Basic Window Creation **Must Have**
         setTitle(name);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JButton butt = new JButton("Test Button");
-        this.getContentPane().add(butt);
+        
+        //Set Size
+        setPreferredSize(new Dimension(width,height));
+        add(new GameScreen() , BorderLayout.CENTER);
         pack();
+
+        //Set Visible
         setVisible(true);
     }
 
     public MainWindow(){
-        this("Unnamed Window");
+        //Default args
+        this(500,500,"Unnamed Window");
     }
 }
