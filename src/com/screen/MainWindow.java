@@ -1,6 +1,6 @@
 package com.screen;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
