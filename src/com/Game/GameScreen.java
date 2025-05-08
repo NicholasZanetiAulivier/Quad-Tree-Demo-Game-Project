@@ -1,4 +1,4 @@
-package com.screen;
+package com.Game;
 
 import javax.swing.JPanel;
 import java.awt.Color;

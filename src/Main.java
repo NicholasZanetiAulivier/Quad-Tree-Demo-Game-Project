@@ -1,4 +1,4 @@
-import com.screen.*;
+import com.Game.*;
 
 public class Main {
     static int width = 500;
