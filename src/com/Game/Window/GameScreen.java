@@ -9,7 +9,7 @@ import java.awt.Color;
 public class GameScreen extends JPanel{
 
     public GameScreen(){
-        super();
+        super(true);
         setBackground(new Color(0xC5C5C5));
     }
 }

@@ -10,6 +10,8 @@ import java.awt.Dimension;
  */
 
 public class MainWindow extends JFrame {
+    private GameScreen canvas;
+
     public MainWindow(int width , int height , String name){
         //Call JFrame Constructor
         super();
@@ -20,7 +22,8 @@ public class MainWindow extends JFrame {
         
         //Set Size
         setPreferredSize(new Dimension(width,height));
-        add(new GameScreen() , BorderLayout.CENTER);
+        this.canvas = new GameScreen();
+        add(this.canvas , BorderLayout.CENTER);
         pack();
 
         //Set Visible
@@ -30,5 +33,9 @@ public class MainWindow extends JFrame {
     public MainWindow(){
         //Default args
         this(500,500,"Unnamed Window");
+    }
+
+    public GameScreen getCanvas(){
+        return this.canvas;
     }
 }
