@@ -1,4 +1,4 @@
-package com.Game;
+package com.Game.Window;
 
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -9,6 +9,7 @@ import java.awt.Color;
 public class GameScreen extends JPanel{
 
     public GameScreen(){
+        super();
         setBackground(new Color(0xC5C5C5));
     }
 }

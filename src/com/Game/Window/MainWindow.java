@@ -1,4 +1,4 @@
-package com.Game;
+package com.Game.Window;
 
 import javax.swing.JFrame;
 
@@ -11,7 +11,9 @@ import java.awt.Dimension;
 
 public class MainWindow extends JFrame {
     public MainWindow(int width , int height , String name){
-        
+        //Call JFrame Constructor
+        super();
+
         //Basic Window Creation **Must Have**
         setTitle(name);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
