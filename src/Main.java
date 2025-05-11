@@ -5,6 +5,6 @@ public class Main {
     static int height = 500;
 
     public static void main(String[] args) throws Exception {
-        GameEnv game = new GameEnv(width, height, "Swingtest");
+        GameEnv game = GameEnv.init(width, height, "Swingtest");
     }
 }
