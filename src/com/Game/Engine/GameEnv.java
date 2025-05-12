@@ -26,6 +26,7 @@ public class GameEnv {
     public static GameEnv init(int width , int height , String name){
         GameEnv game = new GameEnv(width,height,name);
         System.out.println("Game Environment Successfully Initialized!");
+        game.main.getCanvas().setBackground(new Color(0xFFFFFF));
         return game;
     }
 
