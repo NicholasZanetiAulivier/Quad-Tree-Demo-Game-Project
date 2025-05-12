@@ -38,4 +38,5 @@ public class MainWindow extends JFrame {
     public GameScreen getCanvas(){
         return this.canvas;
     }
+
 }

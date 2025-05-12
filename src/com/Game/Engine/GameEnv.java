@@ -9,10 +9,12 @@ import com.Game.Window.MainWindow;
  * Class to be initialized by main
  */
 public class GameEnv {
-    private MainWindow main;
+    //Constants
     private static final int FPS = 60;
     private static final long FPS_TIME = 1_000_000_000/FPS;
-    public boolean s = true;
+    
+    private MainWindow main;
+
     public static GameEnv game;
 
     public GameEnv(int width , int height , String name){
@@ -41,11 +43,6 @@ public class GameEnv {
      * Method to update game environment
      */
     public void update(long dt){
-        int col;
-        if (s) col = 0x000000;
-        else col = 0xFFFFFF;
-        main.getCanvas().setBackground(new Color(col));
-        s = !s;
     }
 
     /*
