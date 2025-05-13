@@ -18,7 +18,7 @@ public class GameEnv {
     //Default update function: called in this.mainLoop()
     private static UpdateFunc gameUpdate = new UpdateFunc() {
         @Override
-        public void update(long dt , Scene scene){
+        public void update(long dt){
 
         }
     };
@@ -29,11 +29,12 @@ public class GameEnv {
         Global.GAME_ENVIRONMENT = this;
     }
 
-    public static GameEnv init(int width , int height , String name){
+    public static GameEnv init(int width , int height , String name) throws Exception{
         GameEnv game = new GameEnv(width,height,name);
         Global.initScenes();
         System.out.println("Game Environment Successfully Initialized!");
         game.main.getCanvas().setBackground(new Color(0xFFFFFF));
+        Global.MainMenu.switchScene();
         return game;
     }
 
@@ -71,14 +72,12 @@ public class GameEnv {
         long currTime = System.nanoTime();
         long newTime = System.nanoTime();
         long dt;
-        //Temp
-        int f = 0;
 
         while(this.main.isVisible()){
             handleEvents();
             newTime = waitFrame(currTime);
             dt = newTime - currTime;
-            gameUpdate.update(dt , Global.currentScene);
+            gameUpdate.update(dt);
             main.repaint();
             currTime = System.nanoTime();
         }

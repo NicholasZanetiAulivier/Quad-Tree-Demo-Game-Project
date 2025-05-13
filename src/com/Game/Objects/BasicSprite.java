@@ -22,8 +22,12 @@ public class BasicSprite implements Drawable{
         xPos = 0; yPos = 0;
     }
 
-    public static void loadSprite(File imageFile) throws IOException{
-        BasicSprite.sprite = ImageIO.read(imageFile.toURI().toURL());
+    public static void loadSprite(String imagePath) throws IOException{
+        BasicSprite.sprite = ImageIO.read((new File(imagePath)).toURI().toURL());
+    }
+
+    public static void freeSprite(){
+        BasicSprite.sprite = null;
     }
 
     public void draw(Graphics g , ImageObserver observer){

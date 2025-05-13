@@ -2,7 +2,6 @@ package com.Game.Window;
 
 import com.Game.Engine.DrawFunc;
 import com.Game.Engine.Global;
-import com.Game.Engine.Scene;
 
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -16,7 +15,7 @@ public class GameScreen extends JPanel{
 
     private static DrawFunc painter = new DrawFunc() {
         @Override
-        public void draw(Graphics g , Scene scene){
+        public void draw(Graphics g){
             
         }
     }; 
@@ -40,6 +39,6 @@ public class GameScreen extends JPanel{
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         
-        painter.draw(g , Global.currentScene);
+        painter.draw(g);
     }
 }
