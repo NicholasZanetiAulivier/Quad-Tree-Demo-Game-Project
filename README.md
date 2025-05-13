@@ -1,18 +1,13 @@
-## Getting Started
+## Quad Tree Demo Game Project
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Welcome to our repository. As written in the title, this repository is created for the sole purpose of doing version control throught out our development of a basic game project made in Java. All of the classes imported and used in our project come from the Java API, which means they're very basic and probably really slow. But this is more of a constraint than a challenge. As this is a college project, the assets and techniques used will be very basic and all that matters in the end is that we understand every part of it.
 
-## Folder Structure
+We have chosen to make a Quad Tree Space Partitioning Mechanism as our project, implementing it as the Broad Phase algorithm for our collision detection mechanism. At this current moment, we are unsure of how it'll turn out. Hopefully, by the end, this repository will be an archive of our successful game project.
 
-The workspace contains two folders by default, where:
+## Engine
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+The "Game Engine" will be made entirely in Java, without any imported libraries outside of the Java API, meaning no GPU acceleration, 3D, or shaders will be supported. As of the current commit, the engine is able to support "Scenes" not unlike Godot, and the main loop is based on a popular Game Engine called [Love2D](https://www.love2d.org/). Since we're the only ones using this engine, support for anything beyond what has been mentioned is very limited.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## TO DO
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+An audio mechanism needs to be added to support music and SFX. An animation mechanism needs to be added for basic animations. Input Handling is on the top priority list. Lastly, we need to make an actual game for the actual project. Deadline is June 2025, good luck to us all
