@@ -8,7 +8,6 @@ import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
 import com.Game.Engine.DrawFunc;
 import com.Game.Engine.Global;
-import com.Game.Engine.Scene;
 import com.Game.Engine.UpdateFunc;
 import com.Game.Objects.BasicSprite;
 import com.Game.Objects.Drawable;

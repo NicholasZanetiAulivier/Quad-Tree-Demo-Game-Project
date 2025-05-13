@@ -1,4 +1,4 @@
-package com.Game.Engine;
+package com.Game.Scenes;
 
 public abstract class Scene {
     

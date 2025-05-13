@@ -2,6 +2,7 @@ package com.Game.Engine;
 
 import com.Game.Window.GameScreen;
 import com.Game.Scenes.MainMenu;
+import com.Game.Scenes.Scene;
 
 public abstract class Global {
     public static GameEnv GAME_ENVIRONMENT = null;
