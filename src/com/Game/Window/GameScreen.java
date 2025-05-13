@@ -7,10 +7,6 @@ import com.Game.Engine.Scene;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.ImageObserver;
-
-import com.Game.Objects.*;
 
 
 /*
