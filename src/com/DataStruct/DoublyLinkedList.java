@@ -3,12 +3,10 @@ package com.DataStruct;
 public class DoublyLinkedList<T> {
     private Denode<T> head;
     private Denode<T> tail;
-    private int size;
 
     public DoublyLinkedList(){
         this.head = null;
         this.tail = null;
-        this.size = 0;
     }
 
     public Denode<T> getHead(){
@@ -31,7 +29,6 @@ public class DoublyLinkedList<T> {
             newNode.setPrev(this.tail);
             this.tail = newNode;
         }
-        this.size++;
     }
 
     //Push to front of list
@@ -46,7 +43,6 @@ public class DoublyLinkedList<T> {
             this.head.setPrev(newNode);
             this.head = newNode;
         }
-        this.size++;
     }
 
     //Pop from front of list
