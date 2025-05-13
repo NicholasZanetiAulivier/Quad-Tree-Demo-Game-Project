@@ -1,4 +1,5 @@
 import com.Game.Engine.GameEnv;
+import com.Game.Engine.Global;
 import com.Game.Objects.*;
 
 import java.io.*;
@@ -12,6 +13,7 @@ public class Main {
         System.out.println(s);
         BasicSprite.loadSprite(s);
         GameEnv.init(width, height, "Swingtest");
-        GameEnv.game.run();
+        Global.MainMenu.switchScene();
+        Global.GAME_ENVIRONMENT.run();
     }
 }

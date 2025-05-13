@@ -1,9 +1,15 @@
 package com.Game.Window;
 
+import com.Game.Engine.DrawFunc;
+import com.Game.Engine.Global;
+import com.Game.Engine.Scene;
+
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.ImageObserver;
+
 import com.Game.Objects.*;
 
 
@@ -12,9 +18,22 @@ import com.Game.Objects.*;
  */
 public class GameScreen extends JPanel{
 
+    private static DrawFunc painter = new DrawFunc() {
+        @Override
+        public void draw(Graphics g , Scene scene){
+            
+        }
+    }; 
+
     public GameScreen(){
         super(true);
         setBackground(new Color(0xC5C5C5));
+
+        Global.CANVAS = this;
+    }
+
+    public void setDrawFunction(DrawFunc f){
+        GameScreen.painter = f;
     }
 
     /*
@@ -25,9 +44,6 @@ public class GameScreen extends JPanel{
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         
-        Drawable obj = new BasicSprite();
-
-        Graphics2D g2d = (Graphics2D) g;
-        obj.draw(g2d , this);
+        painter.draw(g , Global.currentScene);
     }
 }

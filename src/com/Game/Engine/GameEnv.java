@@ -15,19 +15,36 @@ public class GameEnv {
     
     private MainWindow main;
 
-    public static GameEnv game;
+    //Default update function: called in this.mainLoop()
+    private static UpdateFunc gameUpdate = new UpdateFunc() {
+        @Override
+        public void update(long dt , Scene scene){
 
+        }
+    };
+    
     public GameEnv(int width , int height , String name){
         main = new MainWindow(width,height,name);
         System.out.println(main);
-        game = this;
+        Global.GAME_ENVIRONMENT = this;
     }
 
     public static GameEnv init(int width , int height , String name){
         GameEnv game = new GameEnv(width,height,name);
+        Global.initScenes();
         System.out.println("Game Environment Successfully Initialized!");
         game.main.getCanvas().setBackground(new Color(0xFFFFFF));
         return game;
+    }
+
+    //Public draw callback function
+    public void setDrawFunction(DrawFunc f){
+        Global.CANVAS.setDrawFunction(f);
+    }
+
+    //Public update callback function
+    public void setUpdateFunction(UpdateFunc f){
+        GameEnv.gameUpdate = f;
     }
 
     /*
@@ -38,19 +55,6 @@ public class GameEnv {
         long toWait = currTime + FPS_TIME;
         while((currTime=System.nanoTime()) < toWait)continue;
         return currTime;
-    }
-
-    /*
-     * Method to update game environment
-     */
-    public void update(long dt){
-    }
-
-    /*
-     * Method to draw game objects to screen
-     */
-    public void draw(){
-        main.repaint();
     }
 
     /*
@@ -67,15 +71,16 @@ public class GameEnv {
         long currTime = System.nanoTime();
         long newTime = System.nanoTime();
         long dt;
+        //Temp
+        int f = 0;
 
         while(this.main.isVisible()){
             handleEvents();
             newTime = waitFrame(currTime);
             dt = newTime - currTime;
-            update(dt);
-            draw();
+            gameUpdate.update(dt , Global.currentScene);
+            main.repaint();
             currTime = System.nanoTime();
-
         }
     }
 
