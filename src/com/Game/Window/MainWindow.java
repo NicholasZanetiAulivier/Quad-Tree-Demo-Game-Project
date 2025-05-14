@@ -27,11 +27,11 @@ public class MainWindow extends JFrame {
         
         //Set Size
         setLayout(null);
-        setPreferredSize(new Dimension(width,height));
         this.canvas = new GameScreen(width,height);
         this.canvas.setBounds(0,0,width,height);
+        // this.canvas.setOpaque(false);
         add(this.canvas);
-        pack();
+        setSize(width,height);
 
         //Base background
         getContentPane().setBackground(new Color(0x000000));
