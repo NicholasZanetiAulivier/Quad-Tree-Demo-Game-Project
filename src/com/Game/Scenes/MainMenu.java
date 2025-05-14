@@ -33,9 +33,7 @@ public class MainMenu extends Scene{
     private static UpdateFunc update = new UpdateFunc() {  
         @Override
         public void update(long dt){
-            if (s) Global.CANVAS.setBackground(new Color(0x000000));
-            else Global.CANVAS.setBackground(new Color(0xFFFFFF));
-            s = !s;
+            Global.CANVAS.setBackground(new Color(0xFFFFFF));
         }
     };
 

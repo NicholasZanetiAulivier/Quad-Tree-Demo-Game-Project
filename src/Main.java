@@ -3,12 +3,10 @@ import com.Game.Engine.Global;
 import com.Game.Objects.*;
 
 public class Main {
-    static int width = 500;
-    static int height = 500;
 
     public static void main(String[] args) throws Exception {
         BasicSprite.loadSprite("rsc/spriteTest.jpg");
-        GameEnv.init(width, height, "Swingtest");
+        GameEnv.init(Global.originalWidth, Global.originalHeight, "Swingtest");
         Global.MainMenu.switchScene();
         Global.GAME_ENVIRONMENT.run();
     }

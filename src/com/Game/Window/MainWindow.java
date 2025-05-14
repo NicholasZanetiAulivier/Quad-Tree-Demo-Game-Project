@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import com.Game.Engine.Global;
 
 import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -31,6 +32,9 @@ public class MainWindow extends JFrame {
         this.canvas.setBounds(0,0,width,height);
         add(this.canvas);
         pack();
+
+        //Base background
+        getContentPane().setBackground(new Color(0x000000));
         
         //Adding a callback functions(to resize canvas when needed)
         addComponentListener(new ComponentListener() {

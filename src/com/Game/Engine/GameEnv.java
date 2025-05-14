@@ -30,8 +30,6 @@ public class GameEnv {
     }
 
     public static GameEnv init(int width , int height , String name) throws Exception{
-        Global.originalWidth = width;
-        Global.originalHeight = height;
         GameEnv game = new GameEnv(width,height,name);
         Global.initScenes();
         System.out.println("Game Environment Successfully Initialized!");
