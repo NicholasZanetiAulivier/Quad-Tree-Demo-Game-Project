@@ -2,7 +2,6 @@ package com.Game.Window;
 
 import javax.swing.JFrame;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 /*
@@ -21,9 +20,11 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         //Set Size
+        setLayout(null);
         setPreferredSize(new Dimension(width,height));
-        this.canvas = new GameScreen();
-        add(this.canvas , BorderLayout.CENTER);
+        this.canvas = new GameScreen(width,height);
+        this.canvas.setBounds(0,0,width,height);
+        add(this.canvas);
         pack();
 
         //Set Visible

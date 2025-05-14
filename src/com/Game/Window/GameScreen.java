@@ -4,6 +4,7 @@ import com.Game.Engine.DrawFunc;
 import com.Game.Engine.Global;
 
 import javax.swing.JPanel;
+
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -20,7 +21,7 @@ public class GameScreen extends JPanel{
         }
     }; 
 
-    public GameScreen(){
+    public GameScreen(int w , int h){
         super(true);
         setBackground(new Color(0xC5C5C5));
 
