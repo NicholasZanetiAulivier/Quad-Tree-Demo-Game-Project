@@ -2,7 +2,12 @@ package com.Game.Window;
 
 import javax.swing.JFrame;
 
+import com.Game.Engine.Global;
+
 import java.awt.Dimension;
+import java.awt.Component;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 /*
  * Basic Window to contain the canvas
@@ -26,7 +31,20 @@ public class MainWindow extends JFrame {
         this.canvas.setBounds(0,0,width,height);
         add(this.canvas);
         pack();
+        
+        //Adding a callback functions(to resize canvas when needed)
+        addComponentListener(new ComponentListener() {
+            public void componentResized(ComponentEvent e){
+                Component c = (Component) e.getSource();
+                Global.GAME_ENVIRONMENT.resize(c.getWidth() , c.getHeight());
+            }
 
+            public void componentShown(ComponentEvent e){}
+            public void componentHidden(ComponentEvent e){}
+            public void componentMoved(ComponentEvent e){}
+        });
+        
+        
         //Set Visible
         setVisible(true);
     }

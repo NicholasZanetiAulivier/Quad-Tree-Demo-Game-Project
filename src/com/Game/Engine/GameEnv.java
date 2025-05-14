@@ -24,12 +24,14 @@ public class GameEnv {
     };
     
     public GameEnv(int width , int height , String name){
+        Global.GAME_ENVIRONMENT = this;
         main = new MainWindow(width,height,name);
         System.out.println(main);
-        Global.GAME_ENVIRONMENT = this;
     }
 
     public static GameEnv init(int width , int height , String name) throws Exception{
+        Global.originalWidth = width;
+        Global.originalHeight = height;
         GameEnv game = new GameEnv(width,height,name);
         Global.initScenes();
         System.out.println("Game Environment Successfully Initialized!");
@@ -94,6 +96,10 @@ public class GameEnv {
         }catch (Exception e){
             System.err.println(e);
         }
+    }
+
+    public void resize(int width , int height){
+        this.main.getCanvas().fillBounds(width , height);
     }
 
 

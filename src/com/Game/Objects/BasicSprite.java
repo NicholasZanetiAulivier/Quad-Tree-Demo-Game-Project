@@ -31,7 +31,7 @@ public class BasicSprite implements Drawable{
     }
 
     public void draw(Graphics g , ImageObserver observer){
-        g.drawImage(BasicSprite.sprite , 0,0 , observer);
+        g.drawImage(BasicSprite.sprite ,xPos , yPos ,observer);
     }
     
 }
