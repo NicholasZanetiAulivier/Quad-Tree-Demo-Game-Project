@@ -60,6 +60,8 @@ public class GameEnv {
 
     /*
      * Method to process events ( click, keypress, key release, etc)
+     * Scrapped
+     * Use java API KeyEvent, KeyListener, MouseEvent, MouseListener
      */
     public void handleEvents(){
 
