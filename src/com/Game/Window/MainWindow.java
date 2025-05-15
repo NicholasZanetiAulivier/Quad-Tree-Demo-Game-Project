@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 
 import com.Game.Engine.Global;
 
-import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;

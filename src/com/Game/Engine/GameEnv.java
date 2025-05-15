@@ -1,41 +1,33 @@
 package com.Game.Engine;
 
-import java.awt.Color;
-
 import com.Game.Window.MainWindow;
+import com.Game.Scenes.Scene;
 
+//Handle events with EventHandlers
 
 /*
  * Class to be initialized by main
  */
 public class GameEnv {
-    //Constants
-    private static final int FPS = 60;
-    private static final long FPS_TIME = 1_000_000_000/FPS;
-    
-    private MainWindow main;
+    private static final long FPS_TIME = 1_000_000_000/Global.FPS;
+    private static boolean isInitialized = false;
 
     //Default update function: called in this.mainLoop()
     private static UpdateFunc gameUpdate = new UpdateFunc() {
         @Override
-        public void update(long dt){
+        public void update(long dt , Scene currentScene){
 
         }
     };
     
-    public GameEnv(int width , int height , String name){
+    public GameEnv(int width , int height , String name)throws Exception{
+        if (isInitialized) throw new ExceptionInInitializerError("Game Environment has already been Initialized");
         Global.GAME_ENVIRONMENT = this;
-        main = new MainWindow(width,height,name);
-        System.out.println(main);
-    }
-
-    public static GameEnv init(int width , int height , String name) throws Exception{
-        GameEnv game = new GameEnv(width,height,name);
+        Global.MAIN_WINDOW = new MainWindow(width,height,name);
+        System.out.println(Global.MAIN_WINDOW);
         Global.initScenes();
-        System.out.println("Game Environment Successfully Initialized!");
-        game.main.getCanvas().setBackground(new Color(0xFFFFFF));
+        System.out.println("Game Env Successfully Initialized");
         Global.MainMenu.switchScene();
-        return game;
     }
 
     //Public draw callback function
@@ -59,15 +51,6 @@ public class GameEnv {
     }
 
     /*
-     * Method to process events ( click, keypress, key release, etc)
-     * Scrapped
-     * Use java API KeyEvent, KeyListener, MouseEvent, MouseListener
-     */
-    public void handleEvents(){
-
-    }
-
-    /*
      * Method to be run as the main loop
      */
     public void mainLoop(){
@@ -75,12 +58,11 @@ public class GameEnv {
         long newTime = System.nanoTime();
         long dt;
 
-        while(this.main.isVisible()){
-            handleEvents();
+        while(Global.MAIN_WINDOW.isVisible()){
             newTime = waitFrame(currTime);
             dt = newTime - currTime;
-            gameUpdate.update(dt);
-            main.repaint();
+            gameUpdate.update(dt , Global.currentScene);
+            Global.MAIN_WINDOW.repaint();
             currTime = System.nanoTime();
         }
     }
@@ -97,7 +79,7 @@ public class GameEnv {
     }
 
     public void resize(int width , int height){
-        this.main.getCanvas().fillBounds(width , height);
+        Global.CANVAS.fillBounds(width , height);
     }
 
 

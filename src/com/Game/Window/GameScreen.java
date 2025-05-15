@@ -2,6 +2,7 @@ package com.Game.Window;
 
 import com.Game.Engine.DrawFunc;
 import com.Game.Engine.Global;
+import com.Game.Scenes.Scene;
 
 import javax.swing.JPanel;
 
@@ -18,23 +19,23 @@ public class GameScreen extends JPanel{
     private int width;
     private int height;
 
-    private static DrawFunc painter = new DrawFunc() {
+    private DrawFunc painter = new DrawFunc() {
         @Override
-        public void draw(Graphics g){
+        public void draw(Graphics g , Scene currentScene){
             
         }
     }; 
 
     public GameScreen(int w , int h){
         super(true);
-        setBackground(new Color(0xC5C5C5));
+        setBackground(new Color(0xFFFFFF));
         width = w;
         height = h;
         Global.CANVAS = this;
     }
 
     public void setDrawFunction(DrawFunc f){
-        GameScreen.painter = f;
+        this.painter = f;
     }
 
     /*
@@ -48,7 +49,7 @@ public class GameScreen extends JPanel{
         //Scales Canvas to fit window properly
         ((Graphics2D)g).scale(Global.DRAW_SCALE,Global.DRAW_SCALE);
         
-        painter.draw(g);
+        painter.draw(g , Global.currentScene);
     }
 
 
