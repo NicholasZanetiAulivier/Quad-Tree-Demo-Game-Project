@@ -2,7 +2,6 @@ package com.Game.Scenes;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Color;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;

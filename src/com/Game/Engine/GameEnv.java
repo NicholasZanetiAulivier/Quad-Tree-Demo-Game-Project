@@ -16,6 +16,8 @@ public class GameEnv {
     private static final long FPS_TIME = 1_000_000_000/Global.FPS;
     private static boolean isInitialized = false;
 
+    public int frames = 0;
+
     //Default update function: called in this.mainLoop()
     private static UpdateFunc gameUpdate = new UpdateFunc() {
         @Override
@@ -67,6 +69,7 @@ public class GameEnv {
     public long waitFrame(long currTime){
         long toWait = currTime + FPS_TIME;
         while((currTime=System.nanoTime()) < toWait)continue;
+        if (frames++ > 59) {System.out.println(System.nanoTime()); frames =0 ;}
         return currTime;
     }
 

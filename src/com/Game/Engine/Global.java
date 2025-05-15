@@ -20,7 +20,7 @@ public abstract class Global {
     public static int originalWidth = 700;                              //Width at which the screen was drawn at the start
     public static double DRAW_SCALE = 1;                                //DRAW_SCALE: Scale at which entities are drawn
 
-    public static final double ASPECT_RATIO  = 1.;                      //ASPECT_RATIO: Window scale(width/height)
+    public static final double ASPECT_RATIO  = 16./9;                      //ASPECT_RATIO: Window scale(width/height)
     public static final int FPS = 60;
 
     public static void initScenes(){
