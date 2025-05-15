@@ -1,6 +1,10 @@
 package com.Game.Engine;
 
 import com.Game.Window.MainWindow;
+import com.Game.Callbacks.DrawFunc;
+import com.Game.Callbacks.UpdateFunc;
+import com.Game.Events.Keyboard;
+import com.Game.Events.Mouse;
 import com.Game.Scenes.Scene;
 
 //Handle events with EventHandlers
@@ -15,7 +19,7 @@ public class GameEnv {
     //Default update function: called in this.mainLoop()
     private static UpdateFunc gameUpdate = new UpdateFunc() {
         @Override
-        public void update(long dt , Scene currentScene){
+        public void update(double dt , Scene currentScene){
 
         }
     };
@@ -26,11 +30,22 @@ public class GameEnv {
             throw new ExceptionInInitializerError("Game Environment has already been Initialized");
         }else {
             Global.GAME_ENVIRONMENT = this;
+            
             Global.MAIN_WINDOW = new MainWindow(width,height,name);
             System.out.println(Global.MAIN_WINDOW);
+            
             Global.initScenes();
             System.out.println("Game Env Successfully Initialized");
+            
             Global.MainMenu.switchScene();
+
+            Global.KEYBOARD = new Keyboard();
+            Global.MAIN_WINDOW.addKeyListener(Global.KEYBOARD);
+
+            Global.MOUSE = new Mouse();
+            Global.CANVAS.addMouseListener(Global.MOUSE);
+            Global.CANVAS.addMouseMotionListener(Global.MOUSE);
+
             GameEnv.isInitialized = true;
         }
     }
@@ -66,7 +81,8 @@ public class GameEnv {
         while(Global.MAIN_WINDOW.isVisible()){
             newTime = waitFrame(currTime);
             dt = newTime - currTime;
-            gameUpdate.update(dt , Global.currentScene);
+            double dtSec = (double)dt/1_000_000_000;
+            gameUpdate.update(dtSec , Global.currentScene);
             Global.MAIN_WINDOW.repaint();
             currTime = System.nanoTime();
         }

@@ -1,7 +1,7 @@
 package com.Game.Scenes;
 
-import com.Game.Engine.DrawFunc;
-import com.Game.Engine.UpdateFunc;
+import com.Game.Callbacks.DrawFunc;
+import com.Game.Callbacks.UpdateFunc;
 
 public abstract class Scene {
     @SuppressWarnings("all")

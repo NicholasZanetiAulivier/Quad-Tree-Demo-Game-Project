@@ -6,15 +6,16 @@ import java.awt.Color;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
-import com.Game.Engine.DrawFunc;
+import com.Game.Callbacks.DrawFunc;
+import com.Game.Callbacks.UpdateFunc;
 import com.Game.Engine.Global;
-import com.Game.Engine.UpdateFunc;
-import com.Game.Objects.BasicSprite;
+import com.Game.Objects.BasicObject;
 import com.Game.Objects.Drawable;
+import com.Game.Objects.Entity;
 
 public class MainMenu extends Scene{
     public boolean s = true;
-    public DoublyLinkedList<Drawable> drawableList;
+    public DoublyLinkedList<BasicObject> objectList;
     
     /*
      * Describe assets used so that it is clear which ones should be initialized in loadScene
@@ -27,10 +28,10 @@ public class MainMenu extends Scene{
         public void draw(Graphics g , Scene currentScene){
             Graphics2D g2d = (Graphics2D) g;
 
-            Denode<Drawable> item = ((MainMenu)currentScene).drawableList.getHead();
+            Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
 
             while(item != null){
-                item.getData().draw(g2d , Global.CANVAS);
+                ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
                 item = item.getNext();
             }
         }
@@ -38,10 +39,13 @@ public class MainMenu extends Scene{
 
     private static final UpdateFunc update = new UpdateFunc() {  
         @Override
-        public void update(long dt , Scene currentScene){
-            if(((MainMenu)currentScene).s) Global.CANVAS.setBackground(new Color(0x0000000));
-            else Global.CANVAS.setBackground(new Color(0xFFFFFF));
-            ((MainMenu)currentScene).s = !((MainMenu)currentScene).s;
+        public void update(double dt , Scene currentScene){
+            Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
+            
+            while(item != null){
+                ((Entity)item.getData()).update(dt);
+                item = item.getNext();
+            }
         }
     };
 
@@ -56,15 +60,15 @@ public class MainMenu extends Scene{
 
     @Override
     public void loadScene() throws Exception{
-        BasicSprite.loadSprite("rsc/spriteTest.jpg");
-        this.drawableList = new DoublyLinkedList<>();
-        this.drawableList.append(new BasicSprite());
+        BasicObject.loadSprite("rsc/spriteTest.jpg");
+        this.objectList = new DoublyLinkedList<>();
+        this.objectList.append(new BasicObject());
     }
 
     @Override
     public void unloadScene() throws Exception{
-        BasicSprite.freeSprite();
-        this.drawableList = null;
+        BasicObject.freeSprite();
+        this.objectList = null;
     }
 
 }

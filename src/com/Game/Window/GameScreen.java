@@ -1,6 +1,6 @@
 package com.Game.Window;
 
-import com.Game.Engine.DrawFunc;
+import com.Game.Callbacks.DrawFunc;
 import com.Game.Engine.Global;
 import com.Game.Scenes.Scene;
 
@@ -77,11 +77,5 @@ public class GameScreen extends JPanel{
             this.height = height;
             this.setBounds(0,0,this.width-14 , this.height-36);
         }
-
-        System.out.println(this.getBounds());
-
-        // System.out.println("Canvas Width: " + this.getSize() + ", Canvas Height: "+ this.getHeight() + ", Scale: " + Global.DRAW_SCALE
-        //         + ", Width: " + width + ", Height: " + height + ", X Padding: " + (int)((width-this.width)/2.) + ", Y Padding" + (int)(((double)height-this.height)/2)
-        //     );
     }
 }
