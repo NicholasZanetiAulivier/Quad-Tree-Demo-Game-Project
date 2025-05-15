@@ -21,13 +21,18 @@ public class GameEnv {
     };
     
     public GameEnv(int width , int height , String name)throws Exception{
-        if (isInitialized) throw new ExceptionInInitializerError("Game Environment has already been Initialized");
-        Global.GAME_ENVIRONMENT = this;
-        Global.MAIN_WINDOW = new MainWindow(width,height,name);
-        System.out.println(Global.MAIN_WINDOW);
-        Global.initScenes();
-        System.out.println("Game Env Successfully Initialized");
-        Global.MainMenu.switchScene();
+        if (isInitialized) {
+            Global.MAIN_WINDOW.dispose();
+            throw new ExceptionInInitializerError("Game Environment has already been Initialized");
+        }else {
+            Global.GAME_ENVIRONMENT = this;
+            Global.MAIN_WINDOW = new MainWindow(width,height,name);
+            System.out.println(Global.MAIN_WINDOW);
+            Global.initScenes();
+            System.out.println("Game Env Successfully Initialized");
+            Global.MainMenu.switchScene();
+            GameEnv.isInitialized = true;
+        }
     }
 
     //Public draw callback function
