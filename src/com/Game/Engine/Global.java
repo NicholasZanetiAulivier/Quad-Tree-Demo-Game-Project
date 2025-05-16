@@ -8,6 +8,7 @@ import com.Game.Events.Keyboard;
 import com.Game.Events.Mouse;
 
 public abstract class Global {
+
     public static GameEnv GAME_ENVIRONMENT = null;
     public static MainWindow MAIN_WINDOW = null;
     public static GameScreen CANVAS = null;

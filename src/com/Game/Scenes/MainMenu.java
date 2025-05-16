@@ -59,7 +59,7 @@ public class MainMenu extends Scene{
 
     @Override
     public void loadScene() throws Exception{
-        BasicObject.loadSprite("rsc/spriteTest.jpg");
+        BasicObject.loadSprite("rsc/img/spriteTest.jpg");
         this.objectList = new DoublyLinkedList<>();
         this.objectList.append(new BasicObject());
     }

@@ -12,7 +12,7 @@ import com.Game.Scenes.Scene;
 /*
  * Class to be initialized by main
  */
-public class GameEnv {
+public class GameEnv implements Runnable{
     private static final long FPS_TIME = 1_000_000_000/Global.FPS;
     private static boolean isInitialized = false;
 
