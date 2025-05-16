@@ -8,6 +8,7 @@ import com.DataStruct.Denode;
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Engine.Global;
+import com.Game.Engine.Sound;
 import com.Game.Objects.BasicObject;
 import com.Game.Objects.Drawable;
 import com.Game.Objects.Entity;
@@ -15,7 +16,8 @@ import com.Game.Objects.Entity;
 public class MainMenu extends Scene{
     public boolean s = true;
     public DoublyLinkedList<BasicObject> objectList;
-    
+    public DoublyLinkedList<Sound> soundList;
+    public String SPath;
     /*
      * Describe assets used so that it is clear which ones should be initialized in loadScene
      * Using:
@@ -39,6 +41,9 @@ public class MainMenu extends Scene{
     private static final UpdateFunc update = new UpdateFunc() {  
         @Override
         public void update(double dt , Scene currentScene){
+            if(Global.KEYBOARD.KEY_A){
+                new Sound(((MainMenu)currentScene).SPath).play();
+            }
             Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
             
             while(item != null){
@@ -60,7 +65,9 @@ public class MainMenu extends Scene{
     @Override
     public void loadScene() throws Exception{
         BasicObject.loadSprite("rsc/img/spriteTest.jpg");
+        this.SPath = "rsc/aud/sfx/Press.wav";
         this.objectList = new DoublyLinkedList<>();
+        this.soundList = new DoublyLinkedList<>();
         this.objectList.append(new BasicObject());
     }
 
