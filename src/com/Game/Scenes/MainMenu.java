@@ -5,10 +5,10 @@ import java.awt.Graphics2D;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
+import com.Game.Audio.Sound;
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Engine.Global;
-import com.Game.Engine.Sound;
 import com.Game.Objects.BasicObject;
 import com.Game.Objects.Drawable;
 import com.Game.Objects.Entity;
@@ -64,7 +64,7 @@ public class MainMenu extends Scene{
 
     @Override
     public void loadScene() throws Exception{
-        BasicObject.loadSprite("rsc/img/spriteTest.jpg");
+        BasicObject.loadSprite();
         this.SPath = "rsc/aud/sfx/Press.wav";
         this.objectList = new DoublyLinkedList<>();
         this.soundList = new DoublyLinkedList<>();

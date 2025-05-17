@@ -24,8 +24,8 @@ public class BasicObject implements Drawable , Entity{
         x = 0; y = 0;
     }
 
-    public static void loadSprite(String imagePath) throws IOException{
-        BasicObject.sprite = ImageIO.read((new File(imagePath)).toURI().toURL());
+    public static void loadSprite() throws IOException{
+        BasicObject.sprite = ImageIO.read(BasicObject.class.getResource("rsc/BasicObjectSprite.jpg"));
     }
 
     public static void freeSprite(){
