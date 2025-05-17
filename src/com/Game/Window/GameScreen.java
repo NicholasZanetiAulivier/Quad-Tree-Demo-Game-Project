@@ -2,7 +2,6 @@ package com.Game.Window;
 
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Engine.Global;
-import com.Game.Scenes.Scene;
 
 import javax.swing.JPanel;
 
@@ -19,12 +18,7 @@ public class GameScreen extends JPanel{
     private int width;
     private int height;
 
-    private DrawFunc painter = new DrawFunc() {
-        @Override
-        public void draw(Graphics g , Scene currentScene){
-            
-        }
-    }; 
+    private DrawFunc painter = (a,b)->{};
 
     public GameScreen(int w , int h){
         super(true);

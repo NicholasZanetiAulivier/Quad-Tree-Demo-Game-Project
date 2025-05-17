@@ -19,12 +19,7 @@ public class GameEnv implements Runnable{
     public int frames = 0;
 
     //Default update function: called in this.mainLoop()
-    private static UpdateFunc gameUpdate = new UpdateFunc() {
-        @Override
-        public void update(double dt , Scene currentScene){
-
-        }
-    };
+    private static UpdateFunc gameUpdate = (d,c) -> {};
     
     public GameEnv(int width , int height , String name)throws Exception{
         if (isInitialized) {

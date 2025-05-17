@@ -24,9 +24,7 @@ public class MainMenu extends Scene{
      * BasicSprite
      */
     
-    private static final DrawFunc draw = new DrawFunc() {
-        @Override
-        public void draw(Graphics g , Scene currentScene){
+    private static final DrawFunc draw = (g , currentScene) ->{
             Graphics2D g2d = (Graphics2D) g;
 
             Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
@@ -35,12 +33,9 @@ public class MainMenu extends Scene{
                 ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
                 item = item.getNext();
             }
-        }
-    };
+        };
 
-    private static final UpdateFunc update = new UpdateFunc() {  
-        @Override
-        public void update(double dt , Scene currentScene){
+    private static final UpdateFunc update = (dt,currentScene)->{
             if(Global.KEYBOARD.KEY_A){
                 new Sound(((MainMenu)currentScene).SPath).play();
             }
@@ -50,8 +45,7 @@ public class MainMenu extends Scene{
                 ((Entity)item.getData()).update(dt);
                 item = item.getNext();
             }
-        }
-    };
+        };
 
     @Override
     public void switchScene() throws Exception {
