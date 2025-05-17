@@ -1,11 +1,10 @@
 package com.Game.Scenes;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
-import com.Game.Audio.Sound;
+import com.Game.Audio.AudioManager;
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Engine.Global;
@@ -16,8 +15,11 @@ import com.Game.Objects.Entity;
 public class MainMenu extends Scene{
     public boolean s = true;
     public DoublyLinkedList<BasicObject> objectList;
-    public DoublyLinkedList<Sound> soundList;
     public String SPath;
+
+    //Temp
+    public int soundID ;
+
     /*
      * Describe assets used so that it is clear which ones should be initialized in loadScene
      * Using:
@@ -36,10 +38,9 @@ public class MainMenu extends Scene{
         };
 
     private static final UpdateFunc update = (dt,currentScene)->{
-            if(Global.KEYBOARD.KEY_A){
-                new Sound(((MainMenu)currentScene).SPath).play();
-            }
             Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
+
+            if(Global.MOUSE.left_down) AudioManager.playSFX(((MainMenu)currentScene).soundID);
             
             while(item != null){
                 ((Entity)item.getData()).update(dt);
@@ -59,10 +60,12 @@ public class MainMenu extends Scene{
     @Override
     public void loadScene() throws Exception{
         BasicObject.loadSprite();
-        this.SPath = "rsc/aud/sfx/Press.wav";
         this.objectList = new DoublyLinkedList<>();
-        this.soundList = new DoublyLinkedList<>();
         this.objectList.append(new BasicObject());
+        AudioManager.reserveSFXChannelAmount(2);
+
+        //Temp
+        soundID = AudioManager.loadSFX("sfx/Destroyed.wav", 8);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.DataStruct;
 
 public class ArrayList<T> {
-    protected T[] arr ;
+    protected Object[] arr ;
     protected int maxSize;
     protected int currentSize;
 
     public ArrayList(int size){
-        this.arr = (T[])(new Object[size]);
+        this.arr = new Object[size];
         this.maxSize = size;
         this.currentSize = 0;
     }
@@ -20,11 +20,11 @@ public class ArrayList<T> {
     }
 
     public T[] getArray(){
-        return this.arr;
+        return (T[])this.arr;
     }
     
-    public void addElement(T e) throws Error{
-        if(currentSize == maxSize) throw new Error("ArrayList already has maximum capacity");
+    public void addElement(T e) throws Exception{
+        if(currentSize == maxSize) throw new Exception("ArrayList already has maximum capacity");
         this.arr[currentSize] = e;
         currentSize++;
     }

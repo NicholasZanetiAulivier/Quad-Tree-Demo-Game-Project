@@ -64,6 +64,8 @@ public class GameEnv implements Runnable{
     public long waitFrame(long currTime){
         long toWait = currTime + FPS_TIME;
         while((currTime=System.nanoTime()) < toWait)continue;
+        
+        //Get frame info
         if (frames++ > 59) {System.out.println(System.nanoTime()); frames =0 ;}
         return currTime;
     }
@@ -83,6 +85,10 @@ public class GameEnv implements Runnable{
             gameUpdate.update(dtSec , Global.currentScene);
             Global.MAIN_WINDOW.repaint();
             currTime = System.nanoTime();
+
+            //Get memory info
+            System.out.println(Runtime.getRuntime().totalMemory()/(1024*1024));
+            System.out.println(Runtime.getRuntime().freeMemory()/(1024*1024));
         }
     }
 
