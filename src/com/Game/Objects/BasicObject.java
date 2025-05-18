@@ -24,7 +24,7 @@ public class BasicObject implements Drawable , Entity{
     }
 
     public static void loadSprite() throws IOException{
-        BasicObject.sprite = ImageIO.read(BasicObject.class.getResource("rsc/BasicObjectSprite.jpg"));
+        BasicObject.sprite = ImageIO.read(BasicObject.class.getResource("rsc/sixteen.png"));
     }
 
     public static void freeSprite(){

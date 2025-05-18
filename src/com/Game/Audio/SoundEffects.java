@@ -4,8 +4,6 @@ import com.DataStruct.ArrayList;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 
 public class SoundEffects extends ArrayList<Clip> implements Sound{
     private int currentClip = 0;

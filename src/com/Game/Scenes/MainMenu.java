@@ -6,7 +6,6 @@ import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
 import com.Game.Audio.Sound;
 import com.Game.Audio.SoundEffects;
-import com.Game.Callbacks.DrawFunc;
 import com.Game.Engine.Global;
 import com.Game.Objects.BasicObject;
 import com.Game.Objects.Drawable;
