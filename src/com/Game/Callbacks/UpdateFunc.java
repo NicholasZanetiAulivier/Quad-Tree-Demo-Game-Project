@@ -4,5 +4,6 @@ import com.Game.Scenes.Scene;
 
 @FunctionalInterface
 public interface UpdateFunc {
-    public void update(float dt , Scene currScene);
+    //Use callbacks to access currentScene, OR access currentScene from Global
+    public void update(float dt);
 }

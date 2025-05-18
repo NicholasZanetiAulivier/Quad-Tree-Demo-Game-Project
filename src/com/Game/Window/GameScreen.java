@@ -18,7 +18,7 @@ public class GameScreen extends JPanel{
     private int width;
     private int height;
 
-    private DrawFunc painter = (a,b)->{};
+    private DrawFunc painter = (a)->{};
 
     public GameScreen(int w , int h){
         super(true);
@@ -43,7 +43,7 @@ public class GameScreen extends JPanel{
         //Scales Canvas to fit window properly
         ((Graphics2D)g).scale(Global.DRAW_SCALE,Global.DRAW_SCALE);
         
-        painter.draw(g , Global.currentScene);
+        painter.draw(g);
     }
 
 

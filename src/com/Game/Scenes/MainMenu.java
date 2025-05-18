@@ -7,7 +7,6 @@ import com.DataStruct.Denode;
 import com.Game.Audio.Sound;
 import com.Game.Audio.SoundEffects;
 import com.Game.Callbacks.DrawFunc;
-import com.Game.Callbacks.UpdateFunc;
 import com.Game.Engine.Global;
 import com.Game.Objects.BasicObject;
 import com.Game.Objects.Drawable;
@@ -26,35 +25,38 @@ public class MainMenu extends Scene{
      * Using:
      * BasicSprite
      */
-    
-    private static final DrawFunc draw = (g , currentScene) ->{
-            Graphics2D g2d = (Graphics2D) g;
-
-            Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
-
-            while(item != null){
-                ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
-                item = item.getNext();
-            }
-        };
-
-    private static final UpdateFunc update = (dt,currentScene)->{
-            Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
-
-            if(Global.MOUSE.left_down) ((MainMenu)currentScene).sfx.play();
-            
-            while(item != null){
-                ((Entity)item.getData()).update(dt);
-                item = item.getNext();
-            }
-        };
 
     @Override
     public void switchScene() throws Exception {
         if(Global.currentScene != null) Global.currentScene.unloadScene();
         this.loadScene();
-        Global.GAME_ENVIRONMENT.setDrawFunction(draw);
-        Global.GAME_ENVIRONMENT.setUpdateFunction(update);
+
+        //Draw Function
+        Global.GAME_ENVIRONMENT.setDrawFunction(
+            (g) ->{
+                Graphics2D g2d = (Graphics2D) g;
+
+                Denode<?> item = this.objectList.getHead();
+
+                while(item != null){
+                    ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
+                    item = item.getNext();
+                }
+            }
+        );
+        
+        //Update Function
+        Global.GAME_ENVIRONMENT.setUpdateFunction(
+            (dt) -> {
+                Denode<?> item = this.objectList.getHead();
+                if(Global.MOUSE.left_down) this.sfx.play();
+            
+                while(item != null){
+                    ((Entity)item.getData()).update(dt);
+                    item = item.getNext();
+                }
+            }
+        );
         Global.currentScene = this;
     }
 

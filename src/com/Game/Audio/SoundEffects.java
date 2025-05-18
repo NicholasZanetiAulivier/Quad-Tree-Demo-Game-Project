@@ -18,18 +18,6 @@ public class SoundEffects extends ArrayList<Clip> implements Sound{
         for (int i = 0 ; i < channels ; i++){
             Clip temp = AudioSystem.getClip();
             temp.open(AudioSystem.getAudioInputStream(SoundEffects.class.getResource(relativePath)));
-            // int j = i;
-            // temp.addLineListener(new LineListener() {
-            //     @Override
-            //     public void update(LineEvent l){
-            //         if(l.getType() == LineEvent.Type.START){
-            //             System.out.println("Start" + j);
-            //         }
-            //         if(l.getType() == LineEvent.Type.STOP){
-            //             System.out.println("Stopped" + j);
-            //         }
-            //     }
-            // });
             this.addElement(temp);
         }
     }

@@ -18,7 +18,7 @@ public class GameEnv implements Runnable{
     public int frames = 0;
 
     //Default update function: called in this.mainLoop()
-    private static UpdateFunc gameUpdate = (d,c) -> {};
+    private static UpdateFunc gameUpdate = (d) -> {};
     
     public GameEnv(int width , int height , String name)throws Exception{
         if (isInitialized) {
@@ -78,7 +78,7 @@ public class GameEnv implements Runnable{
 
         while(Global.MAIN_WINDOW.isVisible()){
             newTime = waitFrame(currTime);
-            gameUpdate.update((float)(newTime-currTime)/1_000_000_000 , Global.currentScene);
+            gameUpdate.update((float)(newTime-currTime)/1_000_000_000);
             Global.MAIN_WINDOW.repaint();
             currTime = System.nanoTime();
 
