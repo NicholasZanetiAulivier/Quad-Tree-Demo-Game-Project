@@ -10,4 +10,8 @@ The "Game Engine" will be made entirely in Java, without any imported libraries 
 
 ## TO DO
 
-An audio mechanism needs to be added to support music and SFX. An animation mechanism needs to be added for basic animations. Input Handling is on the top priority list. Lastly, we need to make an actual game for the actual project. Deadline is June 2025, good luck to us all
+An animation mechanism needs to be added for basic animations. We need to make an actual game for the actual project. Deadline is June 2025, good luck to us all
+
+## Updates
+
+Sprites, Events, Windowing, Canvas, and Sounds  Finished by 18-5-2025
