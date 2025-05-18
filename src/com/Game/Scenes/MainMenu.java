@@ -4,7 +4,8 @@ import java.awt.Graphics2D;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
-import com.Game.Audio.AudioManager;
+import com.Game.Audio.Sound;
+import com.Game.Audio.SoundEffects;
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Engine.Global;
@@ -18,7 +19,7 @@ public class MainMenu extends Scene{
     public String SPath;
 
     //Temp
-    public int soundID ;
+    public Sound sfx ;
 
     /*
      * Describe assets used so that it is clear which ones should be initialized in loadScene
@@ -40,7 +41,7 @@ public class MainMenu extends Scene{
     private static final UpdateFunc update = (dt,currentScene)->{
             Denode<?> item = ((MainMenu)currentScene).objectList.getHead();
 
-            if(Global.MOUSE.left_down) AudioManager.playSFX(((MainMenu)currentScene).soundID);
+            if(Global.MOUSE.left_down) ((MainMenu)currentScene).sfx.play();
             
             while(item != null){
                 ((Entity)item.getData()).update(dt);
@@ -62,10 +63,9 @@ public class MainMenu extends Scene{
         BasicObject.loadSprite();
         this.objectList = new DoublyLinkedList<>();
         this.objectList.append(new BasicObject());
-        AudioManager.reserveSFXChannelAmount(2);
 
         //Temp
-        soundID = AudioManager.loadSFX("sfx/Destroyed.wav", 8);
+        sfx = new SoundEffects("sfx/Destroyed.wav", 8);
     }
 
     @Override

@@ -17,23 +17,26 @@ public class SoundEffects extends ArrayList<Clip> implements Sound{
         this.channels = channels;
         for (int i = 0 ; i < channels ; i++){
             Clip temp = AudioSystem.getClip();
-            int j = i;
             temp.open(AudioSystem.getAudioInputStream(SoundEffects.class.getResource(relativePath)));
-            temp.addLineListener(new LineListener() {
-                @Override
-                public void update(LineEvent l){
-                    if(l.getType() == LineEvent.Type.START){
-                        System.out.println("Start" + j);
-                    }
-                    if(l.getType() == LineEvent.Type.STOP){
-                        System.out.println("Stopped" + j);
-                    }
-                }
-            });
+            // int j = i;
+            // temp.addLineListener(new LineListener() {
+            //     @Override
+            //     public void update(LineEvent l){
+            //         if(l.getType() == LineEvent.Type.START){
+            //             System.out.println("Start" + j);
+            //         }
+            //         if(l.getType() == LineEvent.Type.STOP){
+            //             System.out.println("Stopped" + j);
+            //         }
+            //     }
+            // });
             this.addElement(temp);
         }
     }
 
+    /*
+     * Play SFX next in line. If next in line is still playing, reset it then play it
+     */
     public void play(){
         int i = incrementClip();
         Clip curr = (Clip)arr[i];
@@ -41,10 +44,6 @@ public class SoundEffects extends ArrayList<Clip> implements Sound{
         curr.flush();
         curr.setFramePosition(0);
         curr.start();
-    }
-
-    private int decrementClip(){
-        return ((((++currentClip) % channels) + channels) % channels);
     }
 
     private int incrementClip(){

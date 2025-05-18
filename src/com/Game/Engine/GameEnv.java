@@ -5,7 +5,6 @@ import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Events.Keyboard;
 import com.Game.Events.Mouse;
-import com.Game.Scenes.Scene;
 
 //Handle events with EventHandlers
 
@@ -76,19 +75,16 @@ public class GameEnv implements Runnable{
     public void mainLoop(){
         long currTime = System.nanoTime();
         long newTime = System.nanoTime();
-        long dt;
 
         while(Global.MAIN_WINDOW.isVisible()){
             newTime = waitFrame(currTime);
-            dt = newTime - currTime;
-            double dtSec = (double)dt/1_000_000_000;
-            gameUpdate.update(dtSec , Global.currentScene);
+            gameUpdate.update((float)(newTime-currTime)/1_000_000_000 , Global.currentScene);
             Global.MAIN_WINDOW.repaint();
             currTime = System.nanoTime();
 
             //Get memory info
-            System.out.println(Runtime.getRuntime().totalMemory()/(1024*1024));
-            System.out.println(Runtime.getRuntime().freeMemory()/(1024*1024));
+            // System.out.println(Runtime.getRuntime().totalMemory()/(1024*1024));
+            // System.out.println(Runtime.getRuntime().freeMemory()/(1024*1024));
         }
     }
 
