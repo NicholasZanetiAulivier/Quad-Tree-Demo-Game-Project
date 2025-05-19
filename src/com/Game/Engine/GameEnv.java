@@ -2,6 +2,8 @@ package com.Game.Engine;
 
 import com.Game.Window.MainWindow;
 
+import java.awt.RenderingHints;
+
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Events.Keyboard;
@@ -30,6 +32,8 @@ public class GameEnv implements Runnable{
             
             Global.MAIN_WINDOW = new MainWindow(width,height,name);
             System.out.println(Global.MAIN_WINDOW);
+
+            Global.RH = new RenderingHints(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON);
             
             Global.initScenes();
             System.out.println("Game Env Successfully Initialized");

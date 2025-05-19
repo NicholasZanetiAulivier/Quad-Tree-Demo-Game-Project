@@ -1,8 +1,6 @@
 package com.Game.Scenes;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.BasicStroke;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
@@ -24,7 +22,7 @@ public class MainMenu extends Scene{
             (g) ->{
                 Graphics2D g2d = (Graphics2D) g;
 
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setRenderingHints(Global.RH);
 
                 Denode<?> item = this.circles.getHead();
 

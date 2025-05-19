@@ -19,7 +19,7 @@ public class GameScreen extends JPanel{
     private int height;
 
     private DrawFunc painter = (a)->{};
-
+    
     public GameScreen(int w , int h){
         super(true);
         setBackground(new Color(0xFFFFFF));

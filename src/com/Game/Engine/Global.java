@@ -1,5 +1,7 @@
 package com.Game.Engine;
 
+import java.awt.RenderingHints;
+
 import com.Game.Window.GameScreen;
 import com.Game.Window.MainWindow;
 import com.Game.Scenes.MainMenu;
@@ -14,6 +16,7 @@ public abstract class Global {
     public static GameScreen CANVAS = null;
     public static Keyboard KEYBOARD = null;
     public static Mouse MOUSE = null;
+    public static RenderingHints RH = null;
     public static Scene currentScene = null;
     public static Scene MainMenu = null;
 

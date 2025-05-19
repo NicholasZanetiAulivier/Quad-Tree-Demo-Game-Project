@@ -1,13 +1,6 @@
 package com.Game.Scenes;
 
-import com.Game.Callbacks.DrawFunc;
-import com.Game.Callbacks.UpdateFunc;
-
 public abstract class Scene {
-    @SuppressWarnings("all")
-    private static final DrawFunc draw = null;
-    @SuppressWarnings("all")
-    private static final UpdateFunc update = null;
     
     public abstract void switchScene() throws Exception;
     //Call unloadScene() of previous scene
