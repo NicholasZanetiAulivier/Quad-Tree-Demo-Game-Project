@@ -35,7 +35,7 @@ public class BasicObject implements Drawable , Entity{
         g.drawImage(BasicObject.sprite ,x , y ,observer);
     }
 
-    public void update(double dt){
+    public void update(float dt){
         this.x = Global.MOUSE.x;
         this.y = Global.MOUSE.y;
     }

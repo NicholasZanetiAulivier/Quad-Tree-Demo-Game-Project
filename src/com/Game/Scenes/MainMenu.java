@@ -1,30 +1,19 @@
 package com.Game.Scenes;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
-import com.Game.Audio.Sound;
-import com.Game.Audio.SoundEffects;
 import com.Game.Engine.Global;
-import com.Game.Objects.BasicObject;
+import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.Drawable;
 import com.Game.Objects.Entity;
 
 public class MainMenu extends Scene{
-    public boolean s = true;
-    public DoublyLinkedList<BasicObject> objectList;
-    public String SPath;
-
-    //Temp
-    public Sound sfx ;
-
-    /*
-     * Describe assets used so that it is clear which ones should be initialized in loadScene
-     * Using:
-     * BasicSprite
-     */
-
+    public DoublyLinkedList<ArtificialCircle> circles;
+   
     @Override
     public void switchScene() throws Exception {
         if(Global.currentScene != null) Global.currentScene.unloadScene();
@@ -35,7 +24,9 @@ public class MainMenu extends Scene{
             (g) ->{
                 Graphics2D g2d = (Graphics2D) g;
 
-                Denode<?> item = this.objectList.getHead();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                Denode<?> item = this.circles.getHead();
 
                 while(item != null){
                     ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
@@ -47,9 +38,7 @@ public class MainMenu extends Scene{
         //Update Function
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
-                Denode<?> item = this.objectList.getHead();
-                if(Global.MOUSE.left_down) this.sfx.play();
-            
+                Denode<?> item = this.circles.getHead();
                 while(item != null){
                     ((Entity)item.getData()).update(dt);
                     item = item.getNext();
@@ -61,18 +50,14 @@ public class MainMenu extends Scene{
 
     @Override
     public void loadScene() throws Exception{
-        BasicObject.loadSprite();
-        this.objectList = new DoublyLinkedList<>();
-        this.objectList.append(new BasicObject());
+        this.circles = new DoublyLinkedList<>();
+        this.circles.append(new ArtificialCircle(0, 0, 0, 0, 100));
 
-        //Temp
-        sfx = new SoundEffects("sfx/Destroyed.wav", 8);
     }
 
     @Override
     public void unloadScene() throws Exception{
-        BasicObject.freeSprite();
-        this.objectList = null;
+        this.circles = null;
     }
 
 }

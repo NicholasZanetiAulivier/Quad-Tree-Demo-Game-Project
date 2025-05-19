@@ -26,6 +26,8 @@ public class GameScreen extends JPanel{
         width = w;
         height = h;
         Global.CANVAS = this;
+        System.out.println(getGraphics());
+        
     }
 
     public void setDrawFunction(DrawFunc f){
