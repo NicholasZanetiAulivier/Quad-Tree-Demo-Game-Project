@@ -17,8 +17,11 @@ public class Mouse implements MouseInputListener{
     public int x = 0;
     public int y = 0;
 
+    @SuppressWarnings("all")
     private MouseClickedFunc mouseClick = (e)->{};
+    @SuppressWarnings("all")
     private MousePressedFunc mousePress = (e)->{};
+    @SuppressWarnings("all")
     private MouseReleasedFunc mouseRelease = (e)->{};
 
     private Timer timer = new Timer();

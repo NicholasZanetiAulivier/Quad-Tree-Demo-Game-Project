@@ -1,5 +1,6 @@
 package com.Game.Scenes;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import com.DataStruct.DoublyLinkedList;
@@ -24,15 +25,15 @@ public class WithoutQuadTree extends Scene{
 
                 g2d.setRenderingHints(Global.RH);
 
+                g2d.setColor(new Color(0xFF0000));
+
                 Denode<?> item = this.circles.getHead();
-
-                g2d.drawString(Global.MOUSE.x + ","+Global.MOUSE.y , 0 , 400);
-
                 while(item != null){
                     ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
-                    g2d.drawString(item.getData().toString(), 0, 100);
+                    // g2d.drawString(item.getData().toString(), 0, 100);
                     item = item.getNext();
                 }
+                g2d.drawString(Global.MOUSE.x + ","+Global.MOUSE.y , 0 , 400);
             }
         );
         
@@ -53,8 +54,14 @@ public class WithoutQuadTree extends Scene{
     @Override
     public void loadScene() throws Exception{
         this.circles = new DoublyLinkedList<>();
-        this.circles.append(new ArtificialCircle(700, 500, 500, 500, 2));
-
+        for (int i = 0 ; i < 1000  ; i++)
+            this.circles.append(
+                new ArtificialCircle(
+                    (float)Math.random()*(Global.realWidth-60), 
+                    (float)Math.random()*(Global.realHeight-60), 
+                    (float)Math.random()*500, 
+                    (float)Math.random()*500, 5)
+            );
     }
 
     @Override

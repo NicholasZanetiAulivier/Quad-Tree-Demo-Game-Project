@@ -9,8 +9,11 @@ import com.Game.Callbacks.KeyReleasedFunc;
 import java.awt.event.KeyEvent;
 
 public class Keyboard implements KeyListener{
+    @SuppressWarnings("all")
     private KeyTypedFunc typeFunc = (e) ->{};
+    @SuppressWarnings("all")
     private KeyPressedFunc pressFunc = (e) ->{};
+    @SuppressWarnings("all")
     private KeyReleasedFunc releaseFunc = (e) ->{};
 
 
