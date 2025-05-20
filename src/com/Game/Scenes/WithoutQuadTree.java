@@ -26,6 +26,8 @@ public class WithoutQuadTree extends Scene{
 
                 Denode<?> item = this.circles.getHead();
 
+                g2d.drawString(Global.MOUSE.x + ","+Global.MOUSE.y , 0 , 400);
+
                 while(item != null){
                     ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
                     g2d.drawString(item.getData().toString(), 0, 100);
@@ -37,12 +39,8 @@ public class WithoutQuadTree extends Scene{
         //Update Function
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
-<<<<<<< HEAD:src/com/Game/Scenes/WithoutQuadTree.java
                 Denode<?> item = this.circles.getHead();
-=======
-                Denode<?> item = this.objectList.getHead();
             
->>>>>>> main:src/com/Game/Scenes/MainMenu.java
                 while(item != null){
                     ((Entity)item.getData()).update(dt);
                     item = item.getNext();
@@ -55,7 +53,7 @@ public class WithoutQuadTree extends Scene{
     @Override
     public void loadScene() throws Exception{
         this.circles = new DoublyLinkedList<>();
-        this.circles.append(new ArtificialCircle(760, 560, 0, 0, 20));
+        this.circles.append(new ArtificialCircle(700, 500, 500, 500, 2));
 
     }
 

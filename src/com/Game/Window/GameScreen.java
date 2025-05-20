@@ -15,16 +15,11 @@ import java.awt.Graphics2D;
  */
 public class GameScreen extends JPanel{
 
-    private int width;
-    private int height;
-
     private DrawFunc painter = (a)->{};
     
-    public GameScreen(int w , int h){
-        super(true);
+    public GameScreen(){
+        super(null,true);
         setBackground(new Color(0xFFFFFF));
-        width = w;
-        height = h;
         Global.CANVAS = this;
         System.out.println(getGraphics());
         
@@ -48,30 +43,5 @@ public class GameScreen extends JPanel{
         painter.draw(g);
     }
 
-
-    /*
-     * Literal magic code 
-     * 
-     * HackFixed by doing this.width-14 and this.height-36 in this.setBounds
-     * This is to fix the stupid oversized JPanel that ruins the left-right and top-botton black bars when window is resized
-     * This afaik shouldn't affect gameplay
-     */
-    public void fillBounds(int width , int height){
-        if((double)width/height < Global.ASPECT_RATIO){
-            Global.DRAW_SCALE = (double)width/Global.originalWidth;
-            this.width = width;
-            this.height = (int)(this.width / Global.ASPECT_RATIO);
-            this.setBounds(0,(int)((height-this.height)/2.) , this.width-14 , this.height-36);
-        } else if ((double)width/height > Global.ASPECT_RATIO){
-            Global.DRAW_SCALE = (double)height/Global.originalHeight;
-            this.height = height;
-            this.width = (int)(this.height * Global.ASPECT_RATIO );
-            this.setBounds((int)((width - this.width)/2.),0,this.width-14 , this.height-36);
-        } else {
-            Global.DRAW_SCALE = (double)width/Global.originalWidth;
-            this.width = width;
-            this.height = height;
-            this.setBounds(0,0,this.width-14 , this.height-36);
-        }
-    }
+    //WINDOW IS NOT RESIZEABLE, unable to fix bug where canvas size is inacurate in many different scales
 }

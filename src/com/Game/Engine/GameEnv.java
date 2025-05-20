@@ -34,19 +34,17 @@ public class GameEnv implements Runnable{
             System.out.println(Global.MAIN_WINDOW);
 
             Global.RH = new RenderingHints(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON);
-            
-            Global.initScenes();
-            System.out.println("Game Env Successfully Initialized");
-            
-            Global.MainMenu.switchScene();
-
             Global.KEYBOARD = new Keyboard();
             Global.MAIN_WINDOW.addKeyListener(Global.KEYBOARD);
 
             Global.MOUSE = new Mouse();
             Global.CANVAS.addMouseListener(Global.MOUSE);
             Global.CANVAS.addMouseMotionListener(Global.MOUSE);
-
+            
+            Global.initScenes();
+            System.out.println("Game Env Successfully Initialized");
+            
+            Global.MainMenu.switchScene();
             GameEnv.isInitialized = true;
         }
     }
@@ -104,9 +102,6 @@ public class GameEnv implements Runnable{
         }
     }
 
-    public void resize(int width , int height){
-        Global.CANVAS.fillBounds(width , height);
-    }
-
+    //WINDOW NOT RESIZEABLE
 
 }

@@ -21,15 +21,11 @@ public class ArtificialCircle implements Entity, Drawable{
     }
 
     public void update(float dt){
-        if(x < 0 || x > Global.originalWidth-2*rad) {
-            if(x < 0) x=0;
-            if(x > Global.originalWidth-2*rad)x = Global.originalWidth-2*rad;
+        if(x < 0 || x > Global.realWidth-2*rad) {
             vX = -vX;
             System.out.println("Bounced at x: "+x);
         };
-        if(y < 0 || y > Global.originalHeight-2*rad) {
-            if(y < 0) y=0;
-            if(y > Global.originalHeight-2*rad)y = Global.originalHeight-2*rad;
+        if(y < 0 || y > Global.realHeight-2*rad) {
             vY = -vY;
             System.out.println("Bounced at y: "+y);
         }
@@ -40,7 +36,7 @@ public class ArtificialCircle implements Entity, Drawable{
     }
 
     public void draw(Graphics g , ImageObserver o){
-        g.drawOval((int)x,(int)y,(int)rad,(int)rad);
+        g.drawOval((int)x,(int)y,(int)rad*2,(int)rad*2);
     }
 
     public String toString(){
