@@ -1,15 +1,18 @@
 package com.Game.Objects;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
 
-public class ArtificialCircle implements Entity, Drawable{
+public class ArtificialCircle implements Entity, Drawable, CollisionObject{
     public Vector2 position; //Top left corner of circle
     public Vector2 velocity;
     public float rad;
+
+    private boolean colliding = false; //Temp
 
     public ArtificialCircle(float x , float y , float vX , float vY,float rad){
         this.position = new Vector2(x,y);
@@ -17,9 +20,61 @@ public class ArtificialCircle implements Entity, Drawable{
         this.velocity = new Vector2(vX, vY);
     }
 
+    public short getType(){
+        return CollisionObject.CIRCLE;
+    }
+
+    public float getX(){
+        return position.getX();
+    }
+
+    public float getY(){
+        return position.getY();
+    }
+
+    public Vector2 getPosition(){
+        return this.position;
+    }
+
+    public float getXVelocity(){
+        return velocity.getX();
+    }
+
+    public float getYVelocity(){
+        return velocity.getY();
+    }
+
+    public Vector2 getVelocity(){
+        return this.velocity;
+    }
+
+    public void setY(float y){
+        this.position.setY(y);
+    }
+
+    public void setX(float x){
+        this.position.setX(x);
+    }
+
+    public void setYVelocity(float v){
+        this.velocity.setY(v);
+    }
+
+    public void setXVelocity(float v){
+        this.velocity.setX(v);
+    }
+
+    public void isColliding(CollisionObject c){
+        if(c.getType() == CollisionObject.CIRCLE) isColliding((ArtificialCircle)c);
+    }
+
+    public void isColliding(ArtificialCircle c){
+        colliding = true;
+    }
+
     public void update(float dt){
-        float x = position.getX();
-        float y = position.getY();
+        float x = getX();
+        float y = getY();
 
         if(x < 0 || x > Global.realWidth-2*rad) {
             velocity.setX(-velocity.getX());
@@ -35,10 +90,23 @@ public class ArtificialCircle implements Entity, Drawable{
     }
 
     public void draw(Graphics g , ImageObserver o){
+        if (!colliding)g.setColor(Color.BLUE);
+        else g.setColor(Color.RED);
         g.fillOval((int)position.getX() , (int)position.getY(),(int)rad*2,(int)rad*2);
+        colliding = false;
     }
 
     public String toString(){
         return this.position.getX()+","+this.position.getY()+","+this.velocity.getX()+","+this.velocity.getY()+","+this.rad;
+    }
+
+    //Assume radius is always the same between the two circles(it's a simulation after all)
+    public boolean checkCollision(ArtificialCircle c){
+        return Math.pow((getX()-c.getX()),2)+Math.pow((getY()-c.getY()),2) < Math.pow(rad*2,2);
+    }
+
+    public boolean checkCollision(CollisionObject c){
+        if (c.getType() == CollisionObject.CIRCLE) return checkCollision((ArtificialCircle)c);
+        else return false;
     }
 }

@@ -7,6 +7,7 @@ import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.Denode;
 import com.Game.Engine.Global;
 import com.Game.Objects.ArtificialCircle;
+import com.Game.Objects.CollisionObject;
 import com.Game.Objects.Drawable;
 import com.Game.Objects.Entity;
 
@@ -43,6 +44,17 @@ public class WithoutQuadTree extends Scene{
                 Denode<?> item = this.circles.getHead();
             
                 while(item != null){
+
+                    //Try commenting this part to see how bad the collision detection is dealing with the frames
+                    CollisionObject n = (CollisionObject)item.getData();
+                    CollisionObject p ;
+                    Denode<?> other = this.circles.getHead();
+                    while(other != null){
+                        if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
+                        other = other.getNext();
+                    }
+                    //
+
                     ((Entity)item.getData()).update(dt);
                     item = item.getNext();
                 }
@@ -54,13 +66,13 @@ public class WithoutQuadTree extends Scene{
     @Override
     public void loadScene() throws Exception{
         this.circles = new DoublyLinkedList<>();
-        for (int i = 0 ; i < 1000  ; i++)
+        for (int i = 0 ; i < 5000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
                     (float)Math.random()*(Global.realWidth-60), 
                     (float)Math.random()*(Global.realHeight-60), 
-                    (float)Math.random()*500, 
-                    (float)Math.random()*500, 5)
+                    (float)Math.random()*1000-500, 
+                    (float)Math.random()*1000-500, 5)
             );
     }
 
