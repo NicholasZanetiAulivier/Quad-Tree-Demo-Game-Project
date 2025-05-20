@@ -9,7 +9,7 @@ import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.Drawable;
 import com.Game.Objects.Entity;
 
-public class MainMenu extends Scene{
+public class WithoutQuadTree extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
    
     @Override
@@ -28,6 +28,7 @@ public class MainMenu extends Scene{
 
                 while(item != null){
                     ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
+                    g2d.drawString(item.getData().toString(), 0, 100);
                     item = item.getNext();
                 }
             }
@@ -49,7 +50,7 @@ public class MainMenu extends Scene{
     @Override
     public void loadScene() throws Exception{
         this.circles = new DoublyLinkedList<>();
-        this.circles.append(new ArtificialCircle(0, 0, 0, 0, 100));
+        this.circles.append(new ArtificialCircle(760, 560, 0, 0, 20));
 
     }
 
