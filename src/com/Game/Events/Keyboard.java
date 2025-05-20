@@ -1,62 +1,43 @@
 package com.Game.Events;
 
 import java.awt.event.KeyListener;
+
+import com.Game.Callbacks.KeyTypedFunc;
+import com.Game.Callbacks.KeyPressedFunc;
+import com.Game.Callbacks.KeyReleasedFunc;
+
 import java.awt.event.KeyEvent;
 
 public class Keyboard implements KeyListener{
-    public boolean KEY_W = false;
-    public boolean KEY_A = false;
-    public boolean KEY_S = false;
-    public boolean KEY_D = false; 
+    private KeyTypedFunc typeFunc = (e) ->{};
+    private KeyPressedFunc pressFunc = (e) ->{};
+    private KeyReleasedFunc releaseFunc = (e) ->{};
+
+
+    public void setKeyPressFunction(KeyPressedFunc k){
+        pressFunc = k;
+    }
+
+    public void setKeyTypeFunction(KeyTypedFunc k){
+        typeFunc = k;
+    }
+
+    public void setKeyReleaseFunction(KeyReleasedFunc k){
+        releaseFunc = k;
+    }
 
     @Override
     public void keyPressed(KeyEvent e){
-        int c = e.getKeyCode();
-        switch(c){
-            case KeyEvent.VK_A : {
-                this.KEY_A = true;
-                break;
-            }
-            case KeyEvent.VK_W : {
-                this.KEY_W = true;
-                break;
-            }
-            case KeyEvent.VK_S : {
-                this.KEY_S = true;
-                break;
-            }
-            case KeyEvent.VK_D : {
-                this.KEY_D = true;
-                break;
-            }
-        }
+        pressFunc.pressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e){
-        int c = e.getKeyCode();
-        switch(c){
-            case KeyEvent.VK_A : {
-                this.KEY_A = false;
-                break;
-            }
-            case KeyEvent.VK_W : {
-                this.KEY_W = false;
-                break;
-            }
-            case KeyEvent.VK_S : {
-                this.KEY_S = false;
-                break;
-            }
-            case KeyEvent.VK_D : {
-                this.KEY_D = false;
-                break;
-            }
-        }
+        releaseFunc.released(e);
     }
 
     @Override
     public void keyTyped(KeyEvent e ){
-        //Useless
+        typeFunc.typed(e);
     }
 }

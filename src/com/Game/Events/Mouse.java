@@ -8,13 +8,18 @@ import java.util.TimerTask;
 
 import javax.swing.event.MouseInputListener;
 
+import com.Game.Callbacks.MouseClickedFunc;
+import com.Game.Callbacks.MousePressedFunc;
+import com.Game.Callbacks.MouseReleasedFunc;
 import com.Game.Engine.Global;
 
 public class Mouse implements MouseInputListener{
     public int x = 0;
     public int y = 0;
-    public boolean left_down = false;
-    public boolean right_down = false;
+
+    private MouseClickedFunc mouseClick = (e)->{};
+    private MousePressedFunc mousePress = (e)->{};
+    private MouseReleasedFunc mouseRelease = (e)->{};
 
     private Timer timer = new Timer();
 
@@ -53,34 +58,16 @@ public class Mouse implements MouseInputListener{
 
     @Override
     public void mousePressed(MouseEvent m){
-        switch(m.getButton()){
-            case MouseEvent.BUTTON1 :{
-                this.left_down = true;
-                break;
-            }
-            case MouseEvent.BUTTON2 : {
-                this.right_down = true;
-                break;
-            }
-        }
+        mousePress.press(m);
     }
 
     @Override
     public void mouseReleased(MouseEvent m){
-        switch(m.getButton()){
-            case MouseEvent.BUTTON1 :{
-                this.left_down = false;
-                break;
-            }
-            case MouseEvent.BUTTON2 : {
-                this.right_down = false;
-                break;
-            }
-        }
+        mouseRelease.release(m);
     }
 
     @Override
     public void mouseClicked(MouseEvent m){
-
+        mouseClick.click(m);
     }
 }

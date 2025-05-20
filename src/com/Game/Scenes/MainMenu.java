@@ -48,7 +48,6 @@ public class MainMenu extends Scene{
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
                 Denode<?> item = this.objectList.getHead();
-                if(Global.MOUSE.left_down) this.sfx.play();
             
                 while(item != null){
                     ((Entity)item.getData()).update(dt);
