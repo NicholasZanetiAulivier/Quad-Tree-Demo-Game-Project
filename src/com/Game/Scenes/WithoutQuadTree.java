@@ -37,7 +37,12 @@ public class WithoutQuadTree extends Scene{
         //Update Function
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
+<<<<<<< HEAD:src/com/Game/Scenes/WithoutQuadTree.java
                 Denode<?> item = this.circles.getHead();
+=======
+                Denode<?> item = this.objectList.getHead();
+            
+>>>>>>> main:src/com/Game/Scenes/MainMenu.java
                 while(item != null){
                     ((Entity)item.getData()).update(dt);
                     item = item.getNext();

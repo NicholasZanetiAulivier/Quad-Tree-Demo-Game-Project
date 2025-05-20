@@ -4,5 +4,5 @@ import java.awt.event.KeyEvent;
 
 @FunctionalInterface
 public interface KeyPressedFunc {
-    public void pressed(KeyEvent e);
+    public void pressed(KeyEvent e);    
 }
