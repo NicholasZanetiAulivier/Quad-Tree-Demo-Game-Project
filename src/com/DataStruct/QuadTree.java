@@ -58,9 +58,9 @@ public class QuadTree {
 
         if (x < verticalMidpoint && x+width < verticalMidpoint ){
             if (top) return 0;
-            else if (bot) return 1;
+            else if (bot) return 2;
         } else if (x > verticalMidpoint){
-            if (top) return 2;
+            if (top) return 1;
             else if (bot) return 3;
         }
 
@@ -70,7 +70,7 @@ public class QuadTree {
 
     public void insert(ArtificialCircle c){
         if (childrenNodes != null){
-            int index = getIndex(c.getX(),c.getY(),c.getRad() , c.getRad());
+            int index = getIndex(c.getX(),c.getY(),c.getRad()*2 , c.getRad()*2);
             if(index != -1) childrenNodes[index].insert(c);
             return;
         }
@@ -87,7 +87,7 @@ public class QuadTree {
 
             Denode<CollisionObject> pt = objects.getHead();
             while(pt != null){
-                int index = getIndex(c.getX(),c.getY(),c.getRad() , c.getRad());
+                int index = getIndex(c.getX(),c.getY(),c.getRad()*2 , c.getRad()*2);
                 if(index != -1) {
                     Denode<CollisionObject> temp = pt.getNext();
                     childrenNodes[index].insert((ArtificialCircle)objects.detachDenode(pt));
@@ -100,7 +100,7 @@ public class QuadTree {
     }
 
     public DoublyLinkedList<CollisionObject> retrieve(DoublyLinkedList<CollisionObject> list , ArtificialCircle c){
-        int index = getIndex(c.getX(),c.getY(),c.getRad() , c.getRad());
+        int index = getIndex(c.getX(),c.getY(),c.getRad()*2 , c.getRad()*2);
         if (index != -1 && childrenNodes != null){
             childrenNodes[index].retrieve(list , c);
         }

@@ -15,6 +15,7 @@ import com.Game.Objects.Entity;
 public class WithQuadTree extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
     public QuadTree partition;
+    public int count = 0;
    
     @Override
     public void switchScene() throws Exception {
@@ -37,8 +38,11 @@ public class WithQuadTree extends Scene{
                     item = item.getNext();
                 }
 
+                g.setColor(Color.GRAY);
                 partition.draw(g);
-                g2d.drawString(Global.MOUSE.x + ","+Global.MOUSE.y , 0 , 400);
+                g.setColor(Color.BLACK);
+                g2d.drawString(count+"" , 0 , 400);
+                count =0;
             }
         );
         
@@ -65,10 +69,11 @@ public class WithQuadTree extends Scene{
                     while(other != null){
                         if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
                         other = other.getNext();
+                        count++;
                     }
                     //
 
-                    ((Entity)item.getData()).update(dt);
+                    // ((Entity)item.getData()).update(dt);
                     item = item.getNext();
                 }
             }
@@ -80,13 +85,13 @@ public class WithQuadTree extends Scene{
     public void loadScene() throws Exception{
         this.partition = new QuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
         this.circles = new DoublyLinkedList<>();
-        for (int i = 0 ; i < 5000  ; i++)  
+        for (int i = 0 ; i < 10000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
                     (float)Math.random()*(Global.realWidth-60), 
                     (float)Math.random()*(Global.realHeight-60), 
-                    (float)Math.random()*1000-500, 
-                    (float)Math.random()*1000-500, 5)
+                    (float)Math.random()*100-50, 
+                    (float)Math.random()*100-50, 2)
             );
     }
 

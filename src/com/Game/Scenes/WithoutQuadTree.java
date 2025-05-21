@@ -13,6 +13,7 @@ import com.Game.Objects.Entity;
 
 public class WithoutQuadTree extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
+    public int count = 0;
    
     @Override
     public void switchScene() throws Exception {
@@ -33,8 +34,11 @@ public class WithoutQuadTree extends Scene{
                     ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
                     // g2d.drawString(item.getData().toString(), 0, 100);
                     item = item.getNext();
+
                 }
-                g2d.drawString(Global.MOUSE.x + ","+Global.MOUSE.y , 0 , 400);
+                g.setColor(Color.BLACK);
+                g2d.drawString(count+"" , 0 , 400);
+                count =0;
             }
         );
         
@@ -42,7 +46,6 @@ public class WithoutQuadTree extends Scene{
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
                 Denode<?> item = this.circles.getHead();
-            
                 while(item != null){
 
                     //Try commenting this part to see how bad the collision detection is dealing with the frames
@@ -52,6 +55,7 @@ public class WithoutQuadTree extends Scene{
                     while(other != null){
                         if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
                         other = other.getNext();
+                        count++;
                     }
                     //
 
@@ -66,13 +70,13 @@ public class WithoutQuadTree extends Scene{
     @Override
     public void loadScene() throws Exception{
         this.circles = new DoublyLinkedList<>();
-        for (int i = 0 ; i < 5000  ; i++)  
+        for (int i = 0 ; i < 10000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
                     (float)Math.random()*(Global.realWidth-60), 
                     (float)Math.random()*(Global.realHeight-60), 
-                    (float)Math.random()*1000-500, 
-                    (float)Math.random()*1000-500, 5)
+                    (float)Math.random()*100-50, 
+                    (float)Math.random()*100-50, 2)
             );
     }
 
