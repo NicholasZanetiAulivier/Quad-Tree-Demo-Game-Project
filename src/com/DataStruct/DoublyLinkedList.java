@@ -35,6 +35,8 @@ public class DoublyLinkedList<T> {
             newNode.setPrev(this.tail);
             this.tail = newNode;
         }
+
+        size++;
     }
 
     //Push to front of list
@@ -49,6 +51,7 @@ public class DoublyLinkedList<T> {
             this.head.setPrev(newNode);
             this.head = newNode;
         }
+        size++;
     }
 
     //Pop from front of list
@@ -57,6 +60,7 @@ public class DoublyLinkedList<T> {
         node.setNext(null);
         this.head = this.head.getNext();
         this.head.setPrev(null);
+        size--;
         return node;
     } 
 
@@ -66,6 +70,7 @@ public class DoublyLinkedList<T> {
         node.setPrev(null);
         this.tail = this.tail.getPrev();
         this.tail.setNext(null);
+        size--;
         return node;
     }
 

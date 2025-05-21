@@ -1,5 +1,7 @@
 package com.DataStruct;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.Game.Objects.ArtificialCircle;
@@ -10,7 +12,7 @@ import com.Game.Objects.CollisionObject;
 //Specifically for the game
 public class QuadTree {
     public static int MAX_OBJECTS = 4;
-    public static byte MAX_LEVEL = 4;
+    public static byte MAX_LEVEL = 10;
     
     private byte level;
     private DoublyLinkedList<CollisionObject> objects;
@@ -21,6 +23,7 @@ public class QuadTree {
     public QuadTree(byte l , Rectangle b){
         this.level = l;
         this.bounds = b;
+        this.objects = new DoublyLinkedList<>();
     }
 
     public QuadTree(byte l , int x , int y , int width , int height ){
@@ -78,7 +81,7 @@ public class QuadTree {
         }
 
         if(objects.getSize() > MAX_OBJECTS && level < MAX_LEVEL){
-            if(childrenNodes!=null){
+            if(childrenNodes==null){
                 split();
             }
 
@@ -110,6 +113,16 @@ public class QuadTree {
         }
 
         return list;
+    }
+
+    public void draw(Graphics g){
+        ((Graphics2D)g).draw(bounds);
+        if(childrenNodes != null){
+            childrenNodes[0].draw(g);
+            childrenNodes[1].draw(g);
+            childrenNodes[2].draw(g);
+            childrenNodes[3].draw(g);
+        }
     }
 
 }
