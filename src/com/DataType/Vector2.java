@@ -1,7 +1,5 @@
 package com.DataType;
 
-import java.util.Vector;
-
 /*
  * Vector2 class provides vector operations in 2D. 
  * This class uses floats

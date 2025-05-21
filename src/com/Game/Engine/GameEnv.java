@@ -21,6 +21,7 @@ public class GameEnv implements Runnable{
     public int frames = 0;
 
     //Default update function: called in this.mainLoop()
+    @SuppressWarnings("all")
     private static UpdateFunc gameUpdate = (d) -> {};
     
     public GameEnv(int width , int height , String name)throws Exception{

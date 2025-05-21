@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
  */
 public class GameScreen extends JPanel{
 
+    @SuppressWarnings("all")
     private DrawFunc painter = (a)->{};
     
     public GameScreen(){
