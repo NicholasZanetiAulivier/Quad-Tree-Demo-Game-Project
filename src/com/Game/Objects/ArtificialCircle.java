@@ -24,34 +24,47 @@ public class ArtificialCircle implements Entity, Drawable, CollisionObject{
         return CollisionObject.CIRCLE;
     }
 
+    public void setColliding(boolean t){
+        colliding = t;
+    }
+
     public float getX(){
         return position.getX();
     }
 
+    
     public float getY(){
         return position.getY();
     }
-
+    
     public Vector2 getPosition(){
         return this.position;
     }
-
+    
     public float getXVelocity(){
         return velocity.getX();
     }
-
+    
     public float getYVelocity(){
         return velocity.getY();
     }
-
+    
     public Vector2 getVelocity(){
         return this.velocity;
     }
-
+    
     public float getRad(){
         return this.rad;
     }
 
+    public float getCenterX(){
+        return getX() + getRad();
+    }
+
+    public float getCenterY(){
+        return getY()+getRad();
+    }
+    
     public void setY(float y){
         this.position.setY(y);
     }

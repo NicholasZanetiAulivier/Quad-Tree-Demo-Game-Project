@@ -32,8 +32,8 @@ public class Denode<T> extends Node<T>{
         this.next = next;
     }
 
-    public void setNext(Node<T> next) throws Exception{
-        throw new Exception("Wrong parameter: setNext on Denode has to be given a Denode parameter");
+    public void setNext(Node<T> next){
+        System.out.println("Wrong parameter: setNext on Denode has to be given a Denode parameter");
     }
 
     public void setPrev(Denode<T> prev){

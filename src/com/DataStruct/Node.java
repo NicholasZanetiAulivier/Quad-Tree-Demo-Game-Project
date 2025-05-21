@@ -29,7 +29,7 @@ public class Node<T> {
         this.data = data;
     }
 
-    public void setNext(Node<T> next) throws Exception{
+    public void setNext(Node<T> next){
         this.next = next;
     }
 }

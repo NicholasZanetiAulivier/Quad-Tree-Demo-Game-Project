@@ -59,6 +59,18 @@ public class Mouse implements MouseInputListener{
         timer.purge();
     }
 
+    public void setMousePressFunction(MousePressedFunc m){
+        this.mousePress = m;
+    }
+
+    public void setMouseClickedFunction(MouseClickedFunc m){
+        this.mouseClick = m;
+    }
+
+    public void setMouseReleasedFunction(MouseReleasedFunc m){
+        this.mouseRelease = m;
+    }
+
     @Override
     public void mousePressed(MouseEvent m){
         mousePress.press(m);

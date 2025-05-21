@@ -99,7 +99,7 @@ public class GameEnv implements Runnable{
         try{
             mainLoop();
         }catch (Exception e){
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

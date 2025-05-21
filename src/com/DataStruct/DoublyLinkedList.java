@@ -57,9 +57,12 @@ public class DoublyLinkedList<T> {
     //Pop from front of list
     public Denode<T> popFront(){
         Denode<T> node = this.head;
-        node.setNext(null);
-        this.head = this.head.getNext();
-        this.head.setPrev(null);
+        this.head = node.getNext();
+        if(this.head == null){
+            this.tail = null;
+        } else{
+            this.head.setPrev(null);
+        }
         size--;
         return node;
     } 
@@ -67,9 +70,12 @@ public class DoublyLinkedList<T> {
     //Pop from back of list
     public Denode<T> popBack(){
         Denode<T> node = this.tail;
-        node.setPrev(null);
-        this.tail = this.tail.getPrev();
-        this.tail.setNext(null);
+        this.tail = node.getPrev();
+        if(this.tail == null){
+            this.head = null;
+        }else{
+            this.tail.setNext(null);
+        }
         size--;
         return node;
     }

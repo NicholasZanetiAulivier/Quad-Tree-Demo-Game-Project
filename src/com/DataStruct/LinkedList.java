@@ -12,7 +12,11 @@ public class LinkedList<T> {
         this.size = 0;
     }
 
-    public void add(T item) throws Exception{
+    public Node<T> getHead(){
+        return head;
+    }
+
+    public void add(T item){
         Node<T> newNode = new Node<>(item);
         if(head == null){
             this.head = newNode;

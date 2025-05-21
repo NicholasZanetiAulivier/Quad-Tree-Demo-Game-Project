@@ -65,7 +65,7 @@ public class WithQuadTree extends Scene{
                     //Try commenting this part to see how bad the collision detection is dealing with the frames
                     CollisionObject n = (CollisionObject)item.getData();
                     CollisionObject p ;
-                    Denode<?> other = partition.retrieve(new DoublyLinkedList<CollisionObject>(), (ArtificialCircle)n).getHead();
+                    Denode<?> other = partition.retrieve((ArtificialCircle)n).getHead();
                     while(other != null){
                         if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
                         other = other.getNext();
@@ -73,7 +73,7 @@ public class WithQuadTree extends Scene{
                     }
                     //
 
-                    // ((Entity)item.getData()).update(dt);
+                    ((Entity)item.getData()).update(dt);
                     item = item.getNext();
                 }
             }
