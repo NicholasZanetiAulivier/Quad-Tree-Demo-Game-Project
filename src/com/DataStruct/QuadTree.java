@@ -2,15 +2,20 @@ package com.DataStruct;
 
 import java.awt.Rectangle;
 
+import com.Game.Objects.ArtificialCircle;
+import com.Game.Objects.CollisionObject;
+
 //https://code.tutsplus.com/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374t
-public class QuadTree<T> {
+
+//Specifically for the game
+public class QuadTree {
     public static int MAX_OBJECTS = 4;
     public static byte MAX_LEVEL = 4;
     
     private byte level;
-    private LinkedList<T> objects;
+    private DoublyLinkedList<CollisionObject> objects;
 
-    private QuadTree<T>[] childrenNodes;
+    private QuadTree[] childrenNodes;
     private Rectangle bounds;
 
     public QuadTree(byte l , Rectangle b){
@@ -40,8 +45,71 @@ public class QuadTree<T> {
         //Bot right
         childrenNodes[3] = new QuadTree(childrenLevel, x+childrenWidth, y+childrenHeight, childrenWidth, childrenHeight);
     }
-
-
     
+    private int getIndex(float x , float y , float width , float height){
+        double verticalMidpoint = bounds.getCenterX();
+        double horizontalMidpoint = bounds.getCenterY();
+        
+        boolean top = y < horizontalMidpoint && y+height < horizontalMidpoint;
+        boolean bot = y>horizontalMidpoint;
+
+        if (x < verticalMidpoint && x+width < verticalMidpoint ){
+            if (top) return 0;
+            else if (bot) return 1;
+        } else if (x > verticalMidpoint){
+            if (top) return 2;
+            else if (bot) return 3;
+        }
+
+        //Return -1 if object bounds contain the midpoint of this node's bounds 
+        return -1;
+    }
+
+    public void insert(ArtificialCircle c){
+        if (childrenNodes != null){
+            int index = getIndex(c.getX(),c.getY(),c.getRad() , c.getRad());
+            if(index != -1) childrenNodes[index].insert(c);
+            return;
+        }
+        try{
+            this.objects.append((CollisionObject)c);
+        } catch(Exception e){
+            System.out.println(e);
+        }
+
+        if(objects.getSize() > MAX_OBJECTS && level < MAX_LEVEL){
+            if(childrenNodes!=null){
+                split();
+            }
+
+            Denode<CollisionObject> pt = objects.getHead();
+            while(pt != null){
+                int index = getIndex(c.getX(),c.getY(),c.getRad() , c.getRad());
+                if(index != -1) {
+                    Denode<CollisionObject> temp = pt.getNext();
+                    childrenNodes[index].insert((ArtificialCircle)objects.detachDenode(pt));
+                    pt = temp;
+                } else{
+                    pt = pt.getNext();
+                }
+            }
+        }
+    }
+
+    public DoublyLinkedList<CollisionObject> retrieve(DoublyLinkedList<CollisionObject> list , ArtificialCircle c){
+        int index = getIndex(c.getX(),c.getY(),c.getRad() , c.getRad());
+        if (index != -1 && childrenNodes != null){
+            childrenNodes[index].retrieve(list , c);
+        }
+
+        Denode<CollisionObject> ptr = objects.getHead();
+
+        while(ptr != null){
+            list.append(ptr.getData());
+            ptr = ptr.getNext();
+        }
+
+        return list;
+    }
 
 }

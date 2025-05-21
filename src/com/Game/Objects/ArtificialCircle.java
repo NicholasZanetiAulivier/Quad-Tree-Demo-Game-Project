@@ -48,6 +48,10 @@ public class ArtificialCircle implements Entity, Drawable, CollisionObject{
         return this.velocity;
     }
 
+    public float getRad(){
+        return this.rad;
+    }
+
     public void setY(float y){
         this.position.setY(y);
     }

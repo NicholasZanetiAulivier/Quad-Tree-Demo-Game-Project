@@ -3,10 +3,12 @@ package com.DataStruct;
 public class DoublyLinkedList<T> {
     private Denode<T> head;
     private Denode<T> tail;
+    private int size;
 
     public DoublyLinkedList(){
         this.head = null;
         this.tail = null;
+        size = 0;
     }
 
     public Denode<T> getHead(){
@@ -15,6 +17,10 @@ public class DoublyLinkedList<T> {
 
     public Denode<T> getTail(){
         return this.tail;
+    }
+
+    public int getSize(){
+        return size;
     }
 
     //Append to back of list
@@ -71,11 +77,16 @@ public class DoublyLinkedList<T> {
         return this.popBack().getData();
     }
 
-    public static <T> void detachDenode(Denode<T> node){
+    //Just assume denode is already a part of the list
+    public T detachDenode(Denode<T> node){
         Denode<T> prev = node.getPrev();
         Denode<T> next = node.getNext();
         
         if (prev != null) prev.setNext(next);
         if (next != null) next.setPrev(prev);
+
+        size--;
+
+        return node.getData();
     }
 }
