@@ -114,10 +114,10 @@ public class WithQuadTree extends Scene{
         for (int i = 0 ; i < 10000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
-                    (float)Math.random()*(Global.realWidth-20), 
-                    (float)Math.random()*(Global.realHeight-20), 
-                    (float)Math.random()*100-50, 
-                    (float)Math.random()*100-50, 10)
+                    (float)Math.random()*(Global.realWidth-4), 
+                    (float)Math.random()*(Global.realHeight-4), 
+                    (float)Math.random()*1000-500, 
+                    (float)Math.random()*1000-500, 2)
             );
         
         k1 = (k)->{
