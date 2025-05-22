@@ -2,10 +2,13 @@ package com.Game.Scenes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.GameQuadTree;
 import com.DataStruct.Denode;
+import com.Game.Callbacks.DrawFunc;
+import com.Game.Callbacks.KeyPressedFunc;
 import com.Game.Engine.Global;
 import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.CollisionObject;
@@ -15,8 +18,34 @@ import com.Game.Objects.Entity;
 public class WithQuadTree extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
     public GameQuadTree partition;
+    public GameQuadTree reference;
     public int count = 0;
    
+    public KeyPressedFunc k1;
+    public KeyPressedFunc k2;
+    public DrawFunc entityDraw = (g) ->{
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHints(Global.RH);
+
+        g2d.setColor(new Color(0xFF0000));
+
+        Denode<?> item = this.circles.getHead();
+        while(item != null){
+            ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
+            // g2d.drawString(item.getData().toString(), 0, 100);
+            item = item.getNext();
+        };
+    };
+    
+    public DrawFunc debugDraw = (g)->{
+        g.setColor(Color.CYAN);
+        reference = partition;
+        reference.draw(g);
+        g.setColor(Color.BLACK);
+        ((Graphics2D)g).drawString(count+"" , 0 , 400);
+    };
+
     @Override
     public void switchScene() throws Exception {
         if(Global.currentScene != null) Global.currentScene.unloadScene();
@@ -24,25 +53,9 @@ public class WithQuadTree extends Scene{
 
         //Draw Function
         Global.GAME_ENVIRONMENT.setDrawFunction(
-            (g) ->{
-                Graphics2D g2d = (Graphics2D) g;
-
-                g2d.setRenderingHints(Global.RH);
-
-                g2d.setColor(new Color(0xFF0000));
-
-                Denode<?> item = this.circles.getHead();
-                while(item != null){
-                    ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
-                    // g2d.drawString(item.getData().toString(), 0, 100);
-                    item = item.getNext();
-                }
-
-                // g.setColor(Color.GRAY);
-                // partition.draw(g);
-                g.setColor(Color.BLACK);
-                g2d.drawString(count+"" , 0 , 400);
-                count =0;
+            (g)->{
+                entityDraw.draw(g);
+                count=0;
             }
         );
         
@@ -89,6 +102,8 @@ public class WithQuadTree extends Scene{
 
             }
         );
+
+        Global.KEYBOARD.setKeyPressFunction(k1);
         Global.currentScene = this;
     }
 
@@ -99,11 +114,36 @@ public class WithQuadTree extends Scene{
         for (int i = 0 ; i < 10000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
-                    (float)Math.random()*(Global.realWidth-4), 
-                    (float)Math.random()*(Global.realHeight-4), 
+                    (float)Math.random()*(Global.realWidth-20), 
+                    (float)Math.random()*(Global.realHeight-20), 
                     (float)Math.random()*100-50, 
-                    (float)Math.random()*100-50, 2)
+                    (float)Math.random()*100-50, 10)
             );
+        
+        k1 = (k)->{
+            if(k.getKeyCode() == KeyEvent.VK_F3){
+                Global.GAME_ENVIRONMENT.setDrawFunction(
+                    (g) ->{
+                        this.entityDraw.draw(g);
+                        this.debugDraw.draw(g);
+                        count = 0;
+                    }
+                );
+                Global.KEYBOARD.setKeyPressFunction(k2);
+            };
+        };
+        
+        k2 = (k)->{
+            if(k.getKeyCode() == KeyEvent.VK_F3){
+                Global.GAME_ENVIRONMENT.setDrawFunction(
+                    (g) ->{
+                        this.entityDraw.draw(g);
+                        count = 0;
+                    }
+                );
+                Global.KEYBOARD.setKeyPressFunction(k1);
+            };
+        };
     }
 
     @Override

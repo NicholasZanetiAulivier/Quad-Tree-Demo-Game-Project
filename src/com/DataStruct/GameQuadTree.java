@@ -15,19 +15,21 @@ import com.Game.Objects.CollisionObject;
  */
 
 public class GameQuadTree{
-    public static int MAX_OBJECTS = 4;
+    public static int MAX_OBJECTS = 7;
     public static int MAX_LEVEL = 7;
-
-    public static int TL = 0;
-    public static int TR = 1;
-    public static int BL = 2;
-    public static int BR = 3;
+    // public static int MAX_LEVEL = 5;
     
     public Rectangle2D.Float bounds;
     public Area boundingArea;
-    public GameQuadTree[] children;
+    
+    public GameQuadTree topLeft = null;
+    public GameQuadTree topRight = null;
+    public GameQuadTree bottomLeft = null;
+    public GameQuadTree bottomRight = null;
+
     public DoublyLinkedList<CollisionObject> objects;
     public int level;
+    public boolean hasSplit = false;
 
     public GameQuadTree(Rectangle2D.Float b , int l){
         this.bounds = b;
@@ -41,17 +43,17 @@ public class GameQuadTree{
     }
 
     public void subDivide(){
-        this.children = new GameQuadTree[4];
+        hasSplit = true;
 
         float x = (float)this.bounds.getX();
         float y = (float)this.bounds.getY();
         float w2 = (float)this.bounds.getWidth()/2;
         float h2 = (float)this.bounds.getHeight()/2;
         int l = this.level+1;
-        this.children[TL] = new GameQuadTree(x,y,w2,h2 ,l);
-        this.children[TR] = new GameQuadTree(x+w2,y,w2,h2 ,l);
-        this.children[BL] = new GameQuadTree(x,y+h2,w2,h2 ,l);
-        this.children[BR] = new GameQuadTree(x+w2,y+h2,w2,h2 ,l);
+        topLeft = new GameQuadTree(x,y,w2,h2 ,l);
+        topRight = new GameQuadTree(x+w2,y,w2,h2 ,l);
+        bottomLeft = new GameQuadTree(x,y+h2,w2,h2 ,l);
+        bottomRight = new GameQuadTree(x+w2,y+h2,w2,h2 ,l);
     }
 
     public void insert(CollisionObject c){
@@ -59,10 +61,11 @@ public class GameQuadTree{
 
         if (!(this.boundingArea.intersects(item)||this.boundingArea.contains(item))) return;
 
-        if (this.children != null){
-            for (GameQuadTree now : this.children){
-                now.insert(c);
-            }
+        if (hasSplit){
+            topLeft.insert(c);
+            topRight.insert(c);
+            bottomLeft.insert(c);
+            bottomRight.insert(c);
             return;
         }
         this.objects.append(c);
@@ -71,9 +74,10 @@ public class GameQuadTree{
             subDivide();
             while (this.objects.getHead() != null){
                 CollisionObject toInsert = this.objects.removeBack();
-                for (GameQuadTree now : this.children){
-                    now.insert(toInsert);
-                }
+                topLeft.insert(toInsert);
+                topRight.insert(toInsert);
+                bottomLeft.insert(toInsert);
+                bottomRight.insert(toInsert);
             }
             this.objects = null;
         }
@@ -90,10 +94,11 @@ public class GameQuadTree{
      */
     public DoublyLinkedList<DoublyLinkedList<CollisionObject>> retrieveAllCollisions(){
         DoublyLinkedList<DoublyLinkedList<CollisionObject>> result = new DoublyLinkedList<>();
-        if(this.children != null){
-            for (GameQuadTree now : this.children){
-                result.concat(now.retrieveAllCollisions());
-            }
+        if(hasSplit){
+            result.concat(topLeft.retrieveAllCollisions());
+            result.concat(topRight.retrieveAllCollisions());
+            result.concat(bottomLeft.retrieveAllCollisions());
+            result.concat(bottomRight.retrieveAllCollisions());
         }
         if(this.objects != null) result.append(this.objects);
         return result;
@@ -105,10 +110,11 @@ public class GameQuadTree{
 
         if (!(this.boundingArea.intersects(item)||this.boundingArea.contains(item))) return res;
 
-        if (this.children != null){
-            for (GameQuadTree now : this.children){
-                res.addAll(now.retrieve(c));
-            }
+        if (hasSplit){
+            res.addAll(topLeft.retrieve(c));
+            res.addAll(topRight.retrieve(c));
+            res.addAll(bottomLeft.retrieve(c));
+            res.addAll(bottomRight.retrieve(c));
             return res;
         }
 
@@ -135,13 +141,29 @@ public class GameQuadTree{
         return this.objects;
     }
 
+    public void clear(){
+        if(hasSplit) {
+            topLeft.clear();
+            topLeft = null;
+            topRight.clear();
+            topRight = null;
+            bottomLeft.clear();
+            bottomLeft = null;
+            bottomRight.clear();
+            bottomRight = null;
+        }
+    }
+
 
     public void draw(Graphics g){
         g.setColor(Color.CYAN);
         ((Graphics2D)g).draw(bounds);
 
-        if(children != null) for(GameQuadTree c : children){
-            c.draw(g);
+        if(hasSplit){
+            topLeft.draw(g);
+            bottomLeft.draw(g);
+            topRight.draw(g);
+            bottomRight.draw(g);
         }
     }
 }

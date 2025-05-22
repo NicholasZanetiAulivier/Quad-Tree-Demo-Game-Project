@@ -81,6 +81,8 @@ public class QuadTreeTest extends Scene{
                     partition.insert((ArtificialCircle)item.getData());
                     item = item.getNext();
                 }
+            
+                boolean friendsCollide = false;
                 item = circles.getHead();
                 while(item != null){
                     if (Math.pow(mouseX-((ArtificialCircle)item.getData()).getCenterX() , 2) + Math.pow(mouseY-((ArtificialCircle)item.getData()).getCenterY() , 2) < Math.pow(((ArtificialCircle)item.getData()).getRad() , 2)) {
@@ -89,20 +91,22 @@ public class QuadTreeTest extends Scene{
                     item = item.getNext();
                 }
 
-                // Denode<ArtificialCircle> pt = circles.getHead();
-                // while(pt != null){
-                //     ArtificialCircle currentCircle = pt.getData();
-                //     Object[] others = partition.getCollisionArray(currentCircle);
-                //     for (Object o : others){
-                //         CollisionObject other = (CollisionObject) o;
-                //         if (currentCircle != other)
-                //             if (currentCircle.checkCollision(other))
-                //                 currentCircle.isColliding(other);
-                //         // if(friendsCollide) ((ArtificialCircle)other).setColliding(true);
-                //         count++;
-                //     }
-                //     pt = pt.getNext();
-                // }
+                /* 
+                    Denode<ArtificialCircle> pt = circles.getHead();
+                    while(pt != null){
+                        ArtificialCircle currentCircle = pt.getData();
+                        Object[] others = partition.getCollisionArray(currentCircle);
+                        for (Object o : others){
+                            CollisionObject other = (CollisionObject) o;
+                            if (currentCircle != other)
+                                if (currentCircle.checkCollision(other))
+                                    currentCircle.isColliding(other);
+                            // if(friendsCollide) ((ArtificialCircle)other).setColliding(true);
+                            count++;
+                        }
+                        pt = pt.getNext();
+                    }
+                */
 
                 DoublyLinkedList<DoublyLinkedList<CollisionObject>> results = partition.retrieveAllCollisions();
                 Denode<DoublyLinkedList<CollisionObject>> currentListNode = results.getHead();
