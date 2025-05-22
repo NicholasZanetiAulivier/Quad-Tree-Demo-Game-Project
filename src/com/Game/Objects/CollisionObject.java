@@ -1,9 +1,12 @@
 package com.Game.Objects;
 
-public interface CollisionObject {
-    static short CIRCLE = 1;
+import java.awt.geom.Rectangle2D;
 
-    public boolean checkCollision(CollisionObject o);
-    public short getType();
-    public void isColliding(CollisionObject o);
+public interface CollisionObject {
+    static final short CIRCLE = 1;
+
+    public abstract Rectangle2D getBounds();
+    public abstract boolean checkCollision(CollisionObject o);
+    public abstract short getType();
+    public abstract void isColliding(CollisionObject o);
 }

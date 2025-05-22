@@ -6,7 +6,7 @@ import java.awt.Color;
 
 import com.DataStruct.Denode;
 import com.DataStruct.DoublyLinkedList;
-import com.DataStruct.QuadTree;
+import com.DataStruct.GameQuadTree;
 import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.KeyPressedFunc;
 import com.Game.Callbacks.MousePressedFunc;
@@ -18,7 +18,7 @@ import com.Game.Objects.Entity;
 
 public class QuadTreeTest extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
-    public QuadTree partition;
+    public GameQuadTree partition;
     public int count = 0;
     public ArtificialCircle currentCircle = null;
 
@@ -39,8 +39,7 @@ public class QuadTreeTest extends Scene{
             ((Drawable)item.getData()).draw(g2d , Global.CANVAS);
             // g2d.drawString(item.getData().toString(), 0, 100);
             item = item.getNext();
-        }  
-        count =0;
+        }
     };
     
     public DrawFunc debugDraw = (g)->{
@@ -73,7 +72,7 @@ public class QuadTreeTest extends Scene{
                 currentCircle.setX(mouseX-currentCircle.getRad());
                 currentCircle.setY(mouseY-currentCircle.getRad());
 
-                this.partition = new QuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
+                this.partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight , 0);
 
                 Denode<?> item = this.circles.getHead();
 
@@ -83,28 +82,33 @@ public class QuadTreeTest extends Scene{
                     item = item.getNext();
                 }
             
+                boolean friendsCollide = false;
                 item = circles.getHead();
                 while(item != null){
-
-
-                    //Try commenting this part to see how bad the collision detection is dealing with the frames
-                    CollisionObject n = (CollisionObject)item.getData();
-                    boolean friendsCollide = false;
-                    if (Math.pow(mouseX-((ArtificialCircle)n).getCenterX() , 2) + Math.pow(mouseY-((ArtificialCircle)n).getCenterY() , 2) < Math.pow(((ArtificialCircle)n).getRad() , 2)) {
+                    if (Math.pow(mouseX-((ArtificialCircle)item.getData()).getCenterX() , 2) + Math.pow(mouseY-((ArtificialCircle)item.getData()).getCenterY() , 2) < Math.pow(((ArtificialCircle)item.getData()).getRad() , 2)) {
                         friendsCollide = true;
                     };
-                    CollisionObject p ;
-                    Denode<?> other = partition.retrieve((ArtificialCircle)n).getHead();
-                    while(other != null){
-                        if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
-                        if(friendsCollide) ((ArtificialCircle)p).setColliding(true);
-                        other = other.getNext();
-                        count++;
-                    }
-                    //
-
-                    // ((Entity)item.getData()).update(dt);
                     item = item.getNext();
+                }
+
+                DoublyLinkedList<DoublyLinkedList<CollisionObject>> results = partition.retrieveAllCollisions();
+                Denode<DoublyLinkedList<CollisionObject>> currentListNode = results.getHead();
+                while(currentListNode != null){
+                    Denode<CollisionObject> currentObject = currentListNode.getData().getHead();
+                    while(currentObject != null){
+                        CollisionObject p , n;
+                        Denode<CollisionObject> other = currentObject.getNext();
+                        while(other != null){
+                            if ((p=other.getData()) != (n = currentObject.getData()))
+                                if (n.checkCollision(p))
+                                    n.isColliding(p);
+                            // if(friendsCollide) ((ArtificialCircle)p).setColliding(true);
+                            other = other.getNext();
+                            count++;
+                        }
+                        currentObject = currentObject.getNext();
+                    }
+                    currentListNode = currentListNode.getNext();
                 }
             }
         );
@@ -117,7 +121,7 @@ public class QuadTreeTest extends Scene{
 
     @Override
     public void loadScene() throws Exception{
-        this.partition = new QuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
+        this.partition = new GameQuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
         this.circles = new DoublyLinkedList<>();
         this.currentCircle = new ArtificialCircle(0, 0, 0, 0, 6);
         this.circles.append(currentCircle);

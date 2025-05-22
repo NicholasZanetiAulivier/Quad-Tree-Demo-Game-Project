@@ -2,6 +2,7 @@ package com.Game.Objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
@@ -64,6 +65,10 @@ public class ArtificialCircle implements Entity, Drawable, CollisionObject{
     public float getCenterY(){
         return getY()+getRad();
     }
+
+    public Rectangle2D getBounds(){
+        return new Rectangle2D.Float(getX(),getY(),getRad()*2,getRad()*2);
+    }
     
     public void setY(float y){
         this.position.setY(y);
@@ -113,17 +118,19 @@ public class ArtificialCircle implements Entity, Drawable, CollisionObject{
         colliding = false;
     }
 
-    public String toString(){
-        return this.position.getX()+","+this.position.getY()+","+this.velocity.getX()+","+this.velocity.getY()+","+this.rad;
-    }
-
     //Assume radius is always the same between the two circles(it's a simulation after all)
     public boolean checkCollision(ArtificialCircle c){
         return Math.pow((getX()-c.getX()),2)+Math.pow((getY()-c.getY()),2) < Math.pow(rad*2,2);
     }
 
     public boolean checkCollision(CollisionObject c){
-        if (c.getType() == CollisionObject.CIRCLE) return checkCollision((ArtificialCircle)c);
+        if (c.getType() == CollisionObject.CIRCLE){
+            return checkCollision((ArtificialCircle)c);
+        }
         else return false;
+    }
+
+    public String toString(){
+        return getBounds().toString();
     }
 }

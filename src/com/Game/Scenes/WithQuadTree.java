@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import com.DataStruct.DoublyLinkedList;
-import com.DataStruct.QuadTree;
+import com.DataStruct.GameQuadTree;
 import com.DataStruct.Denode;
 import com.Game.Engine.Global;
 import com.Game.Objects.ArtificialCircle;
@@ -14,7 +14,7 @@ import com.Game.Objects.Entity;
 
 public class WithQuadTree extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
-    public QuadTree partition;
+    public GameQuadTree partition;
     public int count = 0;
    
     @Override
@@ -49,33 +49,33 @@ public class WithQuadTree extends Scene{
         //Update Function
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
-                this.partition = new QuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
+                // this.partition = new GameQuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
 
-                Denode<?> item = this.circles.getHead();
+                // Denode<?> item = this.circles.getHead();
 
-                //partition
-                while(item != null){
-                    partition.insert((ArtificialCircle)item.getData());
-                    item = item.getNext();
-                }
+                // //partition
+                // while(item != null){
+                //     partition.insert((ArtificialCircle)item.getData());
+                //     item = item.getNext();
+                // }
             
-                item = circles.getHead();
-                while(item != null){
+                // item = circles.getHead();
+                // while(item != null){
 
-                    //Try commenting this part to see how bad the collision detection is dealing with the frames
-                    CollisionObject n = (CollisionObject)item.getData();
-                    CollisionObject p ;
-                    Denode<?> other = partition.retrieve((ArtificialCircle)n).getHead();
-                    while(other != null){
-                        if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
-                        other = other.getNext();
-                        count++;
-                    }
-                    //
+                //     //Try commenting this part to see how bad the collision detection is dealing with the frames
+                //     CollisionObject n = (CollisionObject)item.getData();
+                //     CollisionObject p ;
+                //     Denode<?> other = partition.retrieve((ArtificialCircle)n).getHead();
+                //     while(other != null){
+                //         if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
+                //         other = other.getNext();
+                //         count++;
+                //     }
+                //     //
 
-                    ((Entity)item.getData()).update(dt);
-                    item = item.getNext();
-                }
+                //     ((Entity)item.getData()).update(dt);
+                //     item = item.getNext();
+                // }
             }
         );
         Global.currentScene = this;
@@ -83,7 +83,7 @@ public class WithQuadTree extends Scene{
 
     @Override
     public void loadScene() throws Exception{
-        this.partition = new QuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
+        this.partition = new GameQuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
         this.circles = new DoublyLinkedList<>();
         for (int i = 0 ; i < 10000  ; i++)  
             this.circles.append(

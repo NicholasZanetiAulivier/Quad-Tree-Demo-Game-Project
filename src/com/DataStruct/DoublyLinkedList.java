@@ -100,4 +100,23 @@ public class DoublyLinkedList<T> {
 
         return node.getData();
     }
+
+    public void concat(DoublyLinkedList<T> other){
+        Denode<T> ptr = other.getHead();
+
+        while(ptr != null){
+            this.append(ptr.getData());
+            ptr = ptr.getNext();
+        }
+    }
+
+    public String toString(){
+        String res = "[";
+        Denode<T> pt = getHead();
+        while(pt!= null){
+            res+=" "+pt.getData();
+            pt = pt.getNext();
+        }
+        return res + "]";
+    }
 }
