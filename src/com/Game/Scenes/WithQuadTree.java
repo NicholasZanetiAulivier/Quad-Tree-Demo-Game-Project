@@ -38,8 +38,8 @@ public class WithQuadTree extends Scene{
                     item = item.getNext();
                 }
 
-                g.setColor(Color.GRAY);
-                partition.draw(g);
+                // g.setColor(Color.GRAY);
+                // partition.draw(g);
                 g.setColor(Color.BLACK);
                 g2d.drawString(count+"" , 0 , 400);
                 count =0;
@@ -49,33 +49,44 @@ public class WithQuadTree extends Scene{
         //Update Function
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
-                // this.partition = new GameQuadTree((byte)0, 0, 0, Global.realWidth, Global.realHeight);
+                this.partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
 
-                // Denode<?> item = this.circles.getHead();
+                Denode<?> item = this.circles.getHead();
 
-                // //partition
-                // while(item != null){
-                //     partition.insert((ArtificialCircle)item.getData());
-                //     item = item.getNext();
-                // }
+                //partition
+                while(item != null){
+                    partition.insert((ArtificialCircle)item.getData());
+                    item = item.getNext();
+                }
             
-                // item = circles.getHead();
-                // while(item != null){
+                DoublyLinkedList<DoublyLinkedList<CollisionObject>> results = partition.retrieveAllCollisions();
+                Denode<DoublyLinkedList<CollisionObject>> currentListNode = results.getHead();
+                while(currentListNode != null){
+                    Denode<CollisionObject> currentObject = currentListNode.getData().getHead();
+                    while(currentObject != null){
+                        CollisionObject p , n;
+                        Denode<CollisionObject> other = currentObject.getNext();
+                        while(other != null){
+                            if ((p=other.getData()) != (n = currentObject.getData()))
+                                if (n.checkCollision(p)){
+                                    n.isColliding(p);
+                                }
+                            other = other.getNext();
+                            count++;
+                        }
+                        currentObject = currentObject.getNext();
+                    }
+                    currentListNode = currentListNode.getNext();
+                }
 
-                //     //Try commenting this part to see how bad the collision detection is dealing with the frames
-                //     CollisionObject n = (CollisionObject)item.getData();
-                //     CollisionObject p ;
-                //     Denode<?> other = partition.retrieve((ArtificialCircle)n).getHead();
-                //     while(other != null){
-                //         if ((p=(CollisionObject)other.getData()) != n) if (n.checkCollision(p)) n.isColliding(p);
-                //         other = other.getNext();
-                //         count++;
-                //     }
-                //     //
+                item = this.circles.getHead();
 
-                //     ((Entity)item.getData()).update(dt);
-                //     item = item.getNext();
-                // }
+                //partition
+                while(item != null){
+                    ((ArtificialCircle)item.getData()).update(dt);
+                    item = item.getNext();
+                }
+
             }
         );
         Global.currentScene = this;
@@ -88,8 +99,8 @@ public class WithQuadTree extends Scene{
         for (int i = 0 ; i < 10000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
-                    (float)Math.random()*(Global.realWidth-60), 
-                    (float)Math.random()*(Global.realHeight-60), 
+                    (float)Math.random()*(Global.realWidth-4), 
+                    (float)Math.random()*(Global.realHeight-4), 
                     (float)Math.random()*100-50, 
                     (float)Math.random()*100-50, 2)
             );

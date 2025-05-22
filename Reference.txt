@@ -3,3 +3,9 @@ https://jimkang.com/quadtreevis/
 https://code.tutsplus.com/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374t
 https://gameprogrammingpatterns.com/spatial-partition.html
 https://pvigier.github.io/2019/08/04/quadtree-collision-detection.html
+
+22-5-25
+The Coding Train YT
+    https://www.youtube.com/watch?v=OJxEcs0w_kE
+    https://www.youtube.com/watch?v=QQx_NmCIuCY
+    https://www.youtube.com/watch?v=z0YFFg_nBjw

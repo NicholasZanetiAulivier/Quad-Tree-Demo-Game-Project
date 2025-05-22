@@ -5,13 +5,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
 
 import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.CollisionObject;
 
+/*
+ * Game Quad Tree for collision Detection
+ */
+
 public class GameQuadTree{
     public static int MAX_OBJECTS = 4;
-    public static int MAX_LEVEL = 10;
+    public static int MAX_LEVEL = 7;
 
     public static int TL = 0;
     public static int TR = 1;
@@ -92,6 +97,38 @@ public class GameQuadTree{
         }
         if(this.objects != null) result.append(this.objects);
         return result;
+    }
+
+    public HashSet<CollisionObject> retrieve( CollisionObject c){
+        Rectangle2D item = c.getBounds();
+        HashSet<CollisionObject> res = new HashSet<>();
+
+        if (!(this.boundingArea.intersects(item)||this.boundingArea.contains(item))) return res;
+
+        if (this.children != null){
+            for (GameQuadTree now : this.children){
+                res.addAll(now.retrieve(c));
+            }
+            return res;
+        }
+
+        Denode<CollisionObject> pt = this.objects.getHead();
+        while(pt != null){
+            CollisionObject s = pt.getData();
+            if(s == c) {
+                Denode<CollisionObject> temp = pt.getNext();
+                objects.detachDenode(pt);
+                pt = temp;
+            }else{
+                res.add(s);
+                pt = pt.getNext();
+            }
+        }
+        return res;
+    }
+
+    public Object[] getCollisionArray(CollisionObject c){
+        return retrieve(c).toArray();
     }
 
     public DoublyLinkedList<CollisionObject> getObjects(){

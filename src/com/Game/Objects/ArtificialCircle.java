@@ -91,7 +91,8 @@ public class ArtificialCircle implements Entity, Drawable, CollisionObject{
     }
 
     public void isColliding(ArtificialCircle c){
-        colliding = true;
+        setColliding(true);
+        c.setColliding(true);
     }
 
     public void update(float dt){
