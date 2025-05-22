@@ -13,7 +13,6 @@ import com.Game.Engine.Global;
 import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.Drawable;
-import com.Game.Objects.Entity;
 
 public class WithQuadTree extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
