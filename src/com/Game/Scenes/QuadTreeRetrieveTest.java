@@ -72,24 +72,29 @@ public class QuadTreeRetrieveTest extends Scene{
                     item = item.getNext();
                 }
             
-                DoublyLinkedList<DoublyLinkedList<CollisionObject>> results = partition.retrieveAllCollisions();
-                Denode<DoublyLinkedList<CollisionObject>> currentListNode = results.getHead();
-                while(currentListNode != null){
-                    Denode<CollisionObject> currentObject = currentListNode.getData().getHead();
-                    while(currentObject != null){
-                        CollisionObject p , n;
-                        Denode<CollisionObject> other = currentObject.getNext();
-                        while(other != null){
-                            if ((p=other.getData()) != (n = currentObject.getData()))
-                                if (n.checkCollision(p)){
+                // while(other != null){
+                //     if ((p=other.getData()) != (n = currentObject.getData()))
+                //         if (n.checkCollision(p)){
+                //             n.isColliding(p);
+                //         }
+                //     other = other.getNext();
+                //     count++;
+                // }
+                item = this.circles.getHead();
+                while(item != null){
+                    CollisionObject p;
+                    CollisionObject n = (CollisionObject) item.getData();
+                    DoublyLinkedList<CollisionObject> possibleCollisions = partition.retrieve(n);
+                    Denode<CollisionObject> other = possibleCollisions.getHead();
+                    while(other != null){
+                        if ((p=other.getData()) != n)
+                            if (n.checkCollision(p)){
                                     n.isColliding(p);
-                                }
-                            other = other.getNext();
-                            count++;
-                        }
-                        currentObject = currentObject.getNext();
-                    }
-                    currentListNode = currentListNode.getNext();
+                            }
+                        other = other.getNext();
+                        count++;
+                    }  
+                    item = item.getNext();
                 }
 
                 item = this.circles.getHead();
@@ -116,8 +121,8 @@ public class QuadTreeRetrieveTest extends Scene{
                 new ArtificialCircle(
                     (float)Math.random()*(Global.realWidth-4), 
                     (float)Math.random()*(Global.realHeight-4), 
-                    (float)Math.random()*1000-500, 
-                    (float)Math.random()*1000-500, 2)
+                    (float)Math.random()*100-50, 
+                    (float)Math.random()*100-50, 2)
             );
         
         k1 = (k)->{

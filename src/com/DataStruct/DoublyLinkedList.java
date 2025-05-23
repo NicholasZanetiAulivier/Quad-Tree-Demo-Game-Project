@@ -105,6 +105,7 @@ public class DoublyLinkedList<T> {
      * method to concat 2 lists. just assume that other will never be used
      */
     public void concat(DoublyLinkedList<T> other){
+        if(other.getHead() == null) return;
         this.size += other.getSize();
         if(this.head == null){
             this.head = other.getHead();

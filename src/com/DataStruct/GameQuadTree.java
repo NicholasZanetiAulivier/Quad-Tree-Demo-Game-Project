@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.util.HashSet;
 
 import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.CollisionObject;
@@ -15,7 +14,7 @@ import com.Game.Objects.CollisionObject;
  */
 
 public class GameQuadTree{
-    public static int MAX_OBJECTS = 10;
+    public static int MAX_OBJECTS = 7;
     public static int MAX_LEVEL = 7;
     // public static int MAX_LEVEL = 5;
     
