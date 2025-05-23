@@ -45,7 +45,7 @@ public class GameEnv implements Runnable{
             Global.initScenes();
             System.out.println("Game Env Successfully Initialized");
             
-            Global.MainMenu.switchScene();
+            Global.Game.switchScene();
             GameEnv.isInitialized = true;
         }
     }

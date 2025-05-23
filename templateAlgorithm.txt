@@ -1,3 +1,4 @@
+ALL COLLISIONS
 Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) -> {
                 this.partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
@@ -28,6 +29,46 @@ Global.GAME_ENVIRONMENT.setUpdateFunction(
                         currentObject = currentObject.getNext();
                     }
                     currentListNode = currentListNode.getNext();
+                }
+
+                item = this.circles.getHead();
+
+                //partition
+                while(item != null){
+                    ((ArtificialCircle)item.getData()).update(dt);
+                    item = item.getNext();
+                }
+
+            }
+        );
+
+COLLISIONS FOR SPECIFIC OBJECTS
+Global.GAME_ENVIRONMENT.setUpdateFunction(
+            (dt) -> {
+                this.partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
+
+                Denode<?> item = this.circles.getHead();
+
+                //partition
+                while(item != null){
+                    partition.insert((ArtificialCircle)item.getData());
+                    item = item.getNext();
+                }
+                item = this.circles.getHead();
+                while(item != null){
+                    CollisionObject p;
+                    CollisionObject n = (CollisionObject) item.getData();
+                    DoublyLinkedList<CollisionObject> possibleCollisions = partition.retrieve(n);
+                    Denode<CollisionObject> other = possibleCollisions.getHead();
+                    while(other != null){
+                        if ((p=other.getData()) != n)
+                            if (n.checkCollision(p)){
+                                    n.isColliding(p);
+                            }
+                        other = other.getNext();
+                        count++;
+                    }  
+                    item = item.getNext();
                 }
 
                 item = this.circles.getHead();

@@ -25,6 +25,10 @@ public class ArtificialCircle implements Entity, Drawable, CollisionObject{
         return CollisionObject.CIRCLE;
     }
 
+    public boolean hasCollisions(){
+        return true;
+    }
+
     public void setColliding(boolean t){
         colliding = t;
     }
