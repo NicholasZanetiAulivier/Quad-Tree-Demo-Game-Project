@@ -1,8 +1,14 @@
 package com.Game.Scenes;
 
+import com.Game.Engine.Global;
+
 public abstract class Scene {
     
-    public abstract void switchScene() throws Exception;
+    public void switchScene() throws Exception{
+        if(Global.currentScene != null) Global.currentScene.unloadScene();
+        this.loadScene();
+        Global.currentScene = this;
+    }
     //Call unloadScene() of previous scene
     //Change Global.currScene to this scene
     //Change the draw and update function of GameEnv

@@ -28,6 +28,7 @@ public class MainWindow extends JFrame {
         add(this.canvas);
         setSize(width,height);
         setResizable(false);
+        setLocationRelativeTo(null);
 
         //Base background
         getContentPane().setBackground(new Color(0x000000));

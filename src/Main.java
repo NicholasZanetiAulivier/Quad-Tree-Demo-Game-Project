@@ -8,8 +8,6 @@ public class Main {
         try{
             new GameEnv(Global.originalWidth, Global.originalHeight, "Swingtest");
             // Global.MovingQuadTree.switchScene();
-            // Global.QuadTreeRetrieve.switchScene();
-            // Global.QTreeTest.switchScene();
             Global.GAME_ENVIRONMENT.run();
         } catch(Exception e){
             e.printStackTrace();

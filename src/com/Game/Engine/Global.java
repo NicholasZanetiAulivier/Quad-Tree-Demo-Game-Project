@@ -5,7 +5,7 @@ import java.awt.RenderingHints;
 import com.Game.Window.GameScreen;
 import com.Game.Window.MainWindow;
 import com.Game.Scenes.Scene;
-import com.Game.Scenes.WithQuadTree;
+// import com.Game.Scenes.WithQuadTree;
 import com.Game.Events.Keyboard;
 import com.Game.Events.Mouse;
 
@@ -20,7 +20,7 @@ public abstract class Global {
     public static Mouse MOUSE = null;
     public static RenderingHints RH = null;
     public static Scene currentScene = null;
-    public static Scene MovingQuadTree = null;
+    // public static Scene MovingQuadTree = null;
     public static Scene Game = null;
 
     public static int originalHeight = 638;                             //Height at which the screen was drawn at the start
@@ -34,7 +34,7 @@ public abstract class Global {
     public static final int FPS = 60;
 
     public static void initScenes(){
-        MovingQuadTree = new WithQuadTree();
+        // MovingQuadTree = new WithQuadTree();
         Game = new ShooterGame();
     }
 }
