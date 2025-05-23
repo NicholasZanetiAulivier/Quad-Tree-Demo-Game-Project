@@ -14,7 +14,7 @@ import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.Drawable;
 
-public class WithQuadTree extends Scene{
+public class QuadTreeRetrieveTest extends Scene{
     public DoublyLinkedList<ArtificialCircle> circles;
     public GameQuadTree partition;
     public GameQuadTree reference;

@@ -5,6 +5,7 @@ import java.awt.RenderingHints;
 import com.Game.Window.GameScreen;
 import com.Game.Window.MainWindow;
 import com.Game.Scenes.WithoutQuadTree;
+import com.Game.Scenes.QuadTreeRetrieveTest;
 import com.Game.Scenes.QuadTreeTest;
 import com.Game.Scenes.Scene;
 import com.Game.Scenes.WithQuadTree;
@@ -23,6 +24,7 @@ public abstract class Global {
     public static Scene MainMenu = null;
     public static Scene QTreeTest = null;
     public static Scene MovingQuadTree = null;
+    public static Scene QuadTreeRetrieve = null;
 
     public static int originalHeight = 638;                             //Height at which the screen was drawn at the start
     public static int originalWidth = 815;                              //Width at which the screen was drawn at the start
@@ -38,5 +40,6 @@ public abstract class Global {
         MainMenu = new WithoutQuadTree();
         QTreeTest = new QuadTreeTest();
         MovingQuadTree = new WithQuadTree();
+        QuadTreeRetrieve = new QuadTreeRetrieveTest();
     }
 }

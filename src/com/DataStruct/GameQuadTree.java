@@ -15,7 +15,7 @@ import com.Game.Objects.CollisionObject;
  */
 
 public class GameQuadTree{
-    public static int MAX_OBJECTS = 7;
+    public static int MAX_OBJECTS = 10;
     public static int MAX_LEVEL = 7;
     // public static int MAX_LEVEL = 5;
     
@@ -104,37 +104,32 @@ public class GameQuadTree{
         return result;
     }
 
-    public HashSet<CollisionObject> retrieve( CollisionObject c){
+    public DoublyLinkedList<CollisionObject> retrieve( CollisionObject c){
         Rectangle2D item = c.getBounds();
-        HashSet<CollisionObject> res = new HashSet<>();
-
+        DoublyLinkedList<CollisionObject> res = new DoublyLinkedList<>();
         if (!(this.boundingArea.intersects(item)||this.boundingArea.contains(item))) return res;
 
         if (hasSplit){
-            res.addAll(topLeft.retrieve(c));
-            res.addAll(topRight.retrieve(c));
-            res.addAll(bottomLeft.retrieve(c));
-            res.addAll(bottomRight.retrieve(c));
+            res.concat(topLeft.retrieve(c));
+            res.concat(topRight.retrieve(c));
+            res.concat(bottomLeft.retrieve(c));
+            res.concat(bottomRight.retrieve(c));
             return res;
         }
 
-        Denode<CollisionObject> pt = this.objects.getHead();
-        while(pt != null){
-            CollisionObject s = pt.getData();
-            if(s == c) {
-                Denode<CollisionObject> temp = pt.getNext();
-                objects.detachDenode(pt);
-                pt = temp;
-            }else{
-                res.add(s);
-                pt = pt.getNext();
+        Denode<CollisionObject> ptr = this.objects.getHead();
+        while(ptr != null){
+            CollisionObject p = ptr.getData();
+            if(p == c){
+                Denode<CollisionObject> temp = ptr.getNext();
+                this.objects.detachDenode(ptr);
+                ptr = temp;
+            } else{
+                res.append(p);
+                ptr = ptr.getNext();
             }
         }
         return res;
-    }
-
-    public Object[] getCollisionArray(CollisionObject c){
-        return retrieve(c).toArray();
     }
 
     public DoublyLinkedList<CollisionObject> getObjects(){

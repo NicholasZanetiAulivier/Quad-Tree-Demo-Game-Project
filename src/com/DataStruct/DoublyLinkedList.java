@@ -101,13 +101,20 @@ public class DoublyLinkedList<T> {
         return node.getData();
     }
 
+    /*
+     * method to concat 2 lists. just assume that other will never be used
+     */
     public void concat(DoublyLinkedList<T> other){
-        Denode<T> ptr = other.getHead();
-
-        while(ptr != null){
-            this.append(ptr.getData());
-            ptr = ptr.getNext();
+        this.size += other.getSize();
+        if(this.head == null){
+            this.head = other.getHead();
+            this.tail = other.getTail();
+            return;
         }
+
+        this.tail.setNext(other.getHead());
+        other.getHead().setPrev(this.tail);
+        this.tail = other.getTail();
     }
 
     public String toString(){

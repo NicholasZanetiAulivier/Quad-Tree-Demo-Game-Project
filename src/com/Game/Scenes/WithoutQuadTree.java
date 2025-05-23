@@ -70,13 +70,13 @@ public class WithoutQuadTree extends Scene{
     @Override
     public void loadScene() throws Exception{
         this.circles = new DoublyLinkedList<>();
-        for (int i = 0 ; i < 10000  ; i++)  
+        for (int i = 0 ; i < 3000  ; i++)  
             this.circles.append(
                 new ArtificialCircle(
                     (float)Math.random()*(Global.realWidth-4), 
                     (float)Math.random()*(Global.realHeight-4), 
-                    (float)Math.random()*100-50, 
-                    (float)Math.random()*100-50, 2)
+                    (float)Math.random()*1000-500, 
+                    (float)Math.random()*1000-500, 2)
             );
     }
 
