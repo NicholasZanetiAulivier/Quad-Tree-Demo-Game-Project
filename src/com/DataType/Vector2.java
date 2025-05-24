@@ -6,8 +6,8 @@ package com.DataType;
  */
 
 public class Vector2 {
-    protected float x;
-    protected float y;
+    public float x;
+    public float y;
 
     public Vector2(float x , float y){
         this.x = x;
@@ -38,11 +38,54 @@ public class Vector2 {
         return (float)Math.sqrt(x*x+y*y);
     }
 
+    public void add(float n){
+        x += n ;
+        y += n ;
+    }
+
+    public void add(Vector2 n){
+        x += n.x ;
+        y += n.y ;
+    }
+
+    public void subtract(float n){
+        x -= n ;
+        y -= n ;
+    }
+
+    public void subtract(Vector2 n){
+        x -= n.x ;
+        y -= n.y ;
+    }
+
+    public void multiply(float n){
+        x *= n;
+        y *= n;
+    }
+    
+    public void divide(float n){
+        x /= n;
+        y /= n;
+    }
+
     public static Vector2 add(Vector2 n ,Vector2 v){
         return new Vector2(n.getX()+v.getX(),n.getY()+v.getY());
     }
+    
+    public static Vector2 add(Vector2 n ,float d){
+        return new Vector2(n.getX()+d,n.getY()+d);
+    }
+
     public static Vector2 subtract(Vector2 n ,Vector2 v){
         return new Vector2(n.getX()-v.getX(),n.getY()-v.getY());
+    }
+
+    public static Vector2 subtract(Vector2 n ,float d){
+        return new Vector2(n.getX()-d,n.getY()-d);
+    }
+
+    public static Vector2 divide(Vector2 n ,float d){
+        return new Vector2(n.getX()/d,n.getY()/d);
     }
 
     public static Vector2 scale(Vector2 n , float p){
@@ -63,6 +106,17 @@ public class Vector2 {
 
     public float getDirection(){
         return (float)Math.atan(y/x);
+    }
+
+    public void normalize(){
+        float len = getLength();
+        if(len == 0) return;
+        float scale = 1/getLength();
+        multiply(scale);
+    }
+
+    public String toString(){
+        return "x: " + x + ", y: " + y;
     }
 
 }

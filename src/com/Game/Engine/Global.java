@@ -4,6 +4,7 @@ import java.awt.RenderingHints;
 
 import com.Game.Window.GameScreen;
 import com.Game.Window.MainWindow;
+import com.Game.Scenes.HitboxVisualizer;
 import com.Game.Scenes.Scene;
 // import com.Game.Scenes.WithQuadTree;
 import com.Game.Events.Keyboard;
@@ -22,6 +23,7 @@ public abstract class Global {
     public static Scene currentScene = null;
     // public static Scene MovingQuadTree = null;
     public static Scene Game = null;
+    public static Scene Visualizer = null;
 
     public static int originalHeight = 638;                             //Height at which the screen was drawn at the start
     public static int originalWidth = 815;                              //Width at which the screen was drawn at the start
@@ -36,5 +38,6 @@ public abstract class Global {
     public static void initScenes(){
         // MovingQuadTree = new WithQuadTree();
         Game = new ShooterGame();
+        Visualizer = new HitboxVisualizer();
     }
 }

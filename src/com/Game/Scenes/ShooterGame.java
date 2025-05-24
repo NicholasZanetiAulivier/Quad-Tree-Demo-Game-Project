@@ -22,9 +22,6 @@ public class ShooterGame extends Scene{
     
     public void switchScene() throws Exception{
         super.switchScene();
-
-        this.friendlyObjects = new DoublyLinkedList<>();
-        this.enemyObjects = new DoublyLinkedList<>();
     }
 
     public void loadScene() throws Exception{
@@ -68,11 +65,13 @@ public class ShooterGame extends Scene{
         );
 
 
-        //Load sprites
+        //Load Classes
         PlayerCharacter.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
+        friendlyObjects = new DoublyLinkedList<>();
+        enemyObjects = new DoublyLinkedList<>();
     }
 
     public void unloadScene() throws Exception{
@@ -80,6 +79,8 @@ public class ShooterGame extends Scene{
 
         //Unload Objects
         player = null;
+        friendlyObjects = null;
+        enemyObjects = null;
 
         //Unload classes
         PlayerCharacter.unload();

@@ -7,21 +7,30 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.DataType.Vector2;
 import com.Game.Engine.Global;
+import com.Game.Scenes.HitboxVisualizer;
 import com.Game.Scenes.ShooterGame;
 
 public class PlayerCharacter extends PlayerObject{
     private static BufferedImage sprite = null;
     
     private static final float PLAYER_SPEED = 250;
+    private static final int SPRITE_WIDTH = 64;
+    private static final int SPRITE_HEIGHT = 64;
+    
+    private static final float HITBOX_X_OFFSET = 30;
+    private static final float HITBOX_Y_OFFSET = 26;
+    private static final int HITBOX_WIDTH = 4;
+    private static final int HITBOX_HEIGHT = 8;
 
-    private float x = Global.realWidth /2;
-    private float y = Global.realHeight/2;
+    private Vector2 position;
+    private RectangularHitbox hitbox;
+    
 
     public PlayerCharacter(){
-        x = Global.realWidth /2;
-        y = Global.realHeight/2;
-        hitbox = new RectangularHitbox(16, 16, 2,2);
+        position = new Vector2(Global.realWidth/2,Global.realHeight/2);
+        hitbox = new RectangularHitbox(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH,HITBOX_HEIGHT);
         
     }
 
@@ -32,23 +41,55 @@ public class PlayerCharacter extends PlayerObject{
     public static void unload(){
         sprite = null;
     }
-    
-    @Override
-    public void update(float dt){
-        //TODO: make update function for player
-        ShooterGame currScene = (ShooterGame)Global.currentScene;
-        if(currScene.up) y -= PLAYER_SPEED*dt;
-        if(currScene.down) y += PLAYER_SPEED*dt;
-        if(currScene.left) x -= PLAYER_SPEED*dt;
-        if(currScene.right) x += PLAYER_SPEED*dt;
 
-        hitbox.setPosition(x, y);
+    public void setX(float x){
+        position.setX(x);
+        hitbox.setPosition(x+HITBOX_X_OFFSET, hitbox.getY());   
+    }
+
+    public void setY(float y){
+        position.setY(y);
+        hitbox.setPosition(hitbox.getX(), y+HITBOX_Y_OFFSET);
+    }
+
+    public void setPosition(float x , float y){
+        position.setX(x);
+        position.setY(y);
+        hitbox.setPosition(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET);
+    }
+
+    public Hitbox getHitbox(){
+        return hitbox;
+    }
+    
+    // @Override
+    // public void update(float dt){
+    //     //TODO: make update function for player
+    //     ShooterGame currScene = (ShooterGame)Global.currentScene;
+    //     Vector2 speed = new Vector2(0,0);
+    //     if(currScene.up) speed.y -= 1;
+    //     if(currScene.down) speed.y += 1;
+    //     if(currScene.left) speed.x -= 1;
+    //     if(currScene.right) speed.x += 1;
+
+    //     speed.normalize();
+    //     speed.multiply(PLAYER_SPEED*dt);
+    //     position.add(speed);
+    //     System.out.println(speed);
+    //     hitbox.setPosition(position.x+speed.x, position.y+speed.y);
+    // }
+
+    /*
+     * TEMPOORARY
+     */
+    public void update(float dt){
+        // HitboxVisualizer currScene = (HitboxVisualizer)Global.currentScene;
     }
 
     @Override
     public void draw(Graphics g , ImageObserver observer){
         //TODO: make draw function for player
-        g.drawImage(sprite, Math.round(x), Math.round(y), 64,64,observer);
+        g.drawImage(sprite, Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
     }
 
     @Override

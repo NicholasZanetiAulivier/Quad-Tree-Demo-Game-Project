@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
  * Abstract class for hitboxes that will be bound to objects
  * as a field
  */
-public abstract class Hitbox implements CollisionObject{
+public abstract class Hitbox implements CollisionObject , Drawable{
     protected Rectangle2D bounds;
 
     protected Hitbox(Rectangle2D bounds){
