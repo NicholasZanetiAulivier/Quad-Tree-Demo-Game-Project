@@ -90,11 +90,22 @@ public class DoublyLinkedList<T> {
 
     //Just assume denode is already a part of the list
     public T detachDenode(Denode<T> node){
-        Denode<T> prev = node.getPrev();
-        Denode<T> next = node.getNext();
+        if (size == 1){
+            head = null;
+            tail = null;
+        } else if(getHead() == node){
+            head = node.getNext();
+            head.setPrev(null);
+        } else if (getTail() == node){
+            tail = node.getPrev();
+            tail.setNext(null);
+        } else {
+            Denode<T> prev = node.getPrev();
+            Denode<T> next = node.getNext();
+            if (prev != null) prev.setNext(next);
+            if (next != null) next.setPrev(prev);
+        }
         
-        if (prev != null) prev.setNext(next);
-        if (next != null) next.setPrev(prev);
 
         size--;
 

@@ -9,13 +9,13 @@ import javax.imageio.ImageIO;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
-import com.Game.Scenes.HitboxVisualizer;
 import com.Game.Scenes.ShooterGame;
 
 public class PlayerCharacter extends PlayerObject{
     private static BufferedImage sprite = null;
     
     private static final float PLAYER_SPEED = 250;
+    private static final float PLAYER_SPEED_FAST = 400;
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 64;
     
@@ -26,6 +26,9 @@ public class PlayerCharacter extends PlayerObject{
 
     private Vector2 position;
     private RectangularHitbox hitbox;
+    private boolean goingFast = false;
+    private boolean shooting = false;
+    private float shootCD = .05f;
     
 
     public PlayerCharacter(){
@@ -61,29 +64,59 @@ public class PlayerCharacter extends PlayerObject{
     public Hitbox getHitbox(){
         return hitbox;
     }
+
+    public void goFast(){
+        this.goingFast = true;
+    }
+
+    public void goSlow(){
+        this.goingFast = false;
+    }
     
-    // @Override
-    // public void update(float dt){
-    //     //TODO: make update function for player
-    //     ShooterGame currScene = (ShooterGame)Global.currentScene;
-    //     Vector2 speed = new Vector2(0,0);
-    //     if(currScene.up) speed.y -= 1;
-    //     if(currScene.down) speed.y += 1;
-    //     if(currScene.left) speed.x -= 1;
-    //     if(currScene.right) speed.x += 1;
+    public void switchSpeed(){
+        this.goingFast = !this.goingFast;
+    }
 
-    //     speed.normalize();
-    //     speed.multiply(PLAYER_SPEED*dt);
-    //     position.add(speed);
-    //     System.out.println(speed);
-    //     hitbox.setPosition(position.x+speed.x, position.y+speed.y);
-    // }
+    public void startShooting(){
+        shooting = true;
+    }
 
-    /*
-     * TEMPOORARY
-     */
+    public void stopShooting(){
+        shooting = false;
+    }
+
+    @Override
     public void update(float dt){
-        // HitboxVisualizer currScene = (HitboxVisualizer)Global.currentScene;
+        //TODO: make update function for player
+
+        //  Move Player
+        ShooterGame currScene = (ShooterGame)Global.currentScene;
+        Vector2 speed = new Vector2(0,0);
+        if(currScene.up) speed.y -= 1;
+        if(currScene.down) speed.y += 1;
+        if(currScene.left) speed.x -= 1;
+        if(currScene.right) speed.x += 1;
+
+        speed.normalize();
+        speed.multiply((goingFast ? PLAYER_SPEED_FAST:PLAYER_SPEED)*dt);
+        position.add(speed);
+        // System.out.println(speed);
+        
+        if(position.x < -30) setX(-30);
+        else if (position.x > Global.realWidth-SPRITE_WIDTH+30) setX(Global.realWidth-SPRITE_WIDTH+30);
+        if(position.y < -30) setY(-30);
+        else if (position.y > Global.realHeight-SPRITE_HEIGHT+30) setY(Global.realHeight-SPRITE_HEIGHT+30);
+        
+        hitbox.setPosition(position.x+speed.x, position.y+speed.y);
+
+        //  Shoot bullets if is pressing SHOOT
+        shootCD -= dt;
+        if(shooting && shootCD < 0){
+            shootCD = 0.05f;
+            ((ShooterGame)Global.currentScene).friendlyObjects.append(new PlayerBulletBasic(position.x+24, position.y+30));
+            ((ShooterGame)Global.currentScene).friendlyObjects.append(new PlayerBulletBasic(position.x+12, position.y+36));
+            ((ShooterGame)Global.currentScene).friendlyObjects.append(new PlayerBulletBasic(position.x+36, position.y+36));
+        }
     }
 
     @Override
