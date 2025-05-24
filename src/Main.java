@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         try{
             new GameEnv(Global.originalWidth, Global.originalHeight, "Swingtest");
-            // Global.MovingQuadTree.switchScene();
+            Global.MovingQuadTree.switchScene();
             // Global.QuadTreeRetrieve.switchScene();
             // Global.QTreeTest.switchScene();
             Global.GAME_ENVIRONMENT.run();
