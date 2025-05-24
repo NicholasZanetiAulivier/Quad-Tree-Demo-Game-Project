@@ -16,12 +16,18 @@ public class PlayerBulletBasic extends PlayerBullet{
     private static final int BULLET_WIDTH = 16;
     private static final int BULLET_HEIGHT = 16;
 
+    private static final int HITBOX_WIDTH = 7;
+    private static final int HITBOX_HEIGHT = 17;
+    private static final int HITBOX_X_OFFSET = 5;
+    private static final int HITBOX_Y_OFFSET = 0;
+
     private Vector2 position;
 
     public PlayerBulletBasic(float x , float y){
         position = new Vector2(x, y);
         direction = new Vector2(((float)Math.random()/10-0.05f), -1);
         direction.normalize();
+        hitbox = new RectangularHitbox(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
     
     public static void loadSprite() throws IOException{
@@ -36,6 +42,7 @@ public class PlayerBulletBasic extends PlayerBullet{
     public void update(float dt){
         if(position.y < -80) shouldDestroy = true;
         position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
+        hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.Game.Scenes;
 
 import com.Game.Engine.Global;
+import com.Game.Objects.PlayerBulletBasic;
 import com.Game.Objects.PlayerCharacter;
 
 /*
@@ -8,7 +9,7 @@ import com.Game.Objects.PlayerCharacter;
  */
 
 public class HitboxVisualizer extends Scene {
-    public PlayerCharacter curr;
+    public PlayerBulletBasic curr;
 
     @Override
     public void switchScene() throws Exception{
@@ -31,11 +32,10 @@ public class HitboxVisualizer extends Scene {
         );
 
         //Load Classes
-        PlayerCharacter.loadSprite();
+        PlayerBulletBasic.loadSprite();
 
         //Load Objects
-        this.curr = new PlayerCharacter();
-        curr.setPosition(600, 300);
+        this.curr = new PlayerBulletBasic(600,300);
     }
 
     @Override

@@ -61,10 +61,6 @@ public class PlayerCharacter extends PlayerObject{
         hitbox.setPosition(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET);
     }
 
-    public Hitbox getHitbox(){
-        return hitbox;
-    }
-
     public void goFast(){
         this.goingFast = true;
     }
