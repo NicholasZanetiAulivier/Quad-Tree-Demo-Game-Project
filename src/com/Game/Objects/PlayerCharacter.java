@@ -26,7 +26,7 @@ public class PlayerCharacter extends PlayerObject{
 
     private Vector2 position;
     private RectangularHitbox hitbox;
-    private boolean goingFast = false;
+    private boolean goingFast = true;
     private boolean shooting = false;
     private float shootCD = .05f;
     
@@ -34,7 +34,6 @@ public class PlayerCharacter extends PlayerObject{
     public PlayerCharacter(){
         position = new Vector2(Global.realWidth/2,Global.realHeight/2);
         hitbox = new RectangularHitbox(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH,HITBOX_HEIGHT);
-        
     }
 
     public static void loadSprite() throws IOException{
@@ -103,21 +102,20 @@ public class PlayerCharacter extends PlayerObject{
         if(position.y < -30) setY(-30);
         else if (position.y > Global.realHeight-SPRITE_HEIGHT+30) setY(Global.realHeight-SPRITE_HEIGHT+30);
         
-        hitbox.setPosition(position.x+speed.x, position.y+speed.y);
+        hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
 
         //  Shoot bullets if is pressing SHOOT
         shootCD -= dt;
         if(shooting && shootCD < 0){
             shootCD = 0.05f;
-            ((ShooterGame)Global.currentScene).friendlyObjects.append(new PlayerBulletBasic(position.x+24, position.y+30));
-            ((ShooterGame)Global.currentScene).friendlyObjects.append(new PlayerBulletBasic(position.x+12, position.y+36));
-            ((ShooterGame)Global.currentScene).friendlyObjects.append(new PlayerBulletBasic(position.x+36, position.y+36));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+24, position.y+30));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+12, position.y+36));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+36, position.y+36));
         }
     }
 
     @Override
     public void draw(Graphics g , ImageObserver observer){
-        //TODO: make draw function for player
         g.drawImage(sprite, Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
     }
 

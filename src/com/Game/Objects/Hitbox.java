@@ -26,5 +26,13 @@ public abstract class Hitbox implements CollisionObject , Drawable{
         this.bounds.setRect(x, y, bounds.getWidth(), bounds.getHeight());
     }
 
+    public float getX(){
+        return (float)bounds.getX();
+    }
+
+    public float getY(){
+        return (float)bounds.getY();
+    }
+
     public abstract boolean checkCollision(CollisionObject o);
 }

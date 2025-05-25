@@ -19,14 +19,6 @@ public class RectangularHitbox extends Hitbox{
         return CollisionObject.RECTANGLE;
     }
 
-    public float getY(){
-        return (float)bounds.getY();
-    }
-
-    public float getX(){
-        return (float)bounds.getX();
-    }
-
     public boolean checkCollision(RectangularHitbox p){
         return this.bounds.contains(p.getBounds()) || this.bounds.intersects(p.getBounds());
     }

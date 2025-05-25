@@ -1,15 +1,13 @@
 package com.Game.Scenes;
 
 import com.Game.Engine.Global;
-import com.Game.Objects.PlayerBulletBasic;
-import com.Game.Objects.PlayerCharacter;
-
+import com.Game.Objects.EnemyEntityBasic;
 /*
  * Scene to visualize hitbox
  */
 
 public class HitboxVisualizer extends Scene {
-    public PlayerBulletBasic curr;
+    public EnemyEntityBasic curr;
 
     @Override
     public void switchScene() throws Exception{
@@ -32,10 +30,10 @@ public class HitboxVisualizer extends Scene {
         );
 
         //Load Classes
-        PlayerBulletBasic.loadSprite();
+        EnemyEntityBasic.loadSprite();
 
         //Load Objects
-        this.curr = new PlayerBulletBasic(600,300);
+        this.curr = new EnemyEntityBasic(600,300);
     }
 
     @Override
