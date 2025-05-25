@@ -5,7 +5,9 @@ import java.awt.event.KeyEvent;
 import java.awt.Color;
 
 import com.DataStruct.DoublyLinkedList;
+import com.DataStruct.GameQuadTree;
 import com.Game.Engine.Global;
+import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyEntityBasic;
 import com.Game.Objects.EnemyObject;
 import com.Game.Objects.PlayerBulletBasic;
@@ -17,6 +19,8 @@ public class ShooterGame extends Scene{
     public PlayerCharacter player;
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
+
+    public GameQuadTree partition ;
 
     public boolean up = false;
     public boolean down = false;
@@ -66,6 +70,19 @@ public class ShooterGame extends Scene{
                 /*
                  * Collision Detection (QuadTree)
                  */
+
+                partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
+                partition.insert((CollisionObject) player);
+                friendlyBullet = friendlyBullets.getHead();
+                while(friendlyBullet != null){
+                    partition.insert((CollisionObject)friendlyBullet.getData());
+                    friendlyBullet = friendlyBullet.getNext();
+                }
+                enemy = enemyShips.getHead();
+                while(enemy != null){
+                    partition.insert((CollisionObject)enemy.getData());
+                    enemy = enemy.getNext();
+                }
 
                 /*
                  * Update game objects

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
@@ -80,5 +81,25 @@ public class EnemyEntityBasic extends EnemyObject{
     @Override
     public boolean hasCollisions(){
         return true;
+    }
+
+    @Override
+    public Rectangle2D getBounds(){
+        return hitbox.getBounds();
+    }
+
+    @Override
+    public short getType(){
+        return CollisionObject.RECTANGLE;
+    }
+
+    @Override
+    public short getIdentity(){
+        return CollisionObject.ENEMY_BASIC;
+    }
+
+    @Override
+    public void isColliding(CollisionObject c){
+        //TODO: do this
     }
 }

@@ -23,10 +23,10 @@ public class RectangularHitbox extends Hitbox{
         return this.bounds.contains(p.getBounds()) || this.bounds.intersects(p.getBounds());
     }
 
-    public boolean checkCollision(CollisionObject p){
-        if(p.getType() == CollisionObject.RECTANGLE) return checkCollision((RectangularHitbox) p);
-        return false;
-    }
+    // public boolean checkCollision(CollisionObject p){
+    //     if(p.getType() == CollisionObject.RECTANGLE) return checkCollision((RectangularHitbox) p);
+    //     return false;
+    // }
 
     public void draw(Graphics g , ImageObserver i){
         g.setColor(Color.BLACK);

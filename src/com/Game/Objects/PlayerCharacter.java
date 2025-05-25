@@ -1,6 +1,7 @@
 package com.Game.Objects;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
@@ -122,5 +123,34 @@ public class PlayerCharacter extends PlayerObject{
     @Override
     public boolean hasCollisions(){
         return true;
+    }
+
+    @Override
+    public short getType(){
+        return CollisionObject.RECTANGLE;
+    }
+
+    @Override
+    public short getIdentity(){
+        return CollisionObject.PLAYER;
+    }
+
+    @Override 
+    public Rectangle2D getBounds(){
+        return hitbox.getBounds();
+    }
+
+    @Override
+    public void isColliding(CollisionObject o){
+        short n = o.getIdentity();
+        switch(n){
+            case CollisionObject.ENEMY_BASIC : {
+
+            }
+
+            case CollisionObject.ENEMY_BULLET_BASIC : {
+
+            }
+        } 
     }
 }

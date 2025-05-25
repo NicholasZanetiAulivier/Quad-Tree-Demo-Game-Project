@@ -1,6 +1,7 @@
 package com.Game.Objects;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
@@ -53,6 +54,31 @@ public class PlayerBulletBasic extends PlayerBullet{
     @Override
     public boolean hasCollisions(){
         return true;
+    }
+
+    @Override
+    public short getType(){
+        return CollisionObject.RECTANGLE;
+    }
+
+    @Override
+    public short getIdentity(){
+        return CollisionObject.PLAYER_BULLET_BASIC;
+    }
+
+    @Override
+    public void checkCollision(CollisionObject c){
+        super.checkCollision(c);
+    }
+
+    @Override
+    public Rectangle2D getBounds(){
+        return hitbox.getBounds();
+    }
+
+    @Override
+    public void isColliding(CollisionObject c){
+        //TODO: do this
     }
 
     // @Override

@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
  * Abstract class for hitboxes that will be bound to objects
  * as a field
  */
-public abstract class Hitbox implements CollisionObject , Drawable{
+public abstract class Hitbox implements Drawable{
     protected Rectangle2D bounds;
 
     protected Hitbox(Rectangle2D bounds){
@@ -17,7 +17,6 @@ public abstract class Hitbox implements CollisionObject , Drawable{
         this(new Rectangle2D.Float(x,y,width,height));
     }
 
-    @Override
     public Rectangle2D getBounds(){
         return bounds;
     }
@@ -34,5 +33,5 @@ public abstract class Hitbox implements CollisionObject , Drawable{
         return (float)bounds.getY();
     }
 
-    public abstract boolean checkCollision(CollisionObject o);
+    // public abstract boolean checkCollision(CollisionObject o);
 }
