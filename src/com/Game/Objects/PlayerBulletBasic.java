@@ -79,6 +79,7 @@ public class PlayerBulletBasic extends PlayerBullet{
     @Override
     public void isColliding(CollisionObject c){
         //TODO: do this
+        shouldDestroy = true;
     }
 
     // @Override

@@ -4,7 +4,10 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class EnemyObject implements CollisionObject, Entity , Drawable{
     protected Hitbox hitbox = null;
+    protected boolean colliding = false;
     public boolean shouldDestroy = false;
+    public int HP;
+
     public Hitbox getHitbox(){
         return hitbox;
     }
@@ -23,6 +26,7 @@ public abstract class EnemyObject implements CollisionObject, Entity , Drawable{
             }
         }
         if(collides){
+            colliding = true;
             isColliding(c);
             c.isColliding(this);
         }

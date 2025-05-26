@@ -3,6 +3,7 @@ package com.Game.Objects;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -25,11 +26,13 @@ public class EnemyEntityBasic extends EnemyObject{
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration;
+    private boolean colliding = false;
 
     public EnemyEntityBasic(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
         acceleration = new Vector2(0,1000);
+        HP = 5;
         hitbox = new RectangularHitbox(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
 
@@ -100,6 +103,9 @@ public class EnemyEntityBasic extends EnemyObject{
 
     @Override
     public void isColliding(CollisionObject c){
-        //TODO: do this
+        HP--;
+        if(HP == 0){
+            shouldDestroy = true;
+        }
     }
 }

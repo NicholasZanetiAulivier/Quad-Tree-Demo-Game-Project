@@ -72,15 +72,25 @@ public class ShooterGame extends Scene{
                  */
 
                 partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
-                partition.insert((CollisionObject) player);
+                
+                //Insert player bullet ke QuadTree
                 friendlyBullet = friendlyBullets.getHead();
                 while(friendlyBullet != null){
                     partition.insert((CollisionObject)friendlyBullet.getData());
                     friendlyBullet = friendlyBullet.getNext();
                 }
+                
+
+                //Collision Detect enemy-player bullet
                 enemy = enemyShips.getHead();
                 while(enemy != null){
-                    partition.insert((CollisionObject)enemy.getData());
+                    CollisionObject e = (CollisionObject)enemy.getData();
+                    Denode<CollisionObject> pBullet = partition.retrieve(e).getHead();
+                    while(pBullet != null){
+                        CollisionObject p = pBullet.getData();
+                        e.checkCollision(p);
+                        pBullet = pBullet.getNext(); 
+                    }
                     enemy = enemy.getNext();
                 }
 

@@ -16,7 +16,7 @@ public class PlayerCharacter extends PlayerObject{
     private static BufferedImage sprite = null;
     
     private static final float PLAYER_SPEED = 250;
-    private static final float PLAYER_SPEED_FAST = 400;
+    private static final float PLAYER_SPEED_FAST = 500;
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 64;
     

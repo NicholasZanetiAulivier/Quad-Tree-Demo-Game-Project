@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
-import com.Game.Objects.ArtificialCircle;
+// import com.Game.Objects.ArtificialCircle;
 import com.Game.Objects.CollisionObject;
 
 /*
@@ -82,9 +82,9 @@ public class GameQuadTree{
         }
     }
 
-    public void insert(ArtificialCircle c){
-        insert((CollisionObject)c);
-    }
+    // public void insert(ArtificialCircle c){
+    //     insert((CollisionObject)c);
+    // }
 
 
     /*
