@@ -23,17 +23,21 @@ public class EnemyEntityBasic extends EnemyObject{
     private static final int HITBOX_WIDTH = 35;
     private static final int HITBOX_HEIGHT = 32;
 
-    private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 acceleration;
-    private boolean colliding = false;
+    protected Vector2 position;
+    protected Vector2 velocity;
+    protected Vector2 acceleration;
+    protected boolean colliding = false;
 
     public EnemyEntityBasic(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
         acceleration = new Vector2(0,1000);
         HP = 5;
-        hitbox = new RectangularHitbox(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
+        hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
+    }
+
+    public EnemyEntityBasic(){
+        this(0,0);
     }
 
     public static void loadSprite() throws IOException{
@@ -66,7 +70,6 @@ public class EnemyEntityBasic extends EnemyObject{
 
     @Override
     public void update(float dt){
-        //TODO: make basic enemy update function
         if(position.y > Global.realHeight) shouldDestroy = true;
 
         Vector2 halfAccel = Vector2.scale(acceleration , 0.5f*dt);

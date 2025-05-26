@@ -32,6 +32,4 @@ public abstract class Hitbox implements Drawable{
     public float getY(){
         return (float)bounds.getY();
     }
-
-    // public abstract boolean checkCollision(CollisionObject o);
 }

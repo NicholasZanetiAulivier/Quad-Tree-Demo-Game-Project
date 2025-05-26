@@ -26,7 +26,7 @@ public class PlayerCharacter extends PlayerObject{
     private static final int HITBOX_HEIGHT = 8;
 
     private Vector2 position;
-    private RectangularHitbox hitbox;
+    private HitboxRectangular hitbox;
     private boolean goingFast = true;
     private boolean shooting = false;
     private float shootCD = .05f;
@@ -35,7 +35,7 @@ public class PlayerCharacter extends PlayerObject{
 
     public PlayerCharacter(){
         position = new Vector2(Global.realWidth/2,Global.realHeight/2);
-        hitbox = new RectangularHitbox(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH,HITBOX_HEIGHT);
+        hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH,HITBOX_HEIGHT);
     }
 
     public static void loadSprite() throws IOException{

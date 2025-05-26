@@ -1,13 +1,13 @@
 package com.Game.Scenes;
 
 import com.Game.Engine.Global;
-import com.Game.Objects.EnemyEntityBasic;
+import com.Game.Objects.EnemyEntityHoming;
 /*
  * Scene to visualize hitbox
  */
 
 public class HitboxVisualizer extends Scene {
-    public EnemyEntityBasic curr;
+    public EnemyEntityHoming curr;
 
     @Override
     public void switchScene() throws Exception{
@@ -30,10 +30,10 @@ public class HitboxVisualizer extends Scene {
         );
 
         //Load Classes
-        EnemyEntityBasic.loadSprite();
+        EnemyEntityHoming.loadSprite();
 
         //Load Objects
-        this.curr = new EnemyEntityBasic(600,300);
+        this.curr = new EnemyEntityHoming(600,300);
     }
 
     @Override

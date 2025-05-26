@@ -32,7 +32,7 @@ public class PlayerBulletBasic extends PlayerBullet{
         position = new Vector2(x, (int)(y+Math.random()*10-20));
         direction = new Vector2(((float)Math.random()/4-.125f), -1);
         direction.normalize();
-        hitbox = new RectangularHitbox(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
+        hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
     
     public static void loadSprite() throws IOException{

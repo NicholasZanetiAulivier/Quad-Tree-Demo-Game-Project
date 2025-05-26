@@ -115,6 +115,17 @@ public class Vector2 {
         multiply(scale);
     }
 
+    public double getAngle(){
+        return Math.atan(y/x);
+    }
+
+    public void rotate(double theta){
+        double c = Math.cos(theta);
+        double s = Math.sin(theta);
+        this.x = (float)(c*x-y*s);
+        this.y = (float)(s*x+y*c);
+    }
+
     public String toString(){
         return "x: " + x + ", y: " + y;
     }
