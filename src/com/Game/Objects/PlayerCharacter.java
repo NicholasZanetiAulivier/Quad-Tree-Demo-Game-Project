@@ -15,8 +15,8 @@ import com.Game.Scenes.ShooterGame;
 public class PlayerCharacter extends PlayerObject{
     private static BufferedImage sprite = null;
     
-    private static final float PLAYER_SPEED = 250;
-    private static final float PLAYER_SPEED_FAST = 500;
+    private static final float PLAYER_SPEED = 300;
+    private static final float PLAYER_SPEED_FAST = 600;
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 64;
     
@@ -30,7 +30,8 @@ public class PlayerCharacter extends PlayerObject{
     private boolean goingFast = true;
     private boolean shooting = false;
     private float shootCD = .05f;
-    
+
+    private int bulletCount = 5;
 
     public PlayerCharacter(){
         position = new Vector2(Global.realWidth/2,Global.realHeight/2);
@@ -109,9 +110,8 @@ public class PlayerCharacter extends PlayerObject{
         shootCD -= dt;
         if(shooting && shootCD < 0){
             shootCD = 0.05f;
+            for(int i = 0 ; i < bulletCount ; i++)
             ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+24, position.y+30));
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+12, position.y+36));
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+36, position.y+36));
         }
     }
 
