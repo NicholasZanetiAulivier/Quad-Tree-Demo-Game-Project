@@ -9,7 +9,7 @@ import com.DataStruct.GameQuadTree;
 import com.Game.Engine.Global;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyEntityBasic;
-import com.Game.Objects.EnemyObject;
+import com.Game.Objects.EnemyEntityHoming;
 import com.Game.Objects.PlayerBulletBasic;
 import com.Game.Objects.PlayerCharacter;
 import com.Game.Objects.PlayerBullet;
@@ -28,7 +28,7 @@ public class ShooterGame extends Scene{
     public boolean right = false;
 
     public float timeCooldown = 3f;
-    public int difficulty = 0;
+    public int difficulty = 1;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -41,31 +41,6 @@ public class ShooterGame extends Scene{
             (dt) ->{
                 Denode<PlayerBullet> friendlyBullet;
                 Denode<EnemyEntityBasic> enemy;
-                /*
-                 * Delete dead objects
-                 */
-
-                friendlyBullet = friendlyBullets.getHead();
-                while(friendlyBullet != null){
-                    if (friendlyBullet.getData().shouldDestroy){
-                        Denode<PlayerBullet> temp = friendlyBullet.getNext();
-                        friendlyBullets.detachDenode(friendlyBullet);
-                        friendlyBullet = temp;
-                    } else {
-                        friendlyBullet = friendlyBullet.getNext();
-                    }
-                }
-
-                enemy = enemyShips.getHead();
-                while(enemy != null){
-                    if (enemy.getData().shouldDestroy){
-                        Denode<EnemyEntityBasic> temp = enemy.getNext();
-                        enemyShips.detachDenode(enemy);
-                        enemy = temp;
-                    } else {
-                        enemy = enemy.getNext();
-                    }
-                }
                 
                 /*
                  * Collision Detection (QuadTree)
@@ -92,6 +67,32 @@ public class ShooterGame extends Scene{
                         pBullet = pBullet.getNext(); 
                     }
                     enemy = enemy.getNext();
+                }
+
+                 /*
+                 * Delete dead objects
+                 */
+
+                friendlyBullet = friendlyBullets.getHead();
+                while(friendlyBullet != null){
+                    if (friendlyBullet.getData().shouldDestroy){
+                        Denode<PlayerBullet> temp = friendlyBullet.getNext();
+                        friendlyBullets.detachDenode(friendlyBullet);
+                        friendlyBullet = temp;
+                    } else {
+                        friendlyBullet = friendlyBullet.getNext();
+                    }
+                }
+
+                enemy = enemyShips.getHead();
+                while(enemy != null){
+                    if (enemy.getData().shouldDestroy){
+                        Denode<EnemyEntityBasic> temp = enemy.getNext();
+                        enemyShips.detachDenode(enemy);
+                        enemy = temp;
+                    } else {
+                        enemy = enemy.getNext();
+                    }
                 }
 
                 /*
@@ -174,6 +175,7 @@ public class ShooterGame extends Scene{
         PlayerCharacter.loadSprite();
         PlayerBulletBasic.loadSprite();
         EnemyEntityBasic.loadSprite();
+        EnemyEntityHoming.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
@@ -193,6 +195,7 @@ public class ShooterGame extends Scene{
         PlayerCharacter.unload();
         PlayerBulletBasic.unload();
         EnemyEntityBasic.unload();
+        EnemyEntityHoming.unload();
 
     }
 
@@ -206,7 +209,15 @@ public class ShooterGame extends Scene{
             for (int i = 0 ; i < (int)(Math.random() * 100) ; i++){
                 enemyShips.append(new EnemyEntityBasic((float)Math.random() * 600+100, -64));
             }
+            return;
         }
+        if(dif == 1){
+            timeCooldown = .2f;
+            for(int i = 0 ; i < (int)(Math.random() * 100) ; i++){
+                enemyShips.append(new EnemyEntityHoming((float)Math.random()*600+100, -64));
+            }
+        }
+
     }
 
 }

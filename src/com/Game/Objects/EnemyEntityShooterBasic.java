@@ -1,19 +1,19 @@
 package com.Game.Objects;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.ImageObserver;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
 import com.Game.Scenes.ShooterGame;
 
-public class EnemyEntityHoming extends EnemyEntityBasic{
+public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static BufferedImage sprite;
     
     private static final int HITBOX_X_OFFSET = 11;
@@ -28,7 +28,7 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
     private BufferedImage rotatedImage;
     private Vector2 velocity;
 
-    public EnemyEntityHoming(float x , float y){
+    public EnemyEntityShooterBasic(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
         HP = 5;
@@ -36,7 +36,7 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
         rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
     }
 
-    public EnemyEntityHoming(){
+    public EnemyEntityShooterBasic(){
         this(0,0);
     }
 
