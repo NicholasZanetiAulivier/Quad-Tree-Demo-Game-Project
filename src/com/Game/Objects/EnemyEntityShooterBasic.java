@@ -10,6 +10,7 @@ import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
+import com.Game.Scenes.ShooterGame;
 
 public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static BufferedImage sprite;
@@ -21,12 +22,17 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
+    
+    private static final float BASIC_COOLDOWN = .2f;
+    private static final float STARTING_VELOCITY = 500;
 
+    private static Vector2 acceleration = new Vector2(0,-700);
     private Vector2 velocity;
+    private float shootCD = BASIC_COOLDOWN;
 
     public EnemyEntityShooterBasic(float x , float y){
         position = new Vector2(x, y);
-        velocity = new Vector2(0,100);
+        velocity = new Vector2(0 , STARTING_VELOCITY);
         HP = 5;
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
     }
@@ -45,10 +51,22 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
 
     @Override
     public void update(float dt){
-        //TODO: make homing enemy update function
-        if(position.y > Global.realHeight) shouldDestroy = true;
-        // this.position.add(Vector2.scale(velocity , dt));
-        // hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        //TODO: make Shooting enemy update function
+        if(position.y < -100){
+            shouldDestroy = true;
+            return;
+        }
+
+        Vector2 halfAccel = Vector2.scale(acceleration , 0.5f*dt);
+        velocity.add(halfAccel);
+        this.position.add(Vector2.scale(velocity , dt));
+        velocity.add(halfAccel);
+        hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        
+        if((shootCD -= dt) < 0){
+            shootCD = BASIC_COOLDOWN;
+
+        }
     }
 
     @Override

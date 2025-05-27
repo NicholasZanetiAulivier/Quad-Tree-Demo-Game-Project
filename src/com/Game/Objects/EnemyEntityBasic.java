@@ -25,13 +25,12 @@ public class EnemyEntityBasic extends EnemyObject{
 
     protected Vector2 position;
     protected Vector2 velocity;
-    protected Vector2 acceleration;
+    protected static Vector2 acceleration = new Vector2(0,1000);
     protected boolean colliding = false;
 
     public EnemyEntityBasic(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
-        acceleration = new Vector2(0,1000);
         HP = 5;
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
@@ -70,7 +69,10 @@ public class EnemyEntityBasic extends EnemyObject{
 
     @Override
     public void update(float dt){
-        if(position.y > Global.realHeight) shouldDestroy = true;
+        if(position.y > Global.realHeight){
+            shouldDestroy = true;
+            return;
+        }
 
         Vector2 halfAccel = Vector2.scale(acceleration , 0.5f*dt);
         velocity.add(halfAccel);

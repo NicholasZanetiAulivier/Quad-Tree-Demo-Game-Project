@@ -10,6 +10,7 @@ import com.Game.Engine.Global;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyEntityBasic;
 import com.Game.Objects.EnemyEntityHoming;
+import com.Game.Objects.EnemyEntityShooterBasic;
 import com.Game.Objects.PlayerBulletBasic;
 import com.Game.Objects.PlayerCharacter;
 import com.Game.Objects.PlayerBullet;
@@ -27,8 +28,8 @@ public class ShooterGame extends Scene{
     public boolean left = false;
     public boolean right = false;
 
-    public float timeCooldown = 3f;
-    public int difficulty = 1;
+    public float timeCooldown = 1f;
+    public int difficulty = 2;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -176,6 +177,7 @@ public class ShooterGame extends Scene{
         PlayerBulletBasic.loadSprite();
         EnemyEntityBasic.loadSprite();
         EnemyEntityHoming.loadSprite();
+        EnemyEntityShooterBasic.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
@@ -196,6 +198,7 @@ public class ShooterGame extends Scene{
         PlayerBulletBasic.unload();
         EnemyEntityBasic.unload();
         EnemyEntityHoming.unload();
+        EnemyEntityShooterBasic.unload();
 
     }
 
@@ -215,6 +218,12 @@ public class ShooterGame extends Scene{
             timeCooldown = .2f;
             for(int i = 0 ; i < (int)(Math.random() * 100) ; i++){
                 enemyShips.append(new EnemyEntityHoming((float)Math.random()*600+100, -64));
+            }
+        }
+        if(dif == 2){
+            timeCooldown = .2f;
+            for(int i = 0 ; i < (int)(Math.random() * 100) ; i++){
+                enemyShips.append(new EnemyEntityShooterBasic((float)Math.random()*600+100, -64));
             }
         }
 
