@@ -6,34 +6,29 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Color;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
-import com.Game.Scenes.ShooterGame;
 
 public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static BufferedImage sprite;
     
-    private static final int HITBOX_X_OFFSET = 11;
-    private static final int HITBOX_Y_OFFSET = 13;
-    private static final int HITBOX_RADIUS = 21;
+    private static final int HITBOX_X_OFFSET = 6;
+    private static final int HITBOX_Y_OFFSET = 22;
+    private static final int HITBOX_WIDTH = 51;
+    private static final int HITBOX_HEIGHT = 48;
     
     private static final int SPRITE_WIDTH = 64;
-    private static final int SPRITE_HEIGHT = 64;
+    private static final int SPRITE_HEIGHT = 80;
 
-    private static int SPEED_CONSTANT = 400;
-    
-    private BufferedImage rotatedImage;
     private Vector2 velocity;
 
     public EnemyEntityShooterBasic(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
         HP = 5;
-        hitbox = new HitboxCircular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_RADIUS);
-        rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
+        hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
     }
 
     public EnemyEntityShooterBasic(){
@@ -41,7 +36,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     }
 
     public static void loadSprite() throws IOException{
-        BufferedImage temp = ImageIO.read(EnemyEntityBasic.class.getResource("rsc/Enemies/HomingEnemy.png"));
+        BufferedImage temp = ImageIO.read(EnemyEntityBasic.class.getResource("rsc/Enemies/EnemyShooter.png"));
         sprite = new BufferedImage(temp.getWidth(), temp.getHeight(),temp.getType());
         Graphics2D g = sprite.createGraphics();
         g.rotate(Math.toRadians(180) , temp.getWidth()/2 , temp.getHeight()/2);
@@ -52,25 +47,13 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     public void update(float dt){
         //TODO: make homing enemy update function
         if(position.y > Global.realHeight) shouldDestroy = true;
-        velocity = Vector2.subtract(((ShooterGame)Global.Game).player.position,position);
-        velocity.normalize();
-        velocity.multiply(SPEED_CONSTANT);
-        this.position.add(Vector2.scale(velocity , dt));
-        hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        // this.position.add(Vector2.scale(velocity , dt));
+        // hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }
 
     @Override
     public void draw(Graphics g , ImageObserver observer){
-        Graphics2D gs = rotatedImage.createGraphics();
-        gs.rotate(velocity.getDirection()+Math.PI/2, rotatedImage.getWidth()/2 , rotatedImage.getHeight()/2);
-        if(velocity.x > 0)
-            gs.rotate(Math.PI , rotatedImage.getWidth()/2 , rotatedImage.getHeight()/2);
-        
-        gs.drawImage(sprite , null , 0 , 0);
-        g.drawImage(rotatedImage, Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
-        gs.setBackground(new Color(0,0,0,0));
-        gs.clearRect(0, 0, rotatedImage.getWidth(), rotatedImage.getHeight());
-        gs.dispose();
+        g.drawImage(sprite, Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
     }
 
     @Override

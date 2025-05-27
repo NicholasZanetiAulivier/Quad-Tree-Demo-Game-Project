@@ -87,8 +87,8 @@ public class GameEnv implements Runnable{
             currTime = System.nanoTime();
 
             // Get memory info
-            System.out.println(Runtime.getRuntime().totalMemory()/(1024*1024));
-            System.out.println(Runtime.getRuntime().freeMemory()/(1024*1024));
+            // System.out.println(Runtime.getRuntime().totalMemory()/(1024*1024));
+            // System.out.println(Runtime.getRuntime().freeMemory()/(1024*1024));
         }
     }
 

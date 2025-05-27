@@ -32,7 +32,7 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
         HP = 5;
-        hitbox = new HitboxCircular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_RADIUS);
+        hitbox = new HitboxCircular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET,HITBOX_RADIUS);
         rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
     }
 
@@ -50,7 +50,6 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
 
     @Override
     public void update(float dt){
-        //TODO: make homing enemy update function
         if(position.y > Global.realHeight) shouldDestroy = true;
         velocity = Vector2.subtract(((ShooterGame)Global.Game).player.position,position);
         velocity.normalize();
