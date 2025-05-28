@@ -26,6 +26,7 @@ public class PlayerCharacter extends PlayerObject{
     private static final int HITBOX_HEIGHT = 8;
 
     public Vector2 position;
+    public boolean dead = false;
     private boolean goingFast = true;
     private boolean shooting = false;
     private float shootCD = .05f;
@@ -116,6 +117,7 @@ public class PlayerCharacter extends PlayerObject{
 
     @Override
     public void draw(Graphics g , ImageObserver observer){
+        if(dead) return;
         g.drawImage(sprite, Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
     }
 
@@ -142,13 +144,14 @@ public class PlayerCharacter extends PlayerObject{
     @Override
     public void isColliding(CollisionObject o){
         short n = o.getIdentity();
+        System.out.println('c');
         switch(n){
             case CollisionObject.ENEMY_BASIC : {
-
+                dead = true;
             }
 
             case CollisionObject.ENEMY_BULLET_BASIC : {
-
+                dead = true;
             }
         } 
     }

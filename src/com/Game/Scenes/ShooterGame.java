@@ -79,6 +79,17 @@ public class ShooterGame extends Scene{
                     enemy = enemy.getNext();
                 }
 
+                //Collision detect player-enemyBullet
+                if(!player.dead)
+                for (int i = 0 ; i < 4 ; i++){
+                    enemyBullet = enemyBullets[i].getHead();
+                    while(enemyBullet != null){
+                        CollisionObject p = enemyBullet.getData();
+                        player.checkCollision(p);
+                        enemyBullet = enemyBullet.getNext();
+                    }
+                }
+
                  /*
                  * Delete dead objects
                  */
@@ -335,9 +346,9 @@ public class ShooterGame extends Scene{
             spawn(CollisionObject.ENEMY_HOMING , c);
         }
         if(dif == 2){
-            timeCooldown = .2f;
+            timeCooldown = .5f;
             int c = (int)(Math.round(Math.random()*10));
-            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 40);
+            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 100);
         }
         if (dif == 3){
             timeCooldown = 1f;

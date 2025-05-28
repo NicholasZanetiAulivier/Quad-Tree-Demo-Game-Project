@@ -7,6 +7,8 @@ public class Main {
     public static void main(String[] args) {
         try{
             new GameEnv(Global.originalWidth, Global.originalHeight, "Swingtest",7);
+            long c = System.nanoTime();
+            while(System.nanoTime() <= c+1_000_000_000)continue;
             Global.GAME_ENVIRONMENT.run();
         } catch(Exception e){
             e.printStackTrace();

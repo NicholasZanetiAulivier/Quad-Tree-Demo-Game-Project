@@ -26,11 +26,11 @@ public class EnemyBulletBasic extends EnemyBullet{
     private Vector2 position;
     private BufferedImage rotatedImage;
     
-    public EnemyBulletBasic(Vector2 pos , Vector2 dire){
+    public EnemyBulletBasic(Vector2 pos , Vector2 dire) throws Throwable{
         position = pos;
         direction = dire;
         direction.normalize();
-        rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
+        rotatedImage = new BufferedImage(sprite.getWidth(),sprite.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);
         Graphics2D gs = rotatedImage.createGraphics();
         if(direction.x < 0)
             gs.rotate(Math.PI , rotatedImage.getWidth()/2 , rotatedImage.getHeight()/2);
@@ -39,7 +39,7 @@ public class EnemyBulletBasic extends EnemyBullet{
         hitbox = new HitboxCircular(position.x+HITBOX_X_OFFSET,position.y+HITBOX_Y_OFFSET,HITBOX_RADIUS);
     }
 
-    public EnemyBulletBasic(float x , float y , float dirX , float dirY){
+    public EnemyBulletBasic(float x , float y , float dirX , float dirY) throws Throwable{
         this(new Vector2(x,y) , new Vector2(dirX,dirY));
     }
     

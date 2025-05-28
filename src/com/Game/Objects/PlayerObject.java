@@ -19,6 +19,7 @@ public abstract class PlayerObject implements CollisionObject , Entity , Drawabl
                 break;
             }
             case CollisionObject.CIRCLE : {
+                collides = checkCollision(c.getBounds());
                 break;
             }
         }

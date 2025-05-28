@@ -45,10 +45,14 @@ public class HitboxVisualizer extends Scene {
         EnemyBulletBasic.loadSprite();
 
         //Load Objects
-        this.curr1 = new EnemyBulletBasic(600,300,-1,0);
-        this.curr2 = new EnemyBulletBasic(300,300,0,-1);
-        this.curr3 = new EnemyBulletBasic(300,100,1,0);
-        this.curr4 = new EnemyBulletBasic(100,100,0,1);
+        try{
+            this.curr1 = new EnemyBulletBasic(600,300,-1,0);
+            this.curr2 = new EnemyBulletBasic(300,300,0,-1);
+            this.curr3 = new EnemyBulletBasic(300,100,1,0);
+            this.curr4 = new EnemyBulletBasic(100,100,0,1);
+        } catch(Throwable e){
+            e.printStackTrace();
+        }
     }
 
     @Override
