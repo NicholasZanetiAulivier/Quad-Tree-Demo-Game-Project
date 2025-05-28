@@ -10,6 +10,7 @@ import java.awt.image.ImageObserver;
 import java.awt.geom.Rectangle2D;
 
 import com.DataType.Vector2;
+import com.Game.Engine.Global;
 
 public class EnemyBulletBasic extends EnemyBullet{
     private static BufferedImage sprite;
@@ -52,19 +53,16 @@ public class EnemyBulletBasic extends EnemyBullet{
 
     @Override
     public void update(float dt){
-        if(position.y < -80) {
+        if(position.y > Global.realHeight || position.y < -70 || position.x < -70 || position.x > Global.realWidth) {
             shouldDestroy = true;
             return;
         }
-        // position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
-        // hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
+        hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }
 
     @Override
     public void draw(Graphics g , ImageObserver o){
-
-
-
         g.drawImage(rotatedImage, Math.round(position.x), Math.round(position.y),BULLET_WIDTH, BULLET_HEIGHT, o);
     }
 

@@ -8,6 +8,8 @@ import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.GameQuadTree;
 import com.Game.Engine.Global;
 import com.Game.Objects.CollisionObject;
+import com.Game.Objects.EnemyBullet;
+import com.Game.Objects.EnemyBulletBasic;
 import com.Game.Objects.EnemyEntityBasic;
 import com.Game.Objects.EnemyEntityHoming;
 import com.Game.Objects.EnemyEntityShooterBasic;
@@ -20,6 +22,7 @@ public class ShooterGame extends Scene{
     public PlayerCharacter player;
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
+    public DoublyLinkedList<EnemyBullet> enemyBullets;
 
     public GameQuadTree partition ;
 
@@ -42,6 +45,7 @@ public class ShooterGame extends Scene{
             (dt) ->{
                 Denode<PlayerBullet> friendlyBullet;
                 Denode<EnemyEntityBasic> enemy;
+                Denode<EnemyBullet> enemyBullet;
                 
                 /*
                  * Collision Detection (QuadTree)
@@ -96,6 +100,17 @@ public class ShooterGame extends Scene{
                     }
                 }
 
+                enemyBullet = enemyBullets.getHead();
+                while(enemyBullet != null){
+                    if(enemyBullet.getData().shouldDestroy){
+                        Denode<EnemyBullet> temp = enemyBullet.getNext();
+                        enemyBullets.detachDenode(enemyBullet);
+                        enemyBullet = temp;
+                    } else{
+                        enemyBullet = enemyBullet.getNext();
+                    }
+                }
+
                 /*
                  * Update game objects
                  */
@@ -121,6 +136,12 @@ public class ShooterGame extends Scene{
                     enemy.getData().update(dt);
                     enemy = enemy.getNext();
                 }
+
+                enemyBullet = enemyBullets.getHead();
+                while(enemyBullet != null){
+                    enemyBullet.getData().update(dt);
+                    enemyBullet = enemyBullet.getNext();
+                }
             }
         );
 
@@ -133,17 +154,24 @@ public class ShooterGame extends Scene{
                 g2d.setColor(new Color(0xFF0000));
                 player.draw(g , Global.CANVAS);
 
-                Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
-                while( friendlyBullet != null){
-                    friendlyBullet.getData().draw(g , Global.CANVAS);
-                    friendlyBullet = friendlyBullet.getNext();
-                }
+                // Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
+                // while( friendlyBullet != null){
+                //     friendlyBullet.getData().draw(g , Global.CANVAS);
+                //     friendlyBullet = friendlyBullet.getNext();
+                // }
 
-                Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
-                while(enemy != null){
-                    enemy.getData().draw(g, Global.CANVAS);
-                    enemy = enemy.getNext();
+                // Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
+                // while(enemy != null){
+                //     enemy.getData().draw(g, Global.CANVAS);
+                //     enemy = enemy.getNext();
+                // }
+
+                Denode<EnemyBullet> enemyBullet = enemyBullets.getHead();
+                while(enemyBullet != null){
+                    enemyBullet.getData().draw(g,Global.CANVAS);
+                    enemyBullet = enemyBullet.getNext();
                 }
+                System.out.println(enemyBullets.getSize());
 
             }
         );
@@ -178,11 +206,13 @@ public class ShooterGame extends Scene{
         EnemyEntityBasic.loadSprite();
         EnemyEntityHoming.loadSprite();
         EnemyEntityShooterBasic.loadSprite();
+        EnemyBulletBasic.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
         friendlyBullets = new DoublyLinkedList<>();
         enemyShips = new DoublyLinkedList<>();
+        enemyBullets = new DoublyLinkedList<>();
     }
 
     public void unloadScene() throws Exception{
@@ -192,6 +222,7 @@ public class ShooterGame extends Scene{
         player = null;
         friendlyBullets = null;
         enemyShips = null;
+        enemyBullets = null;
 
         //Unload classes
         PlayerCharacter.unload();
@@ -199,6 +230,7 @@ public class ShooterGame extends Scene{
         EnemyEntityBasic.unload();
         EnemyEntityHoming.unload();
         EnemyEntityShooterBasic.unload();
+        EnemyBulletBasic.unload();
 
     }
 
@@ -206,27 +238,50 @@ public class ShooterGame extends Scene{
         up = down = left = right = false;
     }
 
+    public void spawn(int id , int count){
+        switch(id){
+            case CollisionObject.ENEMY_BASIC : {
+                for (int i = 0 ; i < count ; i++)
+                    enemyShips.append(new EnemyEntityBasic((float)Math.random() * 600+100, -64));
+                break;
+            }
+            case CollisionObject.ENEMY_HOMING : {
+                for (int i = 0 ; i < count ; i++)
+                    enemyShips.append(new EnemyEntityHoming((float)Math.random()*600+100, -64));
+                break;
+            }
+            case CollisionObject.ENEMY_SHOOTER_BASIC: {
+                for (int i = 0 ; i < count ; i++)
+                    enemyShips.append(new EnemyEntityShooterBasic((float)Math.random()*600+100, -64));
+                break;
+            }
+        }
+    }
+
     public void runRandomScriptedEvent(int dif){
         if(dif == 0 ){
             timeCooldown = .1f;
-            for (int i = 0 ; i < (int)(Math.random() * 100) ; i++){
-                enemyShips.append(new EnemyEntityBasic((float)Math.random() * 600+100, -64));
-            }
+            int c = (int)Math.round(Math.random()*100);
+            spawn(CollisionObject.ENEMY_BASIC , c);
             return;
         }
         if(dif == 1){
             timeCooldown = .2f;
-            for(int i = 0 ; i < (int)(Math.random() * 100) ; i++){
-                enemyShips.append(new EnemyEntityHoming((float)Math.random()*600+100, -64));
-            }
+            int c = (int)Math.round(Math.random() * 100);
+            spawn(CollisionObject.ENEMY_HOMING , c);
         }
         if(dif == 2){
             timeCooldown = .2f;
-            for(int i = 0 ; i < (int)(Math.random() * 100) ; i++){
-                enemyShips.append(new EnemyEntityShooterBasic((float)Math.random()*600+100, -64));
-            }
+            int c = (int)(Math.round(Math.random()*10));
+            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 40);
         }
-
+        if (dif == 3){
+            timeCooldown = 1f;
+            spawn(CollisionObject.ENEMY_BASIC , 5);
+            spawn(CollisionObject.ENEMY_HOMING , 10);
+            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 5);
+            
+        }
     }
 
 }

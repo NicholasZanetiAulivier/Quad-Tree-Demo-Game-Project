@@ -23,7 +23,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = .2f;
+    private static final float BASIC_COOLDOWN = 1f;
     private static final float STARTING_VELOCITY = 500;
 
     private static Vector2 acceleration = new Vector2(0,-700);
@@ -65,7 +65,9 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
         
         if((shootCD -= dt) < 0){
             shootCD = BASIC_COOLDOWN;
-
+            ((ShooterGame)Global.currentScene).enemyBullets.append(new EnemyBulletBasic(
+                new Vector2(position.x , position.y), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position))
+            );
         }
     }
 
@@ -76,11 +78,11 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
 
     @Override
     public short getType(){
-        return CollisionObject.CIRCLE;
+        return CollisionObject.RECTANGLE;
     }
 
     @Override
     public short getIdentity(){
-        return CollisionObject.ENEMY_HOMING;
+        return CollisionObject.ENEMY_SHOOTER_BASIC;
     }
 }
