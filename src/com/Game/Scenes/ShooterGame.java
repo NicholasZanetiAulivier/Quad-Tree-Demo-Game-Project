@@ -145,30 +145,30 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(
+        Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
                 Graphics2D g2d = (Graphics2D) g;
 
                 g2d.setRenderingHints(Global.RH);
 
                 g2d.setColor(new Color(0xFF0000));
-                player.draw(g , Global.CANVAS);
+                player.draw(g , Global.CANVAS[0]);
 
-                // Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
-                // while( friendlyBullet != null){
-                //     friendlyBullet.getData().draw(g , Global.CANVAS);
-                //     friendlyBullet = friendlyBullet.getNext();
-                // }
+                Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
+                while( friendlyBullet != null){
+                    friendlyBullet.getData().draw(g , Global.CANVAS[0]);
+                    friendlyBullet = friendlyBullet.getNext();
+                }
 
-                // Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
-                // while(enemy != null){
-                //     enemy.getData().draw(g, Global.CANVAS);
-                //     enemy = enemy.getNext();
-                // }
+                Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
+                while(enemy != null){
+                    enemy.getData().draw(g, Global.CANVAS[0]);
+                    enemy = enemy.getNext();
+                }
 
                 Denode<EnemyBullet> enemyBullet = enemyBullets.getHead();
                 while(enemyBullet != null){
-                    enemyBullet.getData().draw(g,Global.CANVAS);
+                    enemyBullet.getData().draw(g,Global.CANVAS[0]);
                     enemyBullet = enemyBullet.getNext();
                 }
                 System.out.println(enemyBullets.getSize());

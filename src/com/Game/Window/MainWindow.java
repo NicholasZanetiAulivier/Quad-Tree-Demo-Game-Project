@@ -11,9 +11,9 @@ import java.awt.Color;
  */
 
 public class MainWindow extends JFrame {
-    private GameScreen canvas;
+    private GameScreen[] canvas;
 
-    public MainWindow(int width , int height , String name){
+    public MainWindow(int width , int height , String name , int numOfCanvases){
         //Call JFrame Constructor
         super();
 
@@ -23,9 +23,13 @@ public class MainWindow extends JFrame {
         
         //Set Size
         setLayout(null);
-        this.canvas = new GameScreen();
-        this.canvas.setBounds(0,0,Global.originalWidth,Global.originalHeight);
-        add(this.canvas);
+        this.canvas = new GameScreen[numOfCanvases];
+        for(int i = 0 ; i < numOfCanvases ; i++){
+            this.canvas[i] = new GameScreen();
+            this.canvas[i].setBounds(0,0,Global.originalWidth,Global.originalHeight);
+            add(this.canvas[i]);
+        }
+        Global.CANVAS = this.canvas;
         setSize(width,height);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -39,11 +43,11 @@ public class MainWindow extends JFrame {
 
     public MainWindow(){
         //Default args
-        this(500,500,"Unnamed Window");
+        this(500,500,"Unnamed Window" , 1);
     }
 
-    public GameScreen getCanvas(){
-        return this.canvas;
+    public GameScreen getCanvas(int i){
+        return this.canvas[i];
     }
 
 }

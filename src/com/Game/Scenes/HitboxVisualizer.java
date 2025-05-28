@@ -28,16 +28,16 @@ public class HitboxVisualizer extends Scene {
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(
+        Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
-                curr4.draw(g, Global.CANVAS);
-                curr4.getHitbox().draw(g,Global.CANVAS);
-                curr3.draw(g, Global.CANVAS);
-                curr3.getHitbox().draw(g,Global.CANVAS);
-                curr2.draw(g, Global.CANVAS);
-                curr2.getHitbox().draw(g,Global.CANVAS);
-                curr1.draw(g, Global.CANVAS);
-                curr1.getHitbox().draw(g,Global.CANVAS);
+                curr4.draw(g, Global.CANVAS[0]);
+                curr4.getHitbox().draw(g,Global.CANVAS[0]);
+                curr3.draw(g, Global.CANVAS[0]);
+                curr3.getHitbox().draw(g,Global.CANVAS[0]);
+                curr2.draw(g, Global.CANVAS[0]);
+                curr2.getHitbox().draw(g,Global.CANVAS[0]);
+                curr1.draw(g, Global.CANVAS[0]);
+                curr1.getHitbox().draw(g,Global.CANVAS[0]);
             }
         );
 

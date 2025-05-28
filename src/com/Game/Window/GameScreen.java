@@ -21,7 +21,6 @@ public class GameScreen extends JPanel{
     public GameScreen(){
         super(null,true);
         setBackground(new Color(0xFFFFFF));
-        Global.CANVAS = this;
         System.out.println(getGraphics());
         
     }

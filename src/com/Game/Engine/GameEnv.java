@@ -24,14 +24,14 @@ public class GameEnv implements Runnable{
     @SuppressWarnings("all")
     private static UpdateFunc gameUpdate = (d) -> {};
     
-    public GameEnv(int width , int height , String name)throws Exception{
+    public GameEnv(int width , int height , String name , int numOfCanvases)throws Exception{
         if (isInitialized) {
             Global.MAIN_WINDOW.dispose();
             throw new ExceptionInInitializerError("Game Environment has already been Initialized");
         }else {
             Global.GAME_ENVIRONMENT = this;
             
-            Global.MAIN_WINDOW = new MainWindow(width,height,name);
+            Global.MAIN_WINDOW = new MainWindow(width,height,name , numOfCanvases);
             System.out.println(Global.MAIN_WINDOW);
 
             Global.RH = new RenderingHints(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON);
@@ -39,8 +39,10 @@ public class GameEnv implements Runnable{
             Global.MAIN_WINDOW.addKeyListener(Global.KEYBOARD);
 
             Global.MOUSE = new Mouse();
-            Global.CANVAS.addMouseListener(Global.MOUSE);
-            Global.CANVAS.addMouseMotionListener(Global.MOUSE);
+            for(int i = 0 ; i < numOfCanvases ; i++){
+                Global.CANVAS[i].addMouseListener(Global.MOUSE);
+                Global.CANVAS[i].addMouseMotionListener(Global.MOUSE);
+            }
             
             Global.initScenes();
             System.out.println("Game Env Successfully Initialized");
@@ -51,8 +53,8 @@ public class GameEnv implements Runnable{
     }
 
     //Public draw callback function
-    public void setDrawFunction(DrawFunc f){
-        Global.CANVAS.setDrawFunction(f);
+    public void setDrawFunction(int id , DrawFunc f){
+        Global.CANVAS[id].setDrawFunction(f);
     }
 
     //Public update callback function
