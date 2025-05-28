@@ -24,11 +24,14 @@ public class MainWindow extends JFrame {
         //Set Size
         setLayout(null);
         this.canvas = new GameScreen[numOfCanvases];
+
+        //Canvas foreground is always index 0, the next layer is 1, next 2, and so on until the very back which is numOfCanvases-1
         for(int i = 0 ; i < numOfCanvases ; i++){
             this.canvas[i] = new GameScreen();
             this.canvas[i].setBounds(0,0,Global.originalWidth,Global.originalHeight);
             add(this.canvas[i]);
         }
+
         Global.CANVAS = this.canvas;
         setSize(width,height);
         setResizable(false);

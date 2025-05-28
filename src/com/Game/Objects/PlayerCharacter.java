@@ -26,7 +26,6 @@ public class PlayerCharacter extends PlayerObject{
     private static final int HITBOX_HEIGHT = 8;
 
     public Vector2 position;
-    private HitboxRectangular hitbox;
     private boolean goingFast = true;
     private boolean shooting = false;
     private float shootCD = .05f;

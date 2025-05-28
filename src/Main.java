@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         try{
-            new GameEnv(Global.originalWidth, Global.originalHeight, "Swingtest",1);
+            new GameEnv(Global.originalWidth, Global.originalHeight, "Swingtest",7);
             Global.GAME_ENVIRONMENT.run();
         } catch(Exception e){
             e.printStackTrace();

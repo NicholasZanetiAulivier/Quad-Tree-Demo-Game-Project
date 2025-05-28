@@ -20,9 +20,7 @@ public class GameScreen extends JPanel{
     
     public GameScreen(){
         super(null,true);
-        setBackground(new Color(0xFFFFFF));
-        System.out.println(getGraphics());
-        
+        setBackground(new Color(1f,1f,1f,0));
     }
 
     public void setDrawFunction(DrawFunc f){

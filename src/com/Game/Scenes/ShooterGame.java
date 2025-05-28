@@ -1,6 +1,7 @@
 package com.Game.Scenes;
 
 import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 
@@ -18,11 +19,15 @@ import com.Game.Objects.PlayerCharacter;
 import com.Game.Objects.PlayerBullet;
 import com.DataStruct.Denode;
 
+/*
+ * Needs at least 4 layers of canvas
+ */
+
 public class ShooterGame extends Scene{
     public PlayerCharacter player;
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
-    public DoublyLinkedList<EnemyBullet> enemyBullets;
+    public DoublyLinkedList<EnemyBullet>[] enemyBullets;
 
     public GameQuadTree partition ;
 
@@ -100,14 +105,16 @@ public class ShooterGame extends Scene{
                     }
                 }
 
-                enemyBullet = enemyBullets.getHead();
-                while(enemyBullet != null){
-                    if(enemyBullet.getData().shouldDestroy){
-                        Denode<EnemyBullet> temp = enemyBullet.getNext();
-                        enemyBullets.detachDenode(enemyBullet);
-                        enemyBullet = temp;
-                    } else{
-                        enemyBullet = enemyBullet.getNext();
+                for(int i = 0 ; i < 4 ; i++){
+                    enemyBullet = enemyBullets[i].getHead();
+                    while(enemyBullet != null){
+                        if(enemyBullet.getData().shouldDestroy){
+                            Denode<EnemyBullet> temp = enemyBullet.getNext();
+                            enemyBullets[i].detachDenode(enemyBullet);
+                            enemyBullet = temp;
+                        } else{
+                            enemyBullet = enemyBullet.getNext();
+                        }
                     }
                 }
 
@@ -137,42 +144,90 @@ public class ShooterGame extends Scene{
                     enemy = enemy.getNext();
                 }
 
-                enemyBullet = enemyBullets.getHead();
-                while(enemyBullet != null){
-                    enemyBullet.getData().update(dt);
-                    enemyBullet = enemyBullet.getNext();
+                for(int i = 0 ; i < 4 ; i++){
+                    enemyBullet = enemyBullets[i].getHead();
+                    while(enemyBullet != null){
+                        enemyBullet.getData().update(dt);
+                        enemyBullet = enemyBullet.getNext();
+                    }
                 }
             }
         );
 
         Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
-                Graphics2D g2d = (Graphics2D) g;
-
-                g2d.setRenderingHints(Global.RH);
-
-                g2d.setColor(new Color(0xFF0000));
-                player.draw(g , Global.CANVAS[0]);
-
-                Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
-                while( friendlyBullet != null){
-                    friendlyBullet.getData().draw(g , Global.CANVAS[0]);
-                    friendlyBullet = friendlyBullet.getNext();
-                }
-
-                Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
-                while(enemy != null){
-                    enemy.getData().draw(g, Global.CANVAS[0]);
-                    enemy = enemy.getNext();
-                }
-
-                Denode<EnemyBullet> enemyBullet = enemyBullets.getHead();
+                graphicsEnhance(g);
+                Denode<EnemyBullet> enemyBullet = enemyBullets[0].getHead();
                 while(enemyBullet != null){
                     enemyBullet.getData().draw(g,Global.CANVAS[0]);
                     enemyBullet = enemyBullet.getNext();
                 }
-                System.out.println(enemyBullets.getSize());
 
+            }
+        );
+
+        Global.GAME_ENVIRONMENT.setDrawFunction(1,
+            (g) ->{
+                graphicsEnhance(g);
+                Denode<EnemyBullet> enemyBullet = enemyBullets[1].getHead();
+                while(enemyBullet != null){
+                    enemyBullet.getData().draw(g,Global.CANVAS[1]);
+                    enemyBullet = enemyBullet.getNext();
+                }
+
+            }
+        );
+
+        Global.GAME_ENVIRONMENT.setDrawFunction(2,
+            (g) ->{
+                graphicsEnhance(g);
+                Denode<EnemyBullet> enemyBullet = enemyBullets[2].getHead();
+                while(enemyBullet != null){
+                    enemyBullet.getData().draw(g,Global.CANVAS[2]);
+                    enemyBullet = enemyBullet.getNext();
+                }
+
+            }
+        );
+
+        Global.GAME_ENVIRONMENT.setDrawFunction(3,
+            (g) ->{
+                graphicsEnhance(g);
+                Denode<EnemyBullet> enemyBullet = enemyBullets[3].getHead();
+                while(enemyBullet != null){
+                    enemyBullet.getData().draw(g,Global.CANVAS[3]);
+                    enemyBullet = enemyBullet.getNext();
+                }
+
+            }
+        );
+
+        Global.GAME_ENVIRONMENT.setDrawFunction(4, 
+            (g) ->{
+                graphicsEnhance(g);
+                Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
+                while( friendlyBullet != null){
+                    friendlyBullet.getData().draw(g , Global.CANVAS[4]);
+                    friendlyBullet = friendlyBullet.getNext();
+                }
+            }
+        );
+
+        Global.GAME_ENVIRONMENT.setDrawFunction(5,
+            (g) ->{
+                graphicsEnhance(g);
+                Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
+                while(enemy != null){
+                    enemy.getData().draw(g, Global.CANVAS[5]);
+                    enemy = enemy.getNext();
+                }
+            }
+        );
+
+        Global.GAME_ENVIRONMENT.setDrawFunction(6, 
+            (g) -> {
+                graphicsEnhance(g);
+                player.draw(g , Global.CANVAS[6]);
             }
         );
 
@@ -212,7 +267,16 @@ public class ShooterGame extends Scene{
         player = new PlayerCharacter();
         friendlyBullets = new DoublyLinkedList<>();
         enemyShips = new DoublyLinkedList<>();
-        enemyBullets = new DoublyLinkedList<>();
+        enemyBullets = (DoublyLinkedList<EnemyBullet>[])(new DoublyLinkedList[4]);
+        for(int i = 0 ; i < 4 ; i++){
+            enemyBullets[i] = new DoublyLinkedList<>();
+        }
+    }
+
+    public static void graphicsEnhance(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHints(Global.RH);
+        g2d.setColor(new Color(0xFF0000));
     }
 
     public void unloadScene() throws Exception{

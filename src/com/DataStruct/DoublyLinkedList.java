@@ -1,9 +1,9 @@
 package com.DataStruct;
 
 public class DoublyLinkedList<T> {
-    private Denode<T> head;
-    private Denode<T> tail;
-    private int size;
+    protected Denode<T> head;
+    protected Denode<T> tail;
+    protected int size;
 
     public DoublyLinkedList(){
         this.head = null;
@@ -27,7 +27,7 @@ public class DoublyLinkedList<T> {
     public void append(T data){
         Denode<T> newNode = new Denode<>(data);
 
-        if(head == null){
+        if(tail == null){
             this.head = newNode;
             this.tail = newNode;
         } else {
@@ -35,7 +35,6 @@ public class DoublyLinkedList<T> {
             newNode.setPrev(this.tail);
             this.tail = newNode;
         }
-
         size++;
     }
 

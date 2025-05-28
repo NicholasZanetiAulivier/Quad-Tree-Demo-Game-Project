@@ -25,6 +25,8 @@ public abstract class Global {
     public static Scene Game = null;
     public static Scene Visualizer = null;
 
+
+    public static int cycle = 0;
     public static int originalHeight = 638;                             //Height at which the screen was drawn at the start
     public static int originalWidth = 815;                              //Width at which the screen was drawn at the start
     public static double DRAW_SCALE = 1;                                //DRAW_SCALE: Scale at which entities are drawn
@@ -39,5 +41,9 @@ public abstract class Global {
         // MovingQuadTree = new WithQuadTree();
         Game = new ShooterGame();
         Visualizer = new HitboxVisualizer();
+    }
+
+    public static int counter(){
+        return (cycle = (cycle+1)%4);
     }
 }

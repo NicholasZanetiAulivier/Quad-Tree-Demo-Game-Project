@@ -65,7 +65,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
         
         if((shootCD -= dt) < 0){
             shootCD = BASIC_COOLDOWN;
-            ((ShooterGame)Global.currentScene).enemyBullets.append(new EnemyBulletBasic(
+            ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletBasic(
                 new Vector2(position.x , position.y), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position))
             );
         }
