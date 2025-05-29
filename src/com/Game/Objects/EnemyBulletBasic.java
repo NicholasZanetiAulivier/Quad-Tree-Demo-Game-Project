@@ -23,7 +23,7 @@ public class EnemyBulletBasic extends EnemyBullet{
     private static final int HITBOX_X_OFFSET = 32;
     private static final int HITBOX_Y_OFFSET = 31;
     
-    private Vector2 position;
+    protected Vector2 position;
     private BufferedImage rotatedImage;
     
     public EnemyBulletBasic(Vector2 pos , Vector2 dire) throws Throwable{

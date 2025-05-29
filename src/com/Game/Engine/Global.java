@@ -22,8 +22,8 @@ public abstract class Global {
     public static RenderingHints RH = null;
     public static Scene currentScene = null;
     // public static Scene MovingQuadTree = null;
-    public static Scene Game = null;
-    public static Scene Visualizer = null;
+    public static ShooterGame Game = null;
+    public static HitboxVisualizer Visualizer = null;
 
 
     public static int cycle = 0;

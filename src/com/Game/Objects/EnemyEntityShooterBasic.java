@@ -51,7 +51,6 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
 
     @Override
     public void update(float dt){
-        //TODO: make Shooting enemy update function
         if(position.y < -100){
             shouldDestroy = true;
             return;

@@ -11,9 +11,11 @@ import com.Game.Engine.Global;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyBullet;
 import com.Game.Objects.EnemyBulletBasic;
+import com.Game.Objects.EnemyBulletSpread;
 import com.Game.Objects.EnemyEntityBasic;
 import com.Game.Objects.EnemyEntityHoming;
 import com.Game.Objects.EnemyEntityShooterBasic;
+import com.Game.Objects.EnemyEntityShooterSpread;
 import com.Game.Objects.PlayerBulletBasic;
 import com.Game.Objects.PlayerCharacter;
 import com.Game.Objects.PlayerBullet;
@@ -37,7 +39,7 @@ public class ShooterGame extends Scene{
     public boolean right = false;
 
     public float timeCooldown = 1f;
-    public int difficulty = 2;
+    public int difficulty = 3;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -272,7 +274,9 @@ public class ShooterGame extends Scene{
         EnemyEntityBasic.loadSprite();
         EnemyEntityHoming.loadSprite();
         EnemyEntityShooterBasic.loadSprite();
+        EnemyEntityShooterSpread.loadSprite();
         EnemyBulletBasic.loadSprite();
+        EnemyBulletSpread.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
@@ -306,6 +310,8 @@ public class ShooterGame extends Scene{
         EnemyEntityHoming.unload();
         EnemyEntityShooterBasic.unload();
         EnemyBulletBasic.unload();
+        EnemyBulletSpread.unload();
+        EnemyEntityShooterSpread.unload();
 
     }
 
@@ -330,6 +336,11 @@ public class ShooterGame extends Scene{
                     enemyShips.append(new EnemyEntityShooterBasic((float)Math.random()*600+100, -64));
                 break;
             }
+            case CollisionObject.ENEMY_SHOOTER_SPREAD :{
+                for(int i = 0 ; i < count ; i++)
+                    enemyShips.append(new EnemyEntityShooterSpread((float)Math.random()*600+100, -64));
+                break;
+            }
         }
     }
 
@@ -351,11 +362,15 @@ public class ShooterGame extends Scene{
             spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 50);
         }
         if (dif == 3){
-            timeCooldown = 1f;
+            timeCooldown = 2f;
             spawn(CollisionObject.ENEMY_BASIC , 5);
             spawn(CollisionObject.ENEMY_HOMING , 10);
             spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 5);
-            
+            spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , 3);
+        }
+        if(dif == 4){
+            timeCooldown = .5f;
+            spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , 10);
         }
     }
 

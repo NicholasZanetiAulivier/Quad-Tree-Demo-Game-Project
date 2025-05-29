@@ -11,12 +11,13 @@ public interface CollisionObject {
     
     static final short ENEMY_BASIC = 2000;
     static final short ENEMY_HOMING = 2001;
+    static final short ENEMY_SHOOTER_SPREAD = 2005;
+    static final short ENEMY_SHOOTER_BASIC = 2004;
     static final short ENEMY_BULLET_BASIC = 2002;
     static final short ENEMY_BULLET_SPREAD = 2003;
-    static final short ENEMY_SHOOTER_BASIC = 2004;
 
     public abstract Rectangle getBounds();
-    public abstract Hitbox getHitbox();
+    public abstract Hitbox<?> getHitbox();
     public abstract void checkCollision(CollisionObject o);
     //CheckCollision should check if object is colliding with other object.
     //If it is, then call this.isColliding and other object's isColliding

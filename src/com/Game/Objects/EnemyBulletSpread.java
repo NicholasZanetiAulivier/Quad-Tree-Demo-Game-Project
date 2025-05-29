@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 
@@ -12,16 +13,13 @@ import com.Game.Engine.Global;
 
 public class EnemyBulletSpread extends EnemyBulletBasic{
     private static BufferedImage sprite;
-    
-    private static final float BULLET_VELOCITY = 400;
     private static final int BULLET_WIDTH = 16;
     private static final int BULLET_HEIGHT = 16;
+    private static final int BULLET_VELOCITY = 100;
     
     private static final int HITBOX_RADIUS = 6;
     private static final int HITBOX_X_OFFSET = 2;
     private static final int HITBOX_Y_OFFSET = 2;
-    
-    private Vector2 position;
     
     public EnemyBulletSpread(Vector2 pos , Vector2 dire){
         position = pos;

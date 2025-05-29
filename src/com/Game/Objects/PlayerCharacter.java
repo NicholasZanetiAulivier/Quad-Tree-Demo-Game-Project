@@ -146,11 +146,9 @@ public class PlayerCharacter extends PlayerObject{
         short n = o.getIdentity();
         System.out.println("Player died");
         switch(n){
-            case CollisionObject.ENEMY_BASIC : {
-                dead = true;
-            }
-
-            case CollisionObject.ENEMY_BULLET_BASIC : {
+            case CollisionObject.ENEMY_BASIC:
+            case CollisionObject.ENEMY_BULLET_BASIC :
+            case CollisionObject.ENEMY_BULLET_SPREAD :{
                 dead = true;
             }
         } 

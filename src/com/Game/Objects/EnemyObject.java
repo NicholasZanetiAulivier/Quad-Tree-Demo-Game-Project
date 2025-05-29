@@ -5,12 +5,12 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 public abstract class EnemyObject implements CollisionObject, Entity , Drawable{
-    protected Hitbox hitbox = null;
+    protected Hitbox<?> hitbox = null;
     protected boolean colliding = false;
     public boolean shouldDestroy = false;
     public int HP;
 
-    public Hitbox getHitbox(){
+    public Hitbox<?> getHitbox(){
         return hitbox;
     }
 
