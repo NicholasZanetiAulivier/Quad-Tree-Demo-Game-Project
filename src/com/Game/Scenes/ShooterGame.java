@@ -20,6 +20,8 @@ import com.Game.Objects.PlayerBulletBasic;
 import com.Game.Objects.PlayerCharacter;
 import com.Game.Objects.PlayerBullet;
 import com.DataStruct.Denode;
+import com.Game.Objects.Item;
+import com.Game.Objects.Item_10;
 
 /*
  * Needs at least 4 layers of canvas
@@ -30,6 +32,7 @@ public class ShooterGame extends Scene{
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
     public DoublyLinkedList<EnemyBullet>[] enemyBullets;
+    public DoublyLinkedList<Item> items;
 
     public GameQuadTree partition ;
 
@@ -38,8 +41,10 @@ public class ShooterGame extends Scene{
     public boolean left = false;
     public boolean right = false;
 
+    public int points=0;
+
     public float timeCooldown = 1f;
-    public int difficulty = 3;
+    public int difficulty = 0;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -53,6 +58,7 @@ public class ShooterGame extends Scene{
                 Denode<PlayerBullet> friendlyBullet;
                 Denode<EnemyEntityBasic> enemy;
                 Denode<EnemyBullet> enemyBullet;
+                Denode<Item> item;
                 
                 /*
                  * Collision Detection (QuadTree)
@@ -98,7 +104,17 @@ public class ShooterGame extends Scene{
                         player.checkCollision(p);
                         enemy = enemy.getNext();
                     }
+
+                    //Collision detect player-item
+                    item = items.getHead();
+                    while(item != null){
+                        CollisionObject p = item.getData();
+                        player.checkCollision(p);
+                        item = item.getNext();
+                    }
                 }
+
+                
                  /*
                  * Delete dead objects
                  */
@@ -111,6 +127,17 @@ public class ShooterGame extends Scene{
                         friendlyBullet = temp;
                     } else {
                         friendlyBullet = friendlyBullet.getNext();
+                    }
+                }
+
+                item = items.getHead();
+                while(item != null){
+                    if (item.getData().shouldDestroy){
+                        Denode<Item> temp = item.getNext();
+                        items.detachDenode(item);
+                        item = temp;
+                    } else {
+                        item = item.getNext();
                     }
                 }
 
@@ -170,6 +197,12 @@ public class ShooterGame extends Scene{
                         enemyBullet.getData().update(dt);
                         enemyBullet = enemyBullet.getNext();
                     }
+                }
+
+                item = items.getHead();
+                while(item != null){
+                    item.getData().update(dt);
+                    item = item.getNext();
                 }
             }
         );
@@ -251,6 +284,17 @@ public class ShooterGame extends Scene{
             }
         );
 
+        Global.GAME_ENVIRONMENT.setDrawFunction(7, 
+            (g) ->{
+                graphicsEnhance(g);
+                Denode<Item> item = items.getHead();
+                while(item != null){
+                    item.getData().draw(g, Global.CANVAS[7]);
+                    item = item.getNext();
+                }
+            }
+        );
+
         Global.KEYBOARD.setKeyPressFunction(
             (k) ->{
                 int n = k.getKeyCode();
@@ -284,6 +328,7 @@ public class ShooterGame extends Scene{
         EnemyEntityShooterSpread.loadSprite();
         EnemyBulletBasic.loadSprite();
         EnemyBulletSpread.loadSprite();
+        Item_10.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
@@ -293,6 +338,7 @@ public class ShooterGame extends Scene{
         for(int i = 0 ; i < 4 ; i++){
             enemyBullets[i] = new DoublyLinkedList<>();
         }
+        items = new DoublyLinkedList<>();
     }
 
     public static void graphicsEnhance(Graphics g){
@@ -309,6 +355,7 @@ public class ShooterGame extends Scene{
         friendlyBullets = null;
         enemyShips = null;
         enemyBullets = null;
+        items = null;
 
         //Unload classes
         PlayerCharacter.unload();
@@ -319,7 +366,7 @@ public class ShooterGame extends Scene{
         EnemyBulletBasic.unload();
         EnemyBulletSpread.unload();
         EnemyEntityShooterSpread.unload();
-
+        Item_10.unload();
     }
 
     public void resetListeners(){

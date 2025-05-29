@@ -49,6 +49,11 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
         g.drawImage(temp , null , 0 , 0);
     }
 
+    public static void unload(){
+        sprite.flush();
+        sprite = null;
+    }
+
     @Override
     public void update(float dt){
         if(position.y < -100){

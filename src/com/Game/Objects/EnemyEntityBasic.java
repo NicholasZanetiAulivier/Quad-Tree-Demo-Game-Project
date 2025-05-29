@@ -48,6 +48,7 @@ public class EnemyEntityBasic extends EnemyObject{
     }
 
     public static void unload(){
+        sprite.flush();
         sprite = null;
     }
 
@@ -109,10 +110,12 @@ public class EnemyEntityBasic extends EnemyObject{
     @Override
     public void isColliding(CollisionObject c){
         colliding = true;
-        if(c.getIdentity() == CollisionObject.PLAYER_BULLET_BASIC)
+        if(c.getIdentity() == CollisionObject.PLAYER_BULLET_BASIC){
             HP = HP - ((PlayerBullet)c).damage;
             if(HP <= 0){
                 shouldDestroy = true;
+                Global.Game.items.append(new Item_10(position.x,position.y));
             }
+        }
     }
 }

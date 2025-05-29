@@ -17,8 +17,8 @@ public class PlayerCharacter extends PlayerObject{
     
     private static final float PLAYER_SPEED = 200;
     private static final float PLAYER_SPEED_FAST = 600;
-    private static final int SPRITE_WIDTH = 64;
-    private static final int SPRITE_HEIGHT = 64;
+    public static final int SPRITE_WIDTH = 64;
+    public static final int SPRITE_HEIGHT = 64;
     
     private static final float HITBOX_X_OFFSET = 30;
     private static final float HITBOX_Y_OFFSET = 26;
@@ -43,6 +43,7 @@ public class PlayerCharacter extends PlayerObject{
     }
 
     public static void unload(){
+        sprite.flush();
         sprite = null;
     }
 
@@ -146,6 +147,9 @@ public class PlayerCharacter extends PlayerObject{
         short n = o.getIdentity();
         System.out.println("Player died");
         switch(n){
+            case CollisionObject.ITEM:{
+                break;
+            }
             default :{
                 dead = true;
                 break;

@@ -52,6 +52,7 @@ public class EnemyBulletBasic extends EnemyBullet{
     }
 
     public static void unload(){
+        sprite.flush();
         sprite = null;
     }
 

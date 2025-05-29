@@ -59,6 +59,13 @@ public class EnemyEntityShooterSpread extends EnemyEntityShooterBasic{
         g.dispose();
     }
 
+    public static void unload(){
+        sprite.flush();
+        sprite = null;
+        damaged.flush();
+        damaged = null;
+    }
+
     @Override
     public void update(float dt){
         if(position.y > Global.originalHeight){

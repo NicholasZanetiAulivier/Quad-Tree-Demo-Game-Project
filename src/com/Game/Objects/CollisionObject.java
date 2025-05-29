@@ -16,6 +16,8 @@ public interface CollisionObject {
     static final short ENEMY_BULLET_BASIC = 2002;
     static final short ENEMY_BULLET_SPREAD = 2003;
 
+    static final short ITEM = 3000;
+
     public abstract Rectangle getBounds();
     public abstract Hitbox<?> getHitbox();
     public abstract void checkCollision(CollisionObject o);

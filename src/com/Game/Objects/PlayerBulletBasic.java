@@ -41,6 +41,7 @@ public class PlayerBulletBasic extends PlayerBullet{
     }
 
     public static void unload(){
+        sprite.flush();
         sprite = null;
     }
 
