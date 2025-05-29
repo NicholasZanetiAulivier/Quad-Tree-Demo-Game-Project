@@ -82,16 +82,23 @@ public class ShooterGame extends Scene{
                 }
 
                 //Collision detect player-enemyBullet
-                if(!player.dead)
-                for (int i = 0 ; i < 4 ; i++){
-                    enemyBullet = enemyBullets[i].getHead();
-                    while(enemyBullet != null){
-                        CollisionObject p = enemyBullet.getData();
+                if(!player.dead){
+                    for (int i = 0 ; i < 4 ; i++){
+                        enemyBullet = enemyBullets[i].getHead();
+                        while(enemyBullet != null){
+                            CollisionObject p = enemyBullet.getData();
+                            player.checkCollision(p);
+                            enemyBullet = enemyBullet.getNext();
+                        }
+                    }
+                    //Collision detect player-enemy
+                    enemy = enemyShips.getHead();
+                    while(enemy != null){
+                        CollisionObject p = enemy.getData();
                         player.checkCollision(p);
-                        enemyBullet = enemyBullet.getNext();
+                        enemy = enemy.getNext();
                     }
                 }
-
                  /*
                  * Delete dead objects
                  */

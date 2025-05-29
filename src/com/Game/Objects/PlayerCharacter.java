@@ -15,7 +15,7 @@ import com.Game.Scenes.ShooterGame;
 public class PlayerCharacter extends PlayerObject{
     private static BufferedImage sprite = null;
     
-    private static final float PLAYER_SPEED = 300;
+    private static final float PLAYER_SPEED = 200;
     private static final float PLAYER_SPEED_FAST = 600;
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 64;
@@ -146,10 +146,9 @@ public class PlayerCharacter extends PlayerObject{
         short n = o.getIdentity();
         System.out.println("Player died");
         switch(n){
-            case CollisionObject.ENEMY_BASIC:
-            case CollisionObject.ENEMY_BULLET_BASIC :
-            case CollisionObject.ENEMY_BULLET_SPREAD :{
+            default :{
                 dead = true;
+                break;
             }
         } 
     }
