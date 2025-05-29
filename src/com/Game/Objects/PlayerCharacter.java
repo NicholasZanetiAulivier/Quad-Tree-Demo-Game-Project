@@ -1,7 +1,7 @@
 package com.Game.Objects;
 
 import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
@@ -137,7 +137,7 @@ public class PlayerCharacter extends PlayerObject{
     }
 
     @Override 
-    public Rectangle2D getBounds(){
+    public Rectangle getBounds(){
         return hitbox.getBounds();
     }
 

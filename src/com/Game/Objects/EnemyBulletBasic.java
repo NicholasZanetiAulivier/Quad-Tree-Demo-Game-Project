@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
@@ -91,7 +91,7 @@ public class EnemyBulletBasic extends EnemyBullet{
     }
 
     @Override
-    public Rectangle2D getBounds(){
+    public Rectangle getBounds(){
         return hitbox.getBounds();
     }
 

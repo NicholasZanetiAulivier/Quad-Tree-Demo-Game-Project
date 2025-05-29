@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
@@ -92,7 +92,7 @@ public class EnemyEntityBasic extends EnemyObject{
     }
 
     @Override
-    public Rectangle2D getBounds(){
+    public Rectangle getBounds(){
         return hitbox.getBounds();
     }
 
