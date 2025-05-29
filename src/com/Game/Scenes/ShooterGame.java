@@ -348,7 +348,7 @@ public class ShooterGame extends Scene{
         if(dif == 2){
             timeCooldown = .5f;
             int c = (int)(Math.round(Math.random()*10));
-            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 100);
+            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 50);
         }
         if (dif == 3){
             timeCooldown = 1f;

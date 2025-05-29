@@ -39,6 +39,19 @@ public abstract class Global {
 
     public static void initScenes(){
         // MovingQuadTree = new WithQuadTree();
+        currentScene = new Scene() {
+            @Override
+            public void loadScene() throws Exception {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void unloadScene() throws Exception {
+                // TODO Auto-generated method stub
+                
+            }
+        };
         Game = new ShooterGame();
         Visualizer = new HitboxVisualizer();
     }

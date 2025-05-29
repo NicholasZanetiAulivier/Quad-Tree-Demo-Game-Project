@@ -5,50 +5,37 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-import java.awt.geom.Rectangle2D;
 
 import com.DataType.Vector2;
 import com.Game.Engine.Global;
 
-public class EnemyBulletBasic extends EnemyBullet{
+public class EnemyBulletSpread extends EnemyBulletBasic{
     private static BufferedImage sprite;
     
     private static final float BULLET_VELOCITY = 400;
-    private static final int BULLET_WIDTH = 70;
-    private static final int BULLET_HEIGHT = 70;
+    private static final int BULLET_WIDTH = 16;
+    private static final int BULLET_HEIGHT = 16;
     
-    private static final int HITBOX_RADIUS = 3;
-    private static final int HITBOX_X_OFFSET = 32;
-    private static final int HITBOX_Y_OFFSET = 31;
+    private static final int HITBOX_RADIUS = 6;
+    private static final int HITBOX_X_OFFSET = 2;
+    private static final int HITBOX_Y_OFFSET = 2;
     
     private Vector2 position;
-    private BufferedImage rotatedImage;
     
-    public EnemyBulletBasic(Vector2 pos , Vector2 dire) throws Throwable{
+    public EnemyBulletSpread(Vector2 pos , Vector2 dire){
         position = pos;
         direction = dire;
         direction.normalize();
-        rotatedImage = new BufferedImage(sprite.getWidth(),sprite.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);
-        Graphics2D gs = rotatedImage.createGraphics();
-        if(direction.x < 0)
-            gs.rotate(Math.PI , rotatedImage.getWidth()/2 , rotatedImage.getHeight()/2);
-        gs.rotate(direction.getDirection(), rotatedImage.getWidth()/2 , rotatedImage.getHeight()/2);
-        gs.drawImage(sprite , null , 0 , 0);
         hitbox = new HitboxCircular(position.x+HITBOX_X_OFFSET,position.y+HITBOX_Y_OFFSET,HITBOX_RADIUS);
     }
 
-    public EnemyBulletBasic(float x , float y , float dirX , float dirY) throws Throwable{
+    public EnemyBulletSpread(float x , float y , float dirX , float dirY) throws Throwable{
         this(new Vector2(x,y) , new Vector2(dirX,dirY));
-    }
-
-    public EnemyBulletBasic(){
-        
     }
     
     public static void loadSprite() throws IOException{
-        sprite = ImageIO.read(EnemyBulletBasic.class.getResource("rsc/Bullets/EnemyBulletBasic.png"));
+        sprite = ImageIO.read(EnemyBulletSpread.class.getResource("rsc/Bullets/EnemyPurpleBullet.png"));
     }
 
     public static void unload(){
@@ -67,7 +54,7 @@ public class EnemyBulletBasic extends EnemyBullet{
 
     @Override
     public void draw(Graphics g , ImageObserver o){
-        g.drawImage(rotatedImage, Math.round(position.x), Math.round(position.y),BULLET_WIDTH, BULLET_HEIGHT, o);
+        g.drawImage(sprite, Math.round(position.x), Math.round(position.y),BULLET_WIDTH, BULLET_HEIGHT, o);
     }
 
     @Override
@@ -82,17 +69,7 @@ public class EnemyBulletBasic extends EnemyBullet{
 
     @Override
     public short getIdentity(){
-        return CollisionObject.ENEMY_BULLET_BASIC;
-    }
-
-    @Override
-    public void checkCollision(CollisionObject c){
-        super.checkCollision(c);
-    }
-
-    @Override
-    public Rectangle2D getBounds(){
-        return hitbox.getBounds();
+        return CollisionObject.ENEMY_BULLET_SPREAD;
     }
 
     @Override

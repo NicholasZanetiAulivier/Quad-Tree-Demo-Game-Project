@@ -144,7 +144,7 @@ public class PlayerCharacter extends PlayerObject{
     @Override
     public void isColliding(CollisionObject o){
         short n = o.getIdentity();
-        System.out.println('c');
+        System.out.println("Player died");
         switch(n){
             case CollisionObject.ENEMY_BASIC : {
                 dead = true;
