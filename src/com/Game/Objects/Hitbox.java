@@ -1,35 +1,36 @@
 package com.Game.Objects;
 
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 
 /*
  * Abstract class for hitboxes that will be bound to objects
  * as a field
  */
 public abstract class Hitbox implements Drawable{
-    protected Rectangle2D bounds;
+    protected Rectangle bounds;
 
-    protected Hitbox(Rectangle2D bounds){
+    protected Hitbox(Rectangle bounds){
         this.bounds = bounds;
     }
 
     protected Hitbox(float x , float y , float width , float height){
-        this(new Rectangle2D.Float(x,y,width,height));
+        this(new Rectangle((int)x,(int)y,(int)width,(int)height));
     }
 
-    public Rectangle2D getBounds(){
+    public Rectangle getBounds(){
         return bounds;
     }
 
     public void setPosition(float x ,float y){
-        this.bounds.setRect(x, y, bounds.getWidth(), bounds.getHeight());
+        this.bounds.x = (int)x;
+        this.bounds.y = (int)y;
     }
 
-    public float getX(){
-        return (float)bounds.getX();
+    public int getX(){
+        return (int)bounds.getX();
     }
 
-    public float getY(){
-        return (float)bounds.getY();
+    public int getY(){
+        return (int)bounds.getY();
     }
 }
