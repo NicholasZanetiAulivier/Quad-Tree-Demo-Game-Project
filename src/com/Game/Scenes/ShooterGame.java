@@ -44,7 +44,7 @@ public class ShooterGame extends Scene{
     public int points=0;
 
     public float timeCooldown = 1f;
-    public int difficulty = 0;
+    public int difficulty = 2;
     
     public void switchScene() throws Exception{
         super.switchScene();

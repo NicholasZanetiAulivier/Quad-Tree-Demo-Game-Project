@@ -39,7 +39,6 @@ public abstract class Item extends PlayerObject{
     public void isColliding(CollisionObject c){
         Global.Game.points += points;
         shouldDestroy = true;
-        System.out.println(Global.Game.points);
     }
 
     @Override

@@ -16,12 +16,12 @@ public class EnemyBulletBasic extends EnemyBullet{
     private static BufferedImage sprite;
     
     private static final float BULLET_VELOCITY = 400;
-    private static final int BULLET_WIDTH = 70;
-    private static final int BULLET_HEIGHT = 70;
+    private static final int BULLET_WIDTH = 24;
+    private static final int BULLET_HEIGHT = 24;
     
-    private static final int HITBOX_RADIUS = 3;
-    private static final int HITBOX_X_OFFSET = 32;
-    private static final int HITBOX_Y_OFFSET = 31;
+    private static final int HITBOX_RADIUS = 4;
+    private static final int HITBOX_X_OFFSET = 8;
+    private static final int HITBOX_Y_OFFSET = 8;
     
     protected Vector2 position;
     private BufferedImage rotatedImage;

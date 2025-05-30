@@ -1,14 +1,13 @@
 package com.Game.Scenes;
 
 import com.Game.Engine.Global;
-import com.Game.Objects.Item;
-import com.Game.Objects.Item_10;
+import com.Game.Objects.EnemyBulletBasic;
 /*
  * Scene to visualize hitbox
  */
 
 public class HitboxVisualizer extends Scene {
-    public Item_10 curr1;
+    public EnemyBulletBasic[] curr1;
 
     @Override
     public void switchScene() throws Exception{
@@ -24,17 +23,27 @@ public class HitboxVisualizer extends Scene {
 
         Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
-                curr1.draw(g, Global.CANVAS[0]);
-                curr1.getHitbox().draw(g,Global.CANVAS[0]);
+                for(EnemyBulletBasic i : curr1){
+                    i.draw(g, Global.CANVAS[0]);
+                    i.getHitbox().draw(g,Global.CANVAS[0]);
+                }
             }
         );
 
         //Load Classes
-        Item_10.loadSprite();
+        EnemyBulletBasic.loadSprite();
 
         //Load Objects
+        this.curr1 = new EnemyBulletBasic[8];
         try{
-            this.curr1 = new Item_10(600,300);
+            this.curr1[7] = new EnemyBulletBasic(600,300 , 1 , 1);
+            this.curr1[1] = new EnemyBulletBasic(600,300 , -1 , 1);
+            this.curr1[0] = new EnemyBulletBasic(600,300 , -1 , -1);
+            this.curr1[2] = new EnemyBulletBasic(600,300 , 1 , -1);
+            this.curr1[3] = new EnemyBulletBasic(600,300 , 0 , 1);
+            this.curr1[4] = new EnemyBulletBasic(600,300 , 1 , 0);
+            this.curr1[5] = new EnemyBulletBasic(600,300 , 0 , -1);
+            this.curr1[6] = new EnemyBulletBasic(600,300 , -1 , 0);
         } catch(Throwable e){
             e.printStackTrace();
         }

@@ -23,8 +23,8 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = 1f;
-    private static final float STARTING_VELOCITY = 500;
+    private static final float BASIC_COOLDOWN = .5f;
+    private static final float STARTING_VELOCITY = 600;
 
     private static Vector2 acceleration = new Vector2(0,-700);
     private Vector2 velocity;
@@ -33,7 +33,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     public EnemyEntityShooterBasic(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0 , STARTING_VELOCITY);
-        HP = 5;
+        HP = 1;
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
     }
 

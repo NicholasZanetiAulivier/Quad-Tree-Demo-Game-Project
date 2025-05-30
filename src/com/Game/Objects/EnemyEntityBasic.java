@@ -107,6 +107,10 @@ public class EnemyEntityBasic extends EnemyObject{
         return CollisionObject.ENEMY_BASIC;
     }
 
+    public void dropItems(Item c){
+        Global.Game.items.append(c);
+    }
+
     @Override
     public void isColliding(CollisionObject c){
         colliding = true;
@@ -114,7 +118,7 @@ public class EnemyEntityBasic extends EnemyObject{
             HP = HP - ((PlayerBullet)c).damage;
             if(HP <= 0){
                 shouldDestroy = true;
-                Global.Game.items.append(new Item_10(position.x,position.y));
+                dropItems(new Item_10(position.x,position.y));
             }
         }
     }

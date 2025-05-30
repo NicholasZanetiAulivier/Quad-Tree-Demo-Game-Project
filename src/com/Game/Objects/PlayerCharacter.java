@@ -145,13 +145,13 @@ public class PlayerCharacter extends PlayerObject{
     @Override
     public void isColliding(CollisionObject o){
         short n = o.getIdentity();
-        System.out.println("Player died");
         switch(n){
             case CollisionObject.ITEM:{
                 break;
             }
             default :{
                 dead = true;
+                System.out.println("Player died");
                 break;
             }
         } 
