@@ -47,7 +47,7 @@ public class ShooterGame extends Scene{
     public int points=0;
 
     public float timeCooldown = 1f;
-    public int difficulty = 5;
+    public int difficulty = 3;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -407,7 +407,7 @@ public class ShooterGame extends Scene{
             }
             case CollisionObject.ENEMY_SHOOTER_STRAFE : {
                 for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityShooterStrafe((float)Math.random()*600+100, -64 , 0 , 1));
+                    enemyShips.append(new EnemyEntityShooterStrafe((float)Math.random()*600+100, -64 , (float)Math.random()-.5f , (float)Math.random()));
             }
         }
     }
@@ -415,13 +415,13 @@ public class ShooterGame extends Scene{
     public void runRandomScriptedEvent(int dif){
         if(dif == 0 ){
             timeCooldown = .1f;
-            int c = (int)Math.round(Math.random()*500);
+            int c = (int)Math.round(Math.random()*10);
             spawn(CollisionObject.ENEMY_BASIC , c);
             return;
         }
         if(dif == 1){
             timeCooldown = .2f;
-            int c = (int)Math.round(Math.random() * 100);
+            int c = (int)Math.round(Math.random() * 10);
             spawn(CollisionObject.ENEMY_HOMING , c);
         }
         if(dif == 2){
@@ -435,6 +435,7 @@ public class ShooterGame extends Scene{
             spawn(CollisionObject.ENEMY_HOMING , 10);
             spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 5);
             spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , 3);
+            spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 10);
         }
         if(dif == 4){
             timeCooldown = .5f;

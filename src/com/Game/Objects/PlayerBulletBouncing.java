@@ -14,7 +14,7 @@ import com.Game.Engine.Global;
 public class PlayerBulletBouncing extends PlayerBulletBasic{
     private static BufferedImage[] sprite;
 
-    private static final float BULLET_VELOCITY = 500;
+    private static final float BULLET_VELOCITY = 1000;
     private static final int BULLET_WIDTH = 16;
     private static final int BULLET_HEIGHT = 16;
 
@@ -62,7 +62,7 @@ public class PlayerBulletBouncing extends PlayerBulletBasic{
     @Override
     protected void move(float dt){
         if(position.x >= Global.realWidth-PlayerBulletBouncing.BULLET_WIDTH || position.x <= 0) direction.x = -direction.x;
-        if(position.y >= Global.realHeight-PlayerBulletBouncing.BULLET_HEIGHT) direction.y = -direction.y;
+        if(position.y >= Global.realHeight) direction.y = -direction.y;
 
         position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);

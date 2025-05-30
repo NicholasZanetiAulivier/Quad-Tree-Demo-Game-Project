@@ -13,17 +13,19 @@ import com.Game.Engine.Global;
 import com.Game.Scenes.ShooterGame;
 
 public class PlayerCharacter extends PlayerObject{
-    private static BufferedImage sprite = null;
+    private static BufferedImage[] sprite;
     
     private static final float PLAYER_SPEED = 200;
     private static final float PLAYER_SPEED_FAST = 600;
-    public static final int SPRITE_WIDTH = 64;
-    public static final int SPRITE_HEIGHT = 64;
+    public static final int SPRITE_WIDTH = 60;
+    public static final int SPRITE_HEIGHT = 60;
     
-    private static final float HITBOX_X_OFFSET = 30;
-    private static final float HITBOX_Y_OFFSET = 26;
-    private static final int HITBOX_WIDTH = 4;
-    private static final int HITBOX_HEIGHT = 8;
+    private static final float HITBOX_X_OFFSET = 27;
+    private static final float HITBOX_Y_OFFSET = 23;
+    private static final int HITBOX_WIDTH = 7;
+    private static final int HITBOX_HEIGHT = 6;
+
+    private int currentCycle = 0;
 
     public Vector2 position;
     public boolean dead = false;
@@ -39,11 +41,16 @@ public class PlayerCharacter extends PlayerObject{
     }
 
     public static void loadSprite() throws IOException{
-        sprite = ImageIO.read(PlayerCharacter.class.getResource("rsc/Players/Ship_11.png"));
+        BufferedImage temp = ImageIO.read(PlayerCharacter.class.getResource("rsc/Players/Ship_11.png"));
+
+        sprite = new BufferedImage[2];
+        sprite[0] = temp.getSubimage(0, 0,24, 24);
+        sprite[1] = temp.getSubimage(0, 24, 24, 24);
     }
 
     public static void unload(){
-        sprite.flush();
+        sprite[0].flush();
+        sprite[1].flush();
         sprite = null;
     }
 
@@ -117,7 +124,7 @@ public class PlayerCharacter extends PlayerObject{
     @Override
     public void draw(Graphics g , ImageObserver observer){
         if(dead) return;
-        g.drawImage(sprite, Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
+        g.drawImage(sprite[cycle()], Math.round(position.x), Math.round(position.y), SPRITE_WIDTH,SPRITE_HEIGHT,observer);
     }
 
     @Override
@@ -158,10 +165,15 @@ public class PlayerCharacter extends PlayerObject{
     public void shoot(){
         shootCD = 0.05f;
         for(int i = 0 ; i < bulletCount ; i++)
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+24, position.y+30));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , -1,-.5f));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , 1,-.5f));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-3f));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-3f));
+    }
+
+    public int cycle(){
+        currentCycle = ++currentCycle % 16;
+        return currentCycle/8;
     }
 }

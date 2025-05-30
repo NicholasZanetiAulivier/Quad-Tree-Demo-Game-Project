@@ -1,13 +1,13 @@
 package com.Game.Scenes;
 
 import com.Game.Engine.Global;
-import com.Game.Objects.EnemyEntityShooterStrafe;
+import com.Game.Objects.EnemyBulletSpread;
 /*
  * Scene to visualize hitbox
  */
 
 public class HitboxVisualizer extends Scene {
-    public EnemyEntityShooterStrafe[] curr;
+    public EnemyBulletSpread[] curr;
 
     @Override
     public void switchScene() throws Exception{
@@ -24,7 +24,7 @@ public class HitboxVisualizer extends Scene {
 
         Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
-                for(EnemyEntityShooterStrafe i : curr){
+                for(EnemyBulletSpread i : curr){
                     i.draw(g, Global.CANVAS[0]);
                     i.getHitbox().draw(g,Global.CANVAS[0]);
                 }
@@ -32,12 +32,12 @@ public class HitboxVisualizer extends Scene {
         );
 
         //Load Classes
-        EnemyEntityShooterStrafe.loadSprite();
+        EnemyBulletSpread.loadSprite();
 
         //Load Objects
-        this.curr = new EnemyEntityShooterStrafe[1];
+        this.curr = new EnemyBulletSpread[1];
         try{
-            curr[0] = new EnemyEntityShooterStrafe(300, 200, 1,1 );
+            curr[0] = new EnemyBulletSpread(300,200,1,1);
         } catch(Throwable e){
             e.printStackTrace();
         }
