@@ -53,6 +53,7 @@ public class ShooterGame extends Scene{
         super.switchScene();
     }
 
+    @SuppressWarnings("all")
     public void loadScene() throws Exception{
         //TODO: Make a loadScene function
 

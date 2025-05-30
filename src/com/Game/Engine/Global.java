@@ -42,13 +42,13 @@ public abstract class Global {
         currentScene = new Scene() {
             @Override
             public void loadScene() throws Exception {
-                // TODO Auto-generated method stub
+                //
                 
             }
 
             @Override
             public void unloadScene() throws Exception {
-                // TODO Auto-generated method stub
+                //
                 
             }
         };

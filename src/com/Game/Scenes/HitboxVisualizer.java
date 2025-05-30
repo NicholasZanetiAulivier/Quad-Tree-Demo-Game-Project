@@ -14,6 +14,7 @@ public class HitboxVisualizer extends Scene {
         super.switchScene();
     }
 
+    @SuppressWarnings("all")
     @Override
     public void loadScene() throws Exception{
         Global.GAME_ENVIRONMENT.setUpdateFunction(

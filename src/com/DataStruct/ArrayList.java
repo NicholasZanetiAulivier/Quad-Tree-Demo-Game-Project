@@ -19,6 +19,7 @@ public class ArrayList<T> {
         return this.maxSize;
     }
 
+    @SuppressWarnings("all")
     public T[] getArray(){
         return (T[])this.arr;
     }
