@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         try{
-            new GameEnv(Global.originalWidth, Global.originalHeight, "Swingtest",8);
+            new GameEnv(Global.originalWidth, Global.originalHeight, "Draconic Airforce",8);
             Global.Game.switchScene();
             long c = System.nanoTime();
             while(System.nanoTime() <= c+1_000_000_000)continue;

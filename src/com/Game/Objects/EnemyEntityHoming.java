@@ -52,10 +52,18 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
         sprite.flush();
         sprite = null;
     }
+    
+    @Override
+    protected boolean destroyCheck(){
+        if(position.y > Global.realHeight) {
+            shouldDestroy = true;
+            return true;
+        }
+        return false;
+    }
 
     @Override
-    public void update(float dt){
-        if(position.y > Global.realHeight) shouldDestroy = true;
+    protected void move(float dt){
         velocity = Vector2.subtract(((ShooterGame)Global.Game).player.position,position);
         velocity.normalize();
         velocity.multiply(SPEED_CONSTANT);

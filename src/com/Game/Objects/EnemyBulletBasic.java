@@ -58,10 +58,19 @@ public class EnemyBulletBasic extends EnemyBullet{
 
     @Override
     public void update(float dt){
+        if(destroyCheck()) return;
+        move(dt);
+    }
+
+    protected boolean destroyCheck(){
         if(position.y > Global.realHeight || position.y < -70 || position.x < -70 || position.x > Global.realWidth) {
             shouldDestroy = true;
-            return;
+            return true;
         }
+        return false;
+    }
+
+    protected void move(float dt){
         position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }

@@ -47,11 +47,28 @@ public class PlayerBulletBasic extends PlayerBullet{
 
     @Override
     public void update(float dt){
+        if(stall(dt)) return;
+        if(destroyCheck()) return;
+        move(dt);
+    }
+
+    protected boolean stall(float dt){
         if(stall){
             if((waitTime -= dt) <= 0) shouldDestroy = true;
-            return;
+            return true;
         }
-        if(position.y < -80) shouldDestroy = true;
+        return false;
+    }
+
+    protected boolean destroyCheck(){
+        if(position.y < -80){
+            shouldDestroy = true;
+            return true;
+        }
+        return false;
+    }
+
+    protected void move(float dt){
         position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }

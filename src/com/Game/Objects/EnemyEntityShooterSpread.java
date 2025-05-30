@@ -67,15 +67,22 @@ public class EnemyEntityShooterSpread extends EnemyEntityShooterBasic{
     }
 
     @Override
-    public void update(float dt){
+    protected boolean destroyCheck(){
         if(position.y > Global.originalHeight){
             shouldDestroy = true;
-            return;
+            return true;
         }
+        return false;
+    }
 
+    @Override
+    protected void move(float dt){
         this.position.add(Vector2.scale(velocity , dt));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
-        
+    }
+
+    @Override
+    protected void shoot(float dt){
         if((shootCD -= dt) < 0){
             shootCD = BASIC_COOLDOWN;
             try{

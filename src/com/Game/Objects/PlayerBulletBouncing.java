@@ -60,16 +60,7 @@ public class PlayerBulletBouncing extends PlayerBulletBasic{
     }
 
     @Override
-    public void update(float dt){
-        if(stall){
-            if((waitTime -= dt) <= 0) shouldDestroy = true;
-            return;
-        }
-        if(position.y < -80) {
-            shouldDestroy = true;
-            return;
-        }
-
+    protected void move(float dt){
         if(position.x >= Global.realWidth-PlayerBulletBouncing.BULLET_WIDTH || position.x <= 0) direction.x = -direction.x;
         if(position.y >= Global.realHeight-PlayerBulletBouncing.BULLET_HEIGHT) direction.y = -direction.y;
 

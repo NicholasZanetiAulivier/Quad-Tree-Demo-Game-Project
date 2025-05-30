@@ -70,11 +70,19 @@ public class EnemyEntityBasic extends EnemyObject{
 
     @Override
     public void update(float dt){
+        if(destroyCheck()) return;
+        move(dt);
+    }
+
+    protected boolean destroyCheck(){
         if(position.y > Global.realHeight){
             shouldDestroy = true;
-            return;
+            return true;
         }
+        return false;
+    }
 
+    protected void move(float dt){
         Vector2 halfAccel = Vector2.scale(acceleration , 0.5f*dt);
         velocity.add(halfAccel);
         this.position.add(Vector2.scale(velocity , dt));

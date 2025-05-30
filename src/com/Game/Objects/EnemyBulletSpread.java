@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
-import com.Game.Engine.Global;
 
 public class EnemyBulletSpread extends EnemyBulletBasic{
     private static BufferedImage sprite;
@@ -42,11 +41,7 @@ public class EnemyBulletSpread extends EnemyBulletBasic{
     }
 
     @Override
-    public void update(float dt){
-        if(position.y > Global.realHeight || position.y < -70 || position.x < -70 || position.x > Global.realWidth) {
-            shouldDestroy = true;
-            return;
-        }
+    public void move(float dt){
         position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }

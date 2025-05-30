@@ -22,7 +22,7 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
     private static final int SPRITE_WIDTH = 30;
     private static final int SPRITE_HEIGHT = 30;
     
-    private static final float BASIC_COOLDOWN = .1f;
+    private static final float BASIC_COOLDOWN = .5f;
     private static final float STARTING_VELOCITY = 200;
 
     private static final float[][] shootShape = {
@@ -70,15 +70,22 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
     }
 
     @Override
-    public void update(float dt){
+    protected boolean destroyCheck(){
         if(position.y > Global.originalHeight){
             shouldDestroy = true;
-            return;
+            return true;
         }
+        return false;
+    }
 
+    @Override
+    protected void move(float dt){
         this.position.add(Vector2.scale(velocity , dt));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
-        
+    }
+
+    @Override
+    protected void shoot(float dt){
         if((shootCD -= dt) < 0){
             shootCD = BASIC_COOLDOWN;
             try{

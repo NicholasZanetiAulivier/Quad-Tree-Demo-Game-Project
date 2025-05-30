@@ -56,17 +56,30 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
 
     @Override
     public void update(float dt){
+        if(destroyCheck()) return;
+        move(dt);
+        shoot(dt);
+    }
+
+    @Override
+    protected boolean destroyCheck(){
         if(position.y < -100){
             shouldDestroy = true;
-            return;
+            return true;
         }
+        return false;
+    }
 
+    @Override
+    protected void move(float dt){
         Vector2 halfAccel = Vector2.scale(acceleration , 0.5f*dt);
         velocity.add(halfAccel);
         this.position.add(Vector2.scale(velocity , dt));
         velocity.add(halfAccel);
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
-        
+    }
+
+    protected void shoot(float dt){
         if((shootCD -= dt) < 0){
             shootCD = BASIC_COOLDOWN;
             try{
