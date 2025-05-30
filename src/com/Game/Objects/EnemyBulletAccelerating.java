@@ -85,12 +85,7 @@ public class EnemyBulletAccelerating extends EnemyBulletBasic {
     public void draw(Graphics g , ImageObserver o){
         g.drawImage(sprite[cycle()], Math.round(position.x), Math.round(position.y),BULLET_WIDTH, BULLET_HEIGHT, o);
     }
-
-    @Override
-    public boolean hasCollisions(){
-        return true;
-    }
-
+    
     @Override
     public short getType(){
         return CollisionObject.CIRCLE;

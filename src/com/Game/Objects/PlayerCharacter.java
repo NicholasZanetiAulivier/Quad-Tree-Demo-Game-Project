@@ -154,6 +154,14 @@ public class PlayerCharacter extends PlayerObject{
             case CollisionObject.ITEM:{
                 break;
             }
+
+            case CollisionObject.ENEMY_BULLET_EXPLODE : {
+                if (((EnemyBulletExploding)o).exploding){
+                    dead = true;
+                    System.out.println("Player died ex");
+                }
+                break;
+            }
             default :{
                 dead = true;
                 System.out.println("Player died");

@@ -12,10 +12,12 @@ import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyBullet;
 import com.Game.Objects.EnemyBulletAccelerating;
 import com.Game.Objects.EnemyBulletBasic;
+import com.Game.Objects.EnemyBulletExploding;
 import com.Game.Objects.EnemyBulletSpread;
 import com.Game.Objects.EnemyEntityBasic;
 import com.Game.Objects.EnemyEntityHoming;
 import com.Game.Objects.EnemyEntityShooterBasic;
+import com.Game.Objects.EnemyEntityShooterBomb;
 import com.Game.Objects.EnemyEntityShooterSpread;
 import com.Game.Objects.EnemyEntityShooterStrafe;
 import com.Game.Objects.PlayerBulletBasic;
@@ -47,7 +49,7 @@ public class ShooterGame extends Scene{
     public int points=0;
 
     public float timeCooldown = 1f;
-    public int difficulty = 3;
+    public int difficulty = 6;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -332,9 +334,11 @@ public class ShooterGame extends Scene{
         EnemyEntityShooterBasic.loadSprite();
         EnemyEntityShooterSpread.loadSprite();
         EnemyEntityShooterStrafe.loadSprite();
+        EnemyEntityShooterBomb.loadSprite();
         EnemyBulletBasic.loadSprite();
         EnemyBulletSpread.loadSprite();
         EnemyBulletAccelerating.loadSprite();
+        EnemyBulletExploding.loadSprite();
         Item_10.loadSprite();
 
         //Load objects
@@ -372,10 +376,12 @@ public class ShooterGame extends Scene{
         EnemyEntityHoming.unload();
         EnemyEntityShooterBasic.unload();
         EnemyEntityShooterStrafe.unload();
+        EnemyEntityShooterBomb.unload();
         EnemyBulletBasic.unload();
         EnemyBulletSpread.unload();
         EnemyEntityShooterSpread.unload();
         EnemyBulletAccelerating.unload();
+        EnemyBulletExploding.unload();
         Item_10.unload();
     }
 
@@ -408,6 +414,10 @@ public class ShooterGame extends Scene{
             case CollisionObject.ENEMY_SHOOTER_STRAFE : {
                 for (int i = 0 ; i < count ; i++)
                     enemyShips.append(new EnemyEntityShooterStrafe((float)Math.random()*600+100, -64 , (float)Math.random()-.5f , (float)Math.random()));
+            }
+            case CollisionObject.ENEMY_SHOOTER_BOMB : {
+                for (int i = 0 ; i < count ; i++)
+                    enemyShips.append(new EnemyEntityShooterBomb((float)Math.random()*600+100, -64 ));
             }
         }
     }
@@ -444,6 +454,10 @@ public class ShooterGame extends Scene{
         if(dif == 5){
             timeCooldown = 1f;
             spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 10);
+        }
+        if(dif == 6){
+            timeCooldown = 10f;
+            spawn(CollisionObject.ENEMY_SHOOTER_BOMB , 1);
         }
     }
 
