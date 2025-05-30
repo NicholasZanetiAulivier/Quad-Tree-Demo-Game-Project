@@ -68,6 +68,14 @@ public class Vector2 {
         y /= n;
     }
 
+    public void imaginaryMultiply(Vector2 v2){
+        float x = this.x*v2.x-this.y*v2.y;
+        float y = this.x*v2.y+this.y*v2.x;
+
+        this.x = x;
+        this.y = y;
+    }
+
     public static Vector2 add(Vector2 n ,Vector2 v){
         return new Vector2(n.getX()+v.getX(),n.getY()+v.getY());
     }
@@ -90,6 +98,13 @@ public class Vector2 {
 
     public static Vector2 scale(Vector2 n , float p){
         return new Vector2(p*n.getX(),p*n.getY());
+    }
+
+    public static Vector2 imaginaryMultiplication(Vector2 v1 , Vector2 v2){
+        float x = v1.x*v2.x-v1.y*v2.y;
+        float y = v1.x*v2.y+v1.y*v2.x;
+
+        return new Vector2(x,y);
     }
 
     public static float dot(Vector2 n , Vector2 v){

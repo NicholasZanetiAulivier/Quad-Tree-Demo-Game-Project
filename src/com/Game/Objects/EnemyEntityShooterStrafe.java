@@ -43,6 +43,7 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
         thisShootShape = new float[2][2];
         for (int i = 0 ; i < 2 ; i++){
             Vector2 temp = new Vector2(shootShape[i][0],shootShape[i][1]);
+            // temp.imaginaryMultiply(velocity);
             temp.add(velocity);
             temp.normalize();
             thisShootShape[i][0] = temp.x;
@@ -61,15 +62,6 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
 
         sprite[0] = temp.getSubimage(0,0,31,31);
         sprite[1] = temp.getSubimage(0, 31, 31, 31);
-
-        // for(int i = 0 ; i < 2 ; i++){
-        //     temp = new BufferedImage(sprite[i].getWidth(), sprite[i].getHeight(), sprite[i].getType());
-        //     Graphics2D g = temp.createGraphics();
-        //     g.rotate(Math.toRadians(180) , sprite[i].getWidth()/2 , sprite[i].getHeight()/2);
-        //     g.drawImage(sprite[i] , null , 0 , 0);
-        //     g.dispose();
-        //     sprite[i] = temp;
-        // }
     }
 
     public static void unload(){

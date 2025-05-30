@@ -406,7 +406,7 @@ public class ShooterGame extends Scene{
             }
             case CollisionObject.ENEMY_SHOOTER_STRAFE : {
                 for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityShooterStrafe((float)Math.random()*600+100, -64 , -1 , 3));
+                    enemyShips.append(new EnemyEntityShooterStrafe((float)Math.random()*600+100, -64 , 0 , 1));
             }
         }
     }
