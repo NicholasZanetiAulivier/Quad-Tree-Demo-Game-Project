@@ -114,7 +114,8 @@ public class EnemyEntityBasic extends EnemyObject{
     @Override
     public void isColliding(CollisionObject c){
         colliding = true;
-        if(c.getIdentity() == CollisionObject.PLAYER_BULLET_BASIC){
+        short id = c.getIdentity();
+        if(id == CollisionObject.PLAYER_BULLET_BASIC || id == CollisionObject.PLAYER_BULLET_BOUNCING){
             HP = HP - ((PlayerBullet)c).damage;
             if(HP <= 0){
                 shouldDestroy = true;

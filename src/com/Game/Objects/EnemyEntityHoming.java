@@ -23,7 +23,7 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 64;
 
-    private static int SPEED_CONSTANT = 400;
+    private static int SPEED_CONSTANT = 200;
     
     private BufferedImage rotatedImage;
     private Vector2 velocity;
@@ -31,7 +31,7 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
     public EnemyEntityHoming(float x , float y){
         position = new Vector2(x, y);
         velocity = new Vector2(0,100);
-        HP = 5;
+        HP = 20;
         hitbox = new HitboxCircular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET,HITBOX_RADIUS);
         rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
     }

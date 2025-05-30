@@ -110,9 +110,7 @@ public class PlayerCharacter extends PlayerObject{
         //  Shoot bullets if is pressing SHOOT
         shootCD -= dt;
         if(shooting && shootCD < 0){
-            shootCD = 0.05f;
-            for(int i = 0 ; i < bulletCount ; i++)
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+24, position.y+30));
+            shoot();
         }
     }
 
@@ -155,5 +153,15 @@ public class PlayerCharacter extends PlayerObject{
                 break;
             }
         } 
+    }
+
+    public void shoot(){
+        shootCD = 0.05f;
+        for(int i = 0 ; i < bulletCount ; i++)
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+24, position.y+30));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , -1,-.5f));
+        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2, position.y+SPRITE_HEIGHT/2 , 1,-.5f));
     }
 }

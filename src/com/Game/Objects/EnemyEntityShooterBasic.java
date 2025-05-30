@@ -23,7 +23,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = .5f;
+    private static final float BASIC_COOLDOWN = .2f;
     private static final float STARTING_VELOCITY = 600;
 
     private static Vector2 acceleration = new Vector2(0,-700);
@@ -71,7 +71,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
             shootCD = BASIC_COOLDOWN;
             try{
                 ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletBasic(
-                    new Vector2(position.x , position.y), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position))
+                    new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position))
                 );
             } catch(Throwable e ){
                 e.printStackTrace();

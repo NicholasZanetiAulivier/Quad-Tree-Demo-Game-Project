@@ -8,6 +8,7 @@ public interface CollisionObject {
     
     static final short PLAYER = 1000;
     static final short PLAYER_BULLET_BASIC = 1001;
+    static final short PLAYER_BULLET_BOUNCING = 1002;
     
     static final short ENEMY_BASIC = 2000;
     static final short ENEMY_HOMING = 2001;

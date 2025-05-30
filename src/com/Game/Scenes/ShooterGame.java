@@ -17,6 +17,7 @@ import com.Game.Objects.EnemyEntityHoming;
 import com.Game.Objects.EnemyEntityShooterBasic;
 import com.Game.Objects.EnemyEntityShooterSpread;
 import com.Game.Objects.PlayerBulletBasic;
+import com.Game.Objects.PlayerBulletBouncing;
 import com.Game.Objects.PlayerCharacter;
 import com.Game.Objects.PlayerBullet;
 import com.DataStruct.Denode;
@@ -44,7 +45,7 @@ public class ShooterGame extends Scene{
     public int points=0;
 
     public float timeCooldown = 1f;
-    public int difficulty = 2;
+    public int difficulty = 0;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -322,6 +323,7 @@ public class ShooterGame extends Scene{
         //Load Classes
         PlayerCharacter.loadSprite();
         PlayerBulletBasic.loadSprite();
+        PlayerBulletBouncing.loadSprite();
         EnemyEntityBasic.loadSprite();
         EnemyEntityHoming.loadSprite();
         EnemyEntityShooterBasic.loadSprite();
@@ -360,6 +362,7 @@ public class ShooterGame extends Scene{
         //Unload classes
         PlayerCharacter.unload();
         PlayerBulletBasic.unload();
+        PlayerBulletBouncing.unload();
         EnemyEntityBasic.unload();
         EnemyEntityHoming.unload();
         EnemyEntityShooterBasic.unload();
@@ -401,7 +404,7 @@ public class ShooterGame extends Scene{
     public void runRandomScriptedEvent(int dif){
         if(dif == 0 ){
             timeCooldown = .1f;
-            int c = (int)Math.round(Math.random()*100);
+            int c = (int)Math.round(Math.random()*500);
             spawn(CollisionObject.ENEMY_BASIC , c);
             return;
         }
@@ -413,7 +416,7 @@ public class ShooterGame extends Scene{
         if(dif == 2){
             timeCooldown = .5f;
             int c = (int)(Math.round(Math.random()*10));
-            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 50);
+            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 10);
         }
         if (dif == 3){
             timeCooldown = 2f;

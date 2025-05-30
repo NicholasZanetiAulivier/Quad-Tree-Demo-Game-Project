@@ -12,7 +12,7 @@ import com.DataType.Vector2;
 
 public class PlayerBulletBasic extends PlayerBullet{
     private static BufferedImage sprite;
-    private static BufferedImage popSprite;
+    protected static BufferedImage popSprite;
 
     private static final float BULLET_VELOCITY = 1750;
     private static final int BULLET_WIDTH = 16;
@@ -23,10 +23,10 @@ public class PlayerBulletBasic extends PlayerBullet{
     private static final int HITBOX_X_OFFSET = 5;
     private static final int HITBOX_Y_OFFSET = 0;
 
-    private Vector2 position;
+    protected Vector2 position;
 
-    private boolean stall = false;
-    private float waitTime = 0.f;
+    protected boolean stall = false;
+    protected float waitTime = 0.f;
 
     public PlayerBulletBasic(float x , float y){
         position = new Vector2(x, (int)(y+Math.random()*10-20));
