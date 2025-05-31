@@ -52,6 +52,7 @@ public class ShooterGame extends Scene{
     public float timeCooldown = 1f;
     public int wave = 0;
     public int phase = 0;
+    public float survivedFor = 0;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -101,22 +102,57 @@ public class ShooterGame extends Scene{
 
                 //Collision Detect enemy-player bullet
                 enemy = enemyShips.getHead();
+                int checks = 0;
+                
+                /*
+                 * THIS IS THE QUADTREE IMPLEMENTATION
+                 */
+
                 while(enemy != null){
                     CollisionObject e = (CollisionObject)enemy.getData();
                     Denode<CollisionObject> pBullet = partition.retrieve(e).getHead();
                     while(pBullet != null){
                         CollisionObject p = pBullet.getData();
                         e.checkCollision(p);
-                        pBullet = pBullet.getNext(); 
+                        pBullet = pBullet.getNext();
+                        checks++; 
                     }
                     enemy = enemy.getNext();
                 }
+
+                /*
+                 * END QUADTREE IMPLEMENTATION
+                 */
+
+                /*
+                * BRUTEFORCE IMPLEMENTATION
+                */
+
+                // while (enemy != null){
+                //     CollisionObject e = (CollisionObject)enemy.getData();
+                //     Denode<PlayerBullet> pBullet = friendlyBullets.getHead();
+                //     while(pBullet != null){
+                //         CollisionObject p = (CollisionObject)pBullet.getData();
+                //         e.checkCollision(p);
+                //         pBullet = pBullet.getNext();
+                //         checks++;
+                //     }
+                //     enemy = enemy.getNext();
+                // }
+                
+                /*
+                * END BRUITEFORCE IMPLEMENTATION
+                */
+
+                // System.out.println(checks);
+
 
                 //Collision detect player-enemyBullet
                 if(!player.dead){
                     for (int i = 0 ; i < 4 ; i++){
                         enemyBullet = enemyBullets[i].getHead();
                         while(enemyBullet != null){
+
                             CollisionObject p = enemyBullet.getData();
                             player.checkCollision(p);
                             enemyBullet = enemyBullet.getNext();
@@ -196,6 +232,7 @@ public class ShooterGame extends Scene{
 
                 //At certain times, randomly call a new wave
                 timeCooldown -= dt;
+                survivedFor += dt;
                 if(timeCooldown <= 0) runRandomScriptedEvent();
 
 
@@ -325,11 +362,11 @@ public class ShooterGame extends Scene{
                 int n = k.getKeyCode();
                 if(n == KeyEvent.VK_UP) up = true;
                 if(n == KeyEvent.VK_DOWN) down = true;
-                if(n == KeyEvent.VK_LEFT) left = true;                    
-                if(n == KeyEvent.VK_RIGHT) right = true;                    
-                if(n == KeyEvent.VK_SHIFT) player.switchSpeed();                    
+                if(n == KeyEvent.VK_LEFT) left = true;
+                if(n == KeyEvent.VK_RIGHT) right = true;
+                if(n == KeyEvent.VK_SHIFT) player.switchSpeed();
                 if(n == KeyEvent.VK_Z) player.startShooting();
-                if(n == KeyEvent.VK_R) retry = true;            
+                if(n == KeyEvent.VK_R) retry = true;
             }
         );
 
@@ -338,9 +375,10 @@ public class ShooterGame extends Scene{
                 int n = k.getKeyCode();
                 if(n == KeyEvent.VK_UP) up = false;
                 if(n == KeyEvent.VK_DOWN) down = false;
-                if(n == KeyEvent.VK_LEFT) left = false;                  
+                if(n == KeyEvent.VK_LEFT) left = false;
                 if(n == KeyEvent.VK_RIGHT) right = false;
-                if(n == KeyEvent.VK_Z) player.stopShooting();  
+                if(n == KeyEvent.VK_SHIFT) player.switchSpeed();
+                if(n == KeyEvent.VK_Z) player.stopShooting();
             }
         );
 
@@ -458,11 +496,12 @@ public class ShooterGame extends Scene{
                     case 1 : case 2: case 3:{
                         timeCooldown = .2f;
                         for (int i = 0 ; i < 6 ; i++){
-                            spawn(CollisionObject.ENEMY_BASIC , (float)Math.random()*(Global.realWidth-200)+100,-64 , (float)Math.random()*200-100 , 900, (float)Math.random()*200-100 , -500);
+                            spawn(CollisionObject.ENEMY_BASIC , (float)Math.random()*(Global.realWidth-100)+50,-64 , (float)Math.random()*200-100 , 900, (float)Math.random()*200-100 , -500);
                         }
-                        if(points >= 200){
+                        if(points >= 500 || survivedFor > 60){
                             wave++;
                             phase = 0;
+                            survivedFor = 0;
                             timeCooldown = 3f;
                             System.out.println("Wave 2");
                             return;

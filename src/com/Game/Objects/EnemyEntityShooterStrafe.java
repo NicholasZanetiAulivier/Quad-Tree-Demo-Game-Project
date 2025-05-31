@@ -70,15 +70,6 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
     }
 
     @Override
-    protected boolean destroyCheck(){
-        if(position.y > Global.originalHeight){
-            shouldDestroy = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     protected void move(float dt){
         this.position.add(Vector2.scale(velocity , dt));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);

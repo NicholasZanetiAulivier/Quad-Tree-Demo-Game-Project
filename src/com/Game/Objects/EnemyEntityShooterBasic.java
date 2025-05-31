@@ -62,15 +62,6 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     }
 
     @Override
-    protected boolean destroyCheck(){
-        if(position.y < -100){
-            shouldDestroy = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     protected void move(float dt){
         Vector2 halfAccel = Vector2.scale(acceleration , 0.5f*dt);
         velocity.add(halfAccel);

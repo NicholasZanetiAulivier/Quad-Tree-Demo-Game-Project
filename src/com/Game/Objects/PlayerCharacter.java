@@ -15,7 +15,7 @@ import com.Game.Scenes.ShooterGame;
 public class PlayerCharacter extends PlayerObject{
     private static BufferedImage[] sprite;
     
-    private static final float PLAYER_SPEED = 200;
+    private static final float PLAYER_SPEED = 300;
     private static final float PLAYER_SPEED_FAST = 600;
     public static final int SPRITE_WIDTH = 60;
     public static final int SPRITE_HEIGHT = 60;
@@ -97,30 +97,32 @@ public class PlayerCharacter extends PlayerObject{
     public void update(float dt){
         //TODO: make update function for player
 
-        //  Move Player
-        ShooterGame currScene = (ShooterGame)Global.currentScene;
-        Vector2 speed = new Vector2(0,0);
-        if(currScene.up) speed.y -= 1;
-        if(currScene.down) speed.y += 1;
-        if(currScene.left) speed.x -= 1;
-        if(currScene.right) speed.x += 1;
+        if(!dead){
+            //  Move Player
+            ShooterGame currScene = (ShooterGame)Global.currentScene;
+            Vector2 speed = new Vector2(0,0);
+            if(currScene.up) speed.y -= 1;
+            if(currScene.down) speed.y += 1;
+            if(currScene.left) speed.x -= 1;
+            if(currScene.right) speed.x += 1;
 
-        speed.normalize();
-        speed.multiply((goingFast ? PLAYER_SPEED_FAST:PLAYER_SPEED)*dt);
-        position.add(speed);
-        // System.out.println(speed);
-        
-        if(position.x < -30) setX(-30);
-        else if (position.x > Global.realWidth-SPRITE_WIDTH+30) setX(Global.realWidth-SPRITE_WIDTH+30);
-        if(position.y < -30) setY(-30);
-        else if (position.y > Global.realHeight-SPRITE_HEIGHT+30) setY(Global.realHeight-SPRITE_HEIGHT+30);
-        
-        hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+            speed.normalize();
+            speed.multiply((goingFast ? PLAYER_SPEED_FAST:PLAYER_SPEED)*dt);
+            position.add(speed);
+            // System.out.println(speed);
+            if(position.x < -30) setX(-30);
+            else if (position.x > Global.realWidth-SPRITE_WIDTH+30) setX(Global.realWidth-SPRITE_WIDTH+30);
+            if(position.y < -30) setY(-30);
+            else if (position.y > Global.realHeight-SPRITE_HEIGHT+30) setY(Global.realHeight-SPRITE_HEIGHT+30);
+            
+            hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
 
-        //  Shoot bullets if is pressing SHOOT
-        shootCD -= dt;
-        if(shooting && shootCD < 0){
-            shoot();
+            //  Shoot bullets if is pressing SHOOT
+            
+            shootCD -= dt;
+            if(shooting && shootCD < 0){
+                shoot();
+            }
         }
     }
 

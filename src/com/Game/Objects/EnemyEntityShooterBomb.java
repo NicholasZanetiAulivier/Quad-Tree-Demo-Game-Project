@@ -1,7 +1,6 @@
 package com.Game.Objects;
 
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -65,18 +64,8 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
 
     @Override
     public void update(float dt){
-        if(destroyCheck()) return;
         move(dt);
         shoot(dt);
-    }
-
-    @Override
-    protected boolean destroyCheck(){
-        if(position.y < -200){
-            shouldDestroy = true;
-            return true;
-        }
-        return false;
     }
 
     @Override

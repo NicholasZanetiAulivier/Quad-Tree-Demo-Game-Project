@@ -52,15 +52,6 @@ public class EnemyEntityHoming extends EnemyEntityBasic{
         sprite.flush();
         sprite = null;
     }
-    
-    @Override
-    protected boolean destroyCheck(){
-        if(position.y > Global.realHeight) {
-            shouldDestroy = true;
-            return true;
-        }
-        return false;
-    }
 
     @Override
     protected void move(float dt){
