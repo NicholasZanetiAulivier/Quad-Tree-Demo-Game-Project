@@ -48,6 +48,7 @@ public class ShooterGame extends Scene{
 
     public int points=0;
 
+    public boolean retry = false;
     public float timeCooldown = 1f;
     public int difficulty = 6;
     
@@ -61,6 +62,21 @@ public class ShooterGame extends Scene{
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
+
+                if (retry){
+                    friendlyBullets = new DoublyLinkedList<>();
+                    enemyShips = new DoublyLinkedList<>();
+                    items = new DoublyLinkedList<>();
+                    for(int i = 0 ; i < 4 ; i++)
+                        enemyBullets[i] = new DoublyLinkedList<>();
+                    player = new PlayerCharacter();
+
+                    points = 0;
+                    timeCooldown = 1f;
+                    retry = false;
+                    return;
+                }
+
                 Denode<PlayerBullet> friendlyBullet;
                 Denode<EnemyEntityBasic> enemy;
                 Denode<EnemyBullet> enemyBullet;
@@ -309,7 +325,8 @@ public class ShooterGame extends Scene{
                 if(n == KeyEvent.VK_LEFT) left = true;                    
                 if(n == KeyEvent.VK_RIGHT) right = true;                    
                 if(n == KeyEvent.VK_SHIFT) player.switchSpeed();                    
-                if(n == KeyEvent.VK_Z) player.startShooting();                    
+                if(n == KeyEvent.VK_Z) player.startShooting();
+                if(n == KeyEvent.VK_R) retry = true;            
             }
         );
 
@@ -457,7 +474,7 @@ public class ShooterGame extends Scene{
         }
         if(dif == 6){
             timeCooldown = 10f;
-            spawn(CollisionObject.ENEMY_SHOOTER_BOMB , 1);
+            spawn(CollisionObject.ENEMY_SHOOTER_BOMB , 5);
         }
     }
 

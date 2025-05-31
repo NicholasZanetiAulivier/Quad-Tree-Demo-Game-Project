@@ -1,6 +1,7 @@
 package com.Game.Objects;
 
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,7 +24,7 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = .2f;
+    private static final float BASIC_COOLDOWN = 1f;
 
     private Vector2 whereToGo;
     private int cycleTime = 0;
@@ -34,7 +35,7 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
         position = new Vector2(-Global.realWidth/2, -100);
         // position = new Vector2(x,y);
         whereToGo = new Vector2(x,y);
-        HP = 1000;
+        HP = 2000;
         hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
     }
 
@@ -97,7 +98,10 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
             shootCD = BASIC_COOLDOWN;
             try{
                 ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletExploding(
-                    new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position) , (float)Math.random()*5)
+                    new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position) , (float)Math.random()*2)
+                );
+                ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletExploding(
+                    new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.add(Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position) , new Vector2((float)Math.random()*1000-500 , (float)Math.random()*1000-500)) , (float)Math.random()*2)
                 );
             } catch(Throwable e ){
                 e.printStackTrace();
