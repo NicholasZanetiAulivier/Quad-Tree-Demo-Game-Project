@@ -30,10 +30,13 @@ public class PlayerCharacter extends PlayerObject{
     public Vector2 position;
     public boolean dead = false;
     private boolean goingFast = true;
+
     private boolean shooting = false;
+    private boolean bouncingBullets = false;
+
     private float shootCD = .05f;
 
-    private int bulletCount = 5;
+    private int bulletCount = 2;
 
     public PlayerCharacter(){
         position = new Vector2(Global.realWidth/2,Global.realHeight/2);
@@ -174,10 +177,12 @@ public class PlayerCharacter extends PlayerObject{
         shootCD = 0.05f;
         for(int i = 0 ; i < bulletCount ; i++)
             ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-3f));
-        ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-3f));
+        if (bouncingBullets){
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-3f));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-3f));
+        }
     }
 
     public int cycle(){

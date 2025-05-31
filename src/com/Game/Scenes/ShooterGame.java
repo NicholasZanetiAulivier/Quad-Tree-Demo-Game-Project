@@ -50,7 +50,8 @@ public class ShooterGame extends Scene{
 
     public boolean retry = false;
     public float timeCooldown = 1f;
-    public int difficulty = 6;
+    public int wave = 0;
+    public int phase = 0;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -73,6 +74,8 @@ public class ShooterGame extends Scene{
 
                     points = 0;
                     timeCooldown = 1f;
+                    wave = 0;
+                    phase = 0;
                     retry = false;
                     return;
                 }
@@ -193,7 +196,7 @@ public class ShooterGame extends Scene{
 
                 //At certain times, randomly call a new wave
                 timeCooldown -= dt;
-                if(timeCooldown <= 0) runRandomScriptedEvent(difficulty);
+                if(timeCooldown <= 0) runRandomScriptedEvent();
 
 
                 //  Update Player
@@ -406,75 +409,74 @@ public class ShooterGame extends Scene{
         up = down = left = right = false;
     }
 
-    public void spawn(int id , int count){
+    public void spawn(int id , float xLoc, float yLoc , float xDir , float yDir , float xAccel , float yAccel){
         switch(id){
             case CollisionObject.ENEMY_BASIC : {
-                for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityBasic((float)Math.random() * 600+100, -64));
+                enemyShips.append(new EnemyEntityBasic(xLoc , yLoc , xDir , yDir , xAccel , yAccel));
                 break;
             }
             case CollisionObject.ENEMY_HOMING : {
-                for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityHoming((float)Math.random()*600+100, -64));
+                enemyShips.append(new EnemyEntityHoming(xLoc , yLoc));
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_BASIC: {
-                for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityShooterBasic((float)Math.random()*600+100, -64));
+                enemyShips.append(new EnemyEntityShooterBasic(xLoc , yLoc));
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_SPREAD :{
-                for(int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityShooterSpread((float)Math.random()*600+100, -64));
+                enemyShips.append(new EnemyEntityShooterSpread(xLoc , yLoc));
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_STRAFE : {
-                for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityShooterStrafe((float)Math.random()*600+100, -64 , (float)Math.random()-.5f , (float)Math.random()));
+                enemyShips.append(new EnemyEntityShooterStrafe(xLoc, yLoc, xDir, yDir));
+                break;
             }
             case CollisionObject.ENEMY_SHOOTER_BOMB : {
-                for (int i = 0 ; i < count ; i++)
-                    enemyShips.append(new EnemyEntityShooterBomb((float)Math.random()*600+100, -64 ));
+                enemyShips.append(new EnemyEntityShooterBomb(xLoc , yLoc));
+                break;
             }
         }
     }
 
-    public void runRandomScriptedEvent(int dif){
-        if(dif == 0 ){
-            timeCooldown = .1f;
-            int c = (int)Math.round(Math.random()*10);
-            spawn(CollisionObject.ENEMY_BASIC , c);
-            return;
-        }
-        if(dif == 1){
-            timeCooldown = .2f;
-            int c = (int)Math.round(Math.random() * 10);
-            spawn(CollisionObject.ENEMY_HOMING , c);
-        }
-        if(dif == 2){
-            timeCooldown = .5f;
-            int c = (int)(Math.round(Math.random()*10));
-            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , c);
-        }
-        if (dif == 3){
-            timeCooldown = 2f;
-            spawn(CollisionObject.ENEMY_BASIC , 5);
-            spawn(CollisionObject.ENEMY_HOMING , 10);
-            spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 5);
-            spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , 3);
-            spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 10);
-        }
-        if(dif == 4){
-            timeCooldown = .5f;
-            spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , 10);
-        }
-        if(dif == 5){
-            timeCooldown = 1f;
-            spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 10);
-        }
-        if(dif == 6){
-            timeCooldown = 10f;
-            spawn(CollisionObject.ENEMY_SHOOTER_BOMB , 5);
+    //Implicit wave and phase variables
+    public void runRandomScriptedEvent(){
+        //Just hardcode all the events
+        switch(wave){
+
+            //Wave 1
+            case 0: {
+                switch(phase++) {
+                    case 0: {
+                        timeCooldown = 1f;
+                        float spacing = Global.realWidth/5;
+                        for (int i = 0 ; i < 5 ; i++){
+                            spawn(CollisionObject.ENEMY_BASIC , spacing*i,-64 , (float)Math.random()*100-50 , 200, (float)Math.random()*1000-500 , (float)Math.random()*200-250);
+                        }
+                        break;
+                    }
+
+                    case 1 : case 2: case 3:{
+                        timeCooldown = .2f;
+                        for (int i = 0 ; i < 6 ; i++){
+                            spawn(CollisionObject.ENEMY_BASIC , (float)Math.random()*(Global.realWidth-200)+100,-64 , (float)Math.random()*200-100 , 900, (float)Math.random()*200-100 , -500);
+                        }
+                        if(points >= 200){
+                            wave++;
+                            phase = 0;
+                            timeCooldown = 3f;
+                            System.out.println("Wave 2");
+                            return;
+                        }
+                        phase = phase % 4;
+                        break;
+                    }
+                }
+                break;
+            }
+
+            //Wave 2
+            case 1:{
+            }
         }
     }
 

@@ -25,18 +25,19 @@ public class EnemyEntityBasic extends EnemyObject{
 
     protected Vector2 position;
     protected Vector2 velocity;
-    protected static Vector2 acceleration = new Vector2(0,1000);
+    protected Vector2 acceleration;
     protected boolean colliding = false;
 
-    public EnemyEntityBasic(float x , float y){
+    public EnemyEntityBasic(float x , float y , float vX , float vY , float accelX , float accelY){
         position = new Vector2(x, y);
-        velocity = new Vector2(0,100);
-        HP = 5;
+        velocity = new Vector2(vX,vY);
+        acceleration = new Vector2(accelX, accelY);
+        HP = 50;
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
 
     public EnemyEntityBasic(){
-        this(0,0);
+        this(0,0 , 0 , 100 , 0, 0);
     }
 
     public static void loadSprite() throws IOException{
