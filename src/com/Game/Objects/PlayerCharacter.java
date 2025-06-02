@@ -32,7 +32,7 @@ public class PlayerCharacter extends PlayerObject{
     private boolean goingFast = true;
 
     private boolean shooting = false;
-    private boolean bouncingBullets = false;
+    private boolean bouncingBullets = true;
 
     private float shootCD = .05f;
 

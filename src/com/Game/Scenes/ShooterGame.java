@@ -48,6 +48,8 @@ public class ShooterGame extends Scene{
 
     public int points=0;
 
+    public boolean debug = false;
+
     public boolean retry = false;
     public float timeCooldown = 1f;
     public int wave = 0;
@@ -269,6 +271,15 @@ public class ShooterGame extends Scene{
             }
         );
 
+        Global.GAME_ENVIRONMENT.setDrawFunction(999, 
+            (g) ->{
+                if(debug){
+                    graphicsEnhance(g);
+                    partition.draw(g);
+                }
+            }
+        );
+
         Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
                 graphicsEnhance(g);
@@ -281,6 +292,8 @@ public class ShooterGame extends Scene{
             }
         );
 
+
+
         Global.GAME_ENVIRONMENT.setDrawFunction(1,
             (g) ->{
                 graphicsEnhance(g);
@@ -289,7 +302,6 @@ public class ShooterGame extends Scene{
                     enemyBullet.getData().draw(g,Global.CANVAS[1]);
                     enemyBullet = enemyBullet.getNext();
                 }
-
             }
         );
 
@@ -367,6 +379,7 @@ public class ShooterGame extends Scene{
                 if(n == KeyEvent.VK_SHIFT) player.switchSpeed();
                 if(n == KeyEvent.VK_Z) player.startShooting();
                 if(n == KeyEvent.VK_R) retry = true;
+                if(n == KeyEvent.VK_F3) debug = !debug;
             }
         );
 

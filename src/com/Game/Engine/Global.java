@@ -17,6 +17,7 @@ public abstract class Global {
     public static GameEnv GAME_ENVIRONMENT = null;
     public static MainWindow MAIN_WINDOW = null;
     public static GameScreen[] CANVAS = null;
+    public static GameScreen DEBUG_CANVAS = null;
     public static Keyboard KEYBOARD = null;
     public static Mouse MOUSE = null;
     public static RenderingHints RH = null;

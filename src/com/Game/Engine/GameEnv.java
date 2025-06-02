@@ -53,6 +53,10 @@ public class GameEnv implements Runnable{
 
     //Public draw callback function
     public void setDrawFunction(int id , DrawFunc f){
+        if(id == 999){
+            Global.DEBUG_CANVAS.setDrawFunction(f);
+            return;
+        }
         Global.CANVAS[id].setDrawFunction(f);
     }
 

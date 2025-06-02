@@ -150,7 +150,7 @@ public class GameQuadTree{
 
 
     public void draw(Graphics g){
-        g.setColor(Color.CYAN);
+        g.setColor(Color.RED);
         ((Graphics2D)g).draw(bounds);
 
         if(hasSplit){
