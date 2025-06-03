@@ -25,7 +25,7 @@ public class PlayerBulletBouncing extends PlayerBulletBasic{
     private int currState = 0;
 
     public PlayerBulletBouncing(float x , float y , float xDir , float yDir){
-        super(x,y);
+        super(x,y , xDir , yDir);
         direction = new Vector2(xDir, yDir);
         direction.normalize();
         hitbox = new HitboxCircular(position.x + HITBOX_X_OFFSET , position.y + HITBOX_Y_OFFSET , HITBOX_RADIUS);

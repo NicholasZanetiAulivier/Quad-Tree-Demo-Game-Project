@@ -11,37 +11,40 @@ import java.io.IOException;
 import com.DataType.Vector2;
 
 public class PlayerBulletBasic extends PlayerBullet{
-    private static BufferedImage sprite;
+    private static BufferedImage sprite[];
     protected static BufferedImage popSprite;
 
     private static final float BULLET_VELOCITY = 1750;
-    private static final int BULLET_WIDTH = 16;
+    private static final int BULLET_WIDTH = 6;
     private static final int BULLET_HEIGHT = 16;
 
     private static final int HITBOX_WIDTH = 7;
-    private static final int HITBOX_HEIGHT = 17;
-    private static final int HITBOX_X_OFFSET = 5;
+    private static final int HITBOX_HEIGHT = 16;
+    private static final int HITBOX_X_OFFSET = 0;
     private static final int HITBOX_Y_OFFSET = 0;
 
     protected Vector2 position;
 
     protected boolean stall = false;
     protected float waitTime = 0.f;
+    protected int cycleNum = 0;
 
-    public PlayerBulletBasic(float x , float y){
-        position = new Vector2(x, (int)(y+Math.random()*10-20));
-        direction = new Vector2(((float)Math.random()/4-.125f), -1);
+    public PlayerBulletBasic(float x , float y , float xDir , float yDir){
+        position = new Vector2(x, y);
+        direction = new Vector2(xDir , yDir);
         direction.normalize();
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
     
     public static void loadSprite() throws IOException{
-        sprite = ImageIO.read(PlayerBulletBasic.class.getResource("rsc/Bullets/basic.png"));
+        sprite = new BufferedImage[2];
+        BufferedImage temp = ImageIO.read(PlayerBulletBasic.class.getResource("rsc/Bullets/basic.png"));
+        sprite[0] = temp.getSubimage(0, 0, 6, 16);
+        sprite[1] = temp.getSubimage(6, 0, 6, 16);
         popSprite = ImageIO.read(PlayerBulletBasic.class.getResource("rsc/Bullets/crossPop.png"));
     }
 
     public static void unload(){
-        sprite.flush();
         sprite = null;
     }
 
@@ -76,7 +79,12 @@ public class PlayerBulletBasic extends PlayerBullet{
     @Override
     public void draw(Graphics g , ImageObserver o){
         if(stall) g.drawImage(popSprite ,  Math.round(position.x),Math.round(position.y),BULLET_WIDTH , BULLET_HEIGHT , o);
-        else g.drawImage(sprite, Math.round(position.x),Math.round(position.y),BULLET_WIDTH , BULLET_HEIGHT , o);
+        else g.drawImage(sprite[cycle()], Math.round(position.x),Math.round(position.y),BULLET_WIDTH , BULLET_HEIGHT , o);
+    }
+
+    private int cycle(){
+        cycleNum = ++cycleNum % 8;
+        return cycleNum/4;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.Game.Scenes;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -35,7 +36,7 @@ import com.Game.Objects.Item_10;
  */
 
 public class ShooterGame extends Scene{
-    public BufferedImage[] backgrounds;
+    public Image[] backgrounds;
 
     public PlayerCharacter player;
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
@@ -60,6 +61,10 @@ public class ShooterGame extends Scene{
     public int phase = 0;
     public float survivedFor = 0;
     public int bufferCounter = 0;
+    public float backgroundYLevel = 0;
+    static final float backGroundScrollSpeed = 100;
+    static int mapHeight;
+    static int mapWidth;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -69,11 +74,18 @@ public class ShooterGame extends Scene{
     public void loadScene() throws Exception{
         //TODO: Make a loadScene function
 
-        backgrounds = new BufferedImage[1];
-        backgrounds[0] = ImageIO.read(ShooterGame.class.getResource("background/cloudBackground.jpg"));
+        backgrounds = new Image[2];
+        backgrounds[0] = ImageIO.read(ShooterGame.class.getResource("background/map.png"));
+        backgrounds[0] = backgrounds[0].getScaledInstance(((BufferedImage)backgrounds[0]).getWidth()*2,((BufferedImage)backgrounds[0]).getHeight()*2 , points);
+        mapHeight = backgrounds[0].getHeight(null);
+        mapWidth = backgrounds[0].getWidth(null);
+        backgrounds[1] = ImageIO.read(ShooterGame.class.getResource("background/cloudBackground.jpg"));
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
+
+                backgroundYLevel += dt * backGroundScrollSpeed;
+                if(backgroundYLevel >= 0) backgroundYLevel -= mapHeight;
 
                 if (retry){
                     friendlyBullets = new DoublyLinkedList<>();
@@ -283,6 +295,29 @@ public class ShooterGame extends Scene{
             (g) ->{
                 if(debug){
                     graphicsEnhance(g);
+                    for(DoublyLinkedList<EnemyBullet> e : enemyBullets){
+                        Denode<EnemyBullet> eNode = e.getHead();
+                        while(eNode != null){
+                            eNode.getData().getHitbox().draw(g,Global.DEBUG_CANVAS);
+                            eNode = eNode.getNext();
+                        }
+                    }
+                    Denode<PlayerBullet> p = friendlyBullets.getHead();
+                    while(p != null){
+                        p.getData().getHitbox().draw(g , Global.DEBUG_CANVAS);
+                        p = p.getNext();
+                    }
+                    Denode<EnemyEntityBasic> e = enemyShips.getHead();
+                    while(e != null){
+                        e.getData().getHitbox().draw(g , Global.DEBUG_CANVAS);
+                        e = e.getNext();
+                    }
+                    Denode<Item> i = items.getHead();
+                    while(i != null){
+                        i.getData().getHitbox().draw(g , Global.DEBUG_CANVAS);
+                        i = i.getNext();
+                    }
+                    player.getHitbox().draw(g,Global.DEBUG_CANVAS);
                     partition.draw(g);
                 }
             }
@@ -291,7 +326,9 @@ public class ShooterGame extends Scene{
         Global.GAME_ENVIRONMENT.setDrawFunction(-111, 
             (g) ->{
                 graphicsEnhance(g);
-                g.drawImage(backgrounds[0], 0, 0, Global.BACKGROUND_CANVAS);
+                if(backgroundYLevel <= -mapHeight+Global.originalHeight )
+                    g.drawImage(backgrounds[0], 0, (int)backgroundYLevel+mapHeight, Global.BACKGROUND_CANVAS);
+                g.drawImage(backgrounds[0], 0, (int)backgroundYLevel, Global.BACKGROUND_CANVAS);
             }
         );
 

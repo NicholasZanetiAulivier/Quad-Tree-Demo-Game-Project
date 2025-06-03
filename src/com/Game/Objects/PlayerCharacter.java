@@ -178,7 +178,7 @@ public class PlayerCharacter extends PlayerObject{
     public void shoot(){
         shootCD = 0.05f;
         for(int i = 0 ; i < bulletCount ; i++)
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30));
+            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30+(int)(Math.random()*10-20), ((float)Math.random()/4-.125f) ,  -1));
         if (bouncingBullets){
             ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
             ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
