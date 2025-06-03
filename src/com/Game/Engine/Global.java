@@ -5,6 +5,7 @@ import java.awt.RenderingHints;
 import com.Game.Window.GameScreen;
 import com.Game.Window.MainWindow;
 import com.Game.Scenes.HitboxVisualizer;
+import com.Game.Scenes.MainMenu;
 import com.Game.Scenes.Scene;
 // import com.Game.Scenes.WithQuadTree;
 import com.Game.Events.Keyboard;
@@ -26,6 +27,7 @@ public abstract class Global {
     // public static Scene MovingQuadTree = null;
     public static ShooterGame Game = null;
     public static HitboxVisualizer Visualizer = null;
+    public static MainMenu MainMenu = null;
 
 
     public static int cycle = 0;
@@ -56,6 +58,7 @@ public abstract class Global {
         };
         Game = new ShooterGame();
         Visualizer = new HitboxVisualizer();
+        MainMenu = new MainMenu();
     }
 
     public static int counter(){

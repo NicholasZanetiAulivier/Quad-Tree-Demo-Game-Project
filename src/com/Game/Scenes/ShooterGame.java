@@ -30,6 +30,7 @@ import com.Game.Objects.PlayerBullet;
 import com.DataStruct.Denode;
 import com.Game.Objects.Item;
 import com.Game.Objects.Item_10;
+import com.Game.Objects.PlayButton;
 
 /*
  * Needs at least 4 layers of canvas
@@ -291,7 +292,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(999, 
+        Global.DEBUG_CANVAS.setDrawFunction( 
             (g) ->{
                 if(debug){
                     graphicsEnhance(g);
@@ -323,7 +324,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(-111, 
+        Global.BACKGROUND_CANVAS.setDrawFunction(
             (g) ->{
                 graphicsEnhance(g);
                 if(backgroundYLevel <= -mapHeight+Global.originalHeight )
@@ -332,7 +333,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(0,
+        Global.CANVAS[0].setDrawFunction(
             (g) ->{
                 graphicsEnhance(g);
                 Denode<EnemyBullet> enemyBullet = enemyBullets[0].getHead();
@@ -346,7 +347,7 @@ public class ShooterGame extends Scene{
         );
 
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(1,
+        Global.CANVAS[1].setDrawFunction(
             (g) ->{
                 graphicsEnhance(g);
                 Denode<EnemyBullet> enemyBullet = enemyBullets[1].getHead();
@@ -357,7 +358,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(2,
+        Global.CANVAS[2].setDrawFunction(
             (g) ->{
                 graphicsEnhance(g);
                 Denode<EnemyBullet> enemyBullet = enemyBullets[2].getHead();
@@ -369,7 +370,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(3,
+        Global.CANVAS[3].setDrawFunction(
             (g) ->{
                 graphicsEnhance(g);
                 Denode<EnemyBullet> enemyBullet = enemyBullets[3].getHead();
@@ -381,7 +382,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(4, 
+        Global.CANVAS[4].setDrawFunction( 
             (g) ->{
                 graphicsEnhance(g);
                 Denode<PlayerBullet> friendlyBullet = friendlyBullets.getHead();
@@ -392,7 +393,7 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(5,
+        Global.CANVAS[5].setDrawFunction(
             (g) ->{
                 graphicsEnhance(g);
                 Denode<EnemyEntityBasic> enemy = enemyShips.getHead();
@@ -403,14 +404,14 @@ public class ShooterGame extends Scene{
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(6, 
+        Global.CANVAS[6].setDrawFunction( 
             (g) -> {
                 graphicsEnhance(g);
                 player.draw(g , Global.CANVAS[6]);
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(7, 
+        Global.CANVAS[7].setDrawFunction( 
             (g) ->{
                 graphicsEnhance(g);
                 Denode<Item> item = items.getHead();
@@ -481,6 +482,7 @@ public class ShooterGame extends Scene{
         g2d.setColor(new Color(0xFF0000));
     }
 
+    @SuppressWarnings("all")
     public void unloadScene() throws Exception{
         //TODO: Make an unloadScene function
 
@@ -506,6 +508,13 @@ public class ShooterGame extends Scene{
         EnemyBulletAccelerating.unload();
         EnemyBulletExploding.unload();
         Item_10.unload();
+
+        //Unload draw
+        for(int i = 0 ; i < 8 ; i++){
+            Global.CANVAS[i].setDrawFunction((g)->{});
+        }
+        Global.BACKGROUND_CANVAS.setDrawFunction((dt)->{});
+        Global.DEBUG_CANVAS.setDrawFunction((dt)->{});
     }
 
     public void resetListeners(){

@@ -22,7 +22,7 @@ public class HitboxVisualizer extends Scene {
             }
         );
 
-        Global.GAME_ENVIRONMENT.setDrawFunction(0,
+        Global.CANVAS[0].setDrawFunction(
             (g) ->{
                 for(PlayerBulletBasic i : curr){
                     i.draw(g, Global.CANVAS[0]);

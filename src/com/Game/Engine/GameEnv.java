@@ -4,7 +4,6 @@ import com.Game.Window.MainWindow;
 
 import java.awt.RenderingHints;
 
-import com.Game.Callbacks.DrawFunc;
 import com.Game.Callbacks.UpdateFunc;
 import com.Game.Events.Keyboard;
 import com.Game.Events.Mouse;
@@ -49,19 +48,6 @@ public class GameEnv implements Runnable{
             
             GameEnv.isInitialized = true;
         }
-    }
-
-    //Public draw callback function
-    public void setDrawFunction(int id , DrawFunc f){
-        if(id == 999){
-            Global.DEBUG_CANVAS.setDrawFunction(f);
-            return;
-        }
-        if(id == -111){
-            Global.BACKGROUND_CANVAS.setDrawFunction(f);
-            return;
-        }
-        Global.CANVAS[id].setDrawFunction(f);
     }
 
     //Public update callback function
