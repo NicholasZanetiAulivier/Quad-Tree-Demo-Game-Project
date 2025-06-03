@@ -66,10 +66,6 @@ public class ShooterGame extends Scene{
     static final float backGroundScrollSpeed = 100;
     static int mapHeight;
     static int mapWidth;
-    
-    public void switchScene() throws Exception{
-        super.switchScene();
-    }
 
     @SuppressWarnings("all")
     public void loadScene() throws Exception{
@@ -81,6 +77,32 @@ public class ShooterGame extends Scene{
         mapHeight = backgrounds[0].getHeight(null);
         mapWidth = backgrounds[0].getWidth(null);
         backgrounds[1] = ImageIO.read(ShooterGame.class.getResource("background/cloudBackground.jpg"));
+
+        //Load Classes
+        PlayerCharacter.loadSprite();
+        PlayerBulletBasic.loadSprite();
+        PlayerBulletBouncing.loadSprite();
+        EnemyEntityBasic.loadSprite();
+        EnemyEntityHoming.loadSprite();
+        EnemyEntityShooterBasic.loadSprite();
+        EnemyEntityShooterSpread.loadSprite();
+        EnemyEntityShooterStrafe.loadSprite();
+        EnemyEntityShooterBomb.loadSprite();
+        EnemyBulletBasic.loadSprite();
+        EnemyBulletSpread.loadSprite();
+        EnemyBulletAccelerating.loadSprite();
+        EnemyBulletExploding.loadSprite();
+        Item_10.loadSprite();
+
+        //Load objects
+        player = new PlayerCharacter();
+        friendlyBullets = new DoublyLinkedList<>();
+        enemyShips = new DoublyLinkedList<>();
+        enemyBullets = (DoublyLinkedList<EnemyBullet>[])(new DoublyLinkedList[4]);
+        for(int i = 0 ; i < 4 ; i++){
+            enemyBullets[i] = new DoublyLinkedList<>();
+        }
+        items = new DoublyLinkedList<>();
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
@@ -447,33 +469,6 @@ public class ShooterGame extends Scene{
                 if(n == KeyEvent.VK_Z) player.stopShooting();
             }
         );
-
-
-        //Load Classes
-        PlayerCharacter.loadSprite();
-        PlayerBulletBasic.loadSprite();
-        PlayerBulletBouncing.loadSprite();
-        EnemyEntityBasic.loadSprite();
-        EnemyEntityHoming.loadSprite();
-        EnemyEntityShooterBasic.loadSprite();
-        EnemyEntityShooterSpread.loadSprite();
-        EnemyEntityShooterStrafe.loadSprite();
-        EnemyEntityShooterBomb.loadSprite();
-        EnemyBulletBasic.loadSprite();
-        EnemyBulletSpread.loadSprite();
-        EnemyBulletAccelerating.loadSprite();
-        EnemyBulletExploding.loadSprite();
-        Item_10.loadSprite();
-
-        //Load objects
-        player = new PlayerCharacter();
-        friendlyBullets = new DoublyLinkedList<>();
-        enemyShips = new DoublyLinkedList<>();
-        enemyBullets = (DoublyLinkedList<EnemyBullet>[])(new DoublyLinkedList[4]);
-        for(int i = 0 ; i < 4 ; i++){
-            enemyBullets[i] = new DoublyLinkedList<>();
-        }
-        items = new DoublyLinkedList<>();
     }
 
     public static void graphicsEnhance(Graphics g){
