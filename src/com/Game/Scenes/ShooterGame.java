@@ -3,7 +3,9 @@ package com.Game.Scenes;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.awt.Color;
+import javax.imageio.ImageIO;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.GameQuadTree;
@@ -33,6 +35,8 @@ import com.Game.Objects.Item_10;
  */
 
 public class ShooterGame extends Scene{
+    public BufferedImage[] backgrounds;
+
     public PlayerCharacter player;
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
@@ -52,9 +56,10 @@ public class ShooterGame extends Scene{
 
     public boolean retry = false;
     public float timeCooldown = 1f;
-    public int wave = 0;
+    public int wave = 1;
     public int phase = 0;
     public float survivedFor = 0;
+    public int bufferCounter = 0;
     
     public void switchScene() throws Exception{
         super.switchScene();
@@ -63,6 +68,9 @@ public class ShooterGame extends Scene{
     @SuppressWarnings("all")
     public void loadScene() throws Exception{
         //TODO: Make a loadScene function
+
+        backgrounds = new BufferedImage[1];
+        backgrounds[0] = ImageIO.read(ShooterGame.class.getResource("background/cloudBackground.jpg"));
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
@@ -280,6 +288,13 @@ public class ShooterGame extends Scene{
             }
         );
 
+        Global.GAME_ENVIRONMENT.setDrawFunction(-111, 
+            (g) ->{
+                graphicsEnhance(g);
+                g.drawImage(backgrounds[0], 0, 0, Global.BACKGROUND_CANVAS);
+            }
+        );
+
         Global.GAME_ENVIRONMENT.setDrawFunction(0,
             (g) ->{
                 graphicsEnhance(g);
@@ -289,9 +304,9 @@ public class ShooterGame extends Scene{
                     enemyBullet = enemyBullet.getNext();
                 }
 
+                g.drawString(String.valueOf(points), 10, Global.realHeight-10);
             }
         );
-
 
 
         Global.GAME_ENVIRONMENT.setDrawFunction(1,
@@ -471,7 +486,7 @@ public class ShooterGame extends Scene{
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_BASIC: {
-                enemyShips.append(new EnemyEntityShooterBasic(xLoc , yLoc));
+                enemyShips.append(new EnemyEntityShooterBasic(xLoc , yLoc , xDir , yDir , xAccel , yAccel));
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_SPREAD :{
@@ -509,7 +524,7 @@ public class ShooterGame extends Scene{
                     case 1 : case 2: case 3:{
                         timeCooldown = .2f;
                         for (int i = 0 ; i < 6 ; i++){
-                            spawn(CollisionObject.ENEMY_BASIC , (float)Math.random()*(Global.realWidth-100)+50,-64 , (float)Math.random()*200-100 , 900, (float)Math.random()*200-100 , -500);
+                            spawn(CollisionObject.ENEMY_BASIC , (float)Math.random()*(Global.realWidth-50),-64 , (float)Math.random()*200-100 , 900, (float)Math.random()*200-100 , -500);
                         }
                         if(points >= 500 || survivedFor > 60){
                             wave++;
@@ -517,6 +532,7 @@ public class ShooterGame extends Scene{
                             survivedFor = 0;
                             timeCooldown = 3f;
                             System.out.println("Wave 2");
+                            player.bulletCount += 1;
                             return;
                         }
                         phase = phase % 4;
@@ -528,6 +544,49 @@ public class ShooterGame extends Scene{
 
             //Wave 2
             case 1:{
+                switch(phase++){
+                    case 0: case 3:{
+                        timeCooldown = .7f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , Global.realWidth-80 , -64 , 0 , 300 , 0 , 0);
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 16 , -64 , 0 , 300 , 0 , 0);
+                        break;
+                    }
+                    case 1 :  case 2: case 4:{
+                        timeCooldown = .2f;
+                        int c = (int)player.position.x;
+                        spawn(CollisionObject.ENEMY_BASIC , c , -64 , 0 , 700 , 0 , 100);
+                        spawn(CollisionObject.ENEMY_BASIC , c+30 , -64 , 200 , 200 , 0 , 100);
+                        spawn(CollisionObject.ENEMY_BASIC , c-30 , -64 , -200 , 200 , 0 , 100);
+                        spawn(CollisionObject.ENEMY_BASIC , c+60 , -64 , 200 , 100 , 0 , 100);
+                        spawn(CollisionObject.ENEMY_BASIC , c-60 , -64 , -200 , 100 , 0 , 100);
+                        spawn(CollisionObject.ENEMY_BASIC , c+120 , -64 , 200 , 50 , 0 , 100);
+                        spawn(CollisionObject.ENEMY_BASIC , c-120 , -64 , -200 , 50 , 0 , 100);
+
+                        if(survivedFor > 15 || points >= 1000 ){
+                            phase = 5;
+                            return;
+                        }
+
+                        phase = phase % 5;
+                        break;
+                    }
+
+                    case 5:{
+                        timeCooldown = .2f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , Global.realWidth-80 , -64 , 0 , 300 , 0 , 0);
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 16 , -64 , 0 , 300 , 0 , 0);
+                        if(bufferCounter++ > 5){
+                            timeCooldown = 2f;
+                            bufferCounter = 0;
+                            wave++;
+                            phase = 0;
+                            return;
+                        }
+                        phase = 5;
+                        break;
+                    }
+                }
+                break;
             }
         }
     }

@@ -57,6 +57,10 @@ public class GameEnv implements Runnable{
             Global.DEBUG_CANVAS.setDrawFunction(f);
             return;
         }
+        if(id == -111){
+            Global.BACKGROUND_CANVAS.setDrawFunction(f);
+            return;
+        }
         Global.CANVAS[id].setDrawFunction(f);
     }
 

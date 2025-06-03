@@ -32,11 +32,11 @@ public class PlayerCharacter extends PlayerObject{
     private boolean goingFast = true;
 
     private boolean shooting = false;
-    private boolean bouncingBullets = true;
+    public boolean bouncingBullets = false;
 
     private float shootCD = .05f;
 
-    private int bulletCount = 2;
+    public int bulletCount = 2;
 
     public PlayerCharacter(){
         position = new Vector2(Global.realWidth/2,Global.realHeight/2);

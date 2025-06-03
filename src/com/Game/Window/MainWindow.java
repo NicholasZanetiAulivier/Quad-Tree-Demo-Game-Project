@@ -13,6 +13,7 @@ import java.awt.Color;
 public class MainWindow extends JFrame {
     private GameScreen[] canvas;
     private GameScreen debugCanvas;
+    private GameScreen backgroundCanvas;
 
     public MainWindow(int width , int height , String name , int numOfCanvases){
         //Call JFrame Constructor
@@ -27,10 +28,10 @@ public class MainWindow extends JFrame {
         debugCanvas = new GameScreen();
         debugCanvas.setBounds(0,0,Global.originalWidth,Global.originalHeight);
         add(debugCanvas);
-
+        
         this.canvas = new GameScreen[numOfCanvases];
-
-
+        
+        
         //Canvas foreground is always index 0, the next layer is 1, next 2, and so on until the very back which is numOfCanvases-1
         for(int i = 0 ; i < numOfCanvases ; i++){
             this.canvas[i] = new GameScreen();
@@ -38,6 +39,11 @@ public class MainWindow extends JFrame {
             add(this.canvas[i]);
         }
 
+        backgroundCanvas = new GameScreen();
+        backgroundCanvas.setBounds(0,0,Global.originalWidth,Global.originalHeight);
+        add(backgroundCanvas);
+
+        Global.BACKGROUND_CANVAS = backgroundCanvas;
         Global.DEBUG_CANVAS = debugCanvas;
         Global.CANVAS = this.canvas;
         setSize(width,height);
