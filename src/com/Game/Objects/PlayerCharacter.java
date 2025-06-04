@@ -83,10 +83,6 @@ public class PlayerCharacter extends PlayerObject{
     public void goSlow(){
         this.goingFast = false;
     }
-    
-    public void switchSpeed(){
-        this.goingFast = !this.goingFast;
-    }
 
     public void startShooting(){
         shooting = true;

@@ -14,7 +14,7 @@ import com.Game.Objects.CollisionObject;
  */
 
 public class GameQuadTree{
-    public static int MAX_OBJECTS = 7;
+    public static int MAX_OBJECTS = 5;
     public static int MAX_LEVEL = 7;
     // public static int MAX_LEVEL = 5;
     

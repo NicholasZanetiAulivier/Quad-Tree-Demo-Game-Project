@@ -76,7 +76,7 @@ public class EnemyEntityBasic extends EnemyObject{
     }
 
     protected boolean destroyCheck(){
-        if(position.y > Global.realHeight || position.y < -70 || position.x < -70 || position.x > Global.realWidth) {
+        if(position.y > Global.realHeight+100 || position.y < -150 || position.x < -150 || position.x > Global.originalWidth+100) {
             shouldDestroy = true;
             return true;
         }

@@ -20,11 +20,10 @@ public class EnemyEntityShooterSpread extends EnemyEntityShooterBasic{
     private static final int HITBOX_WIDTH = 49;
     private static final int HITBOX_HEIGHT = 40;
     
-    private static final int SPRITE_WIDTH = 64;
-    private static final int SPRITE_HEIGHT = 80;
+    public static final int SPRITE_WIDTH = 64;
+    public static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = .5f;
-    private static final float STARTING_VELOCITY = 200;
+    private static final float BASIC_COOLDOWN = .3f;
 
     private static final float[][] shootShape = {
         {1f,-1f},
@@ -34,11 +33,13 @@ public class EnemyEntityShooterSpread extends EnemyEntityShooterBasic{
     };
 
     private Vector2 velocity;
+    private Vector2 acceleration;
     private float shootCD = BASIC_COOLDOWN;
 
-    public EnemyEntityShooterSpread(float x , float y){
+    public EnemyEntityShooterSpread(float x , float y , float xV , float yV , float xAccel , float yAccel){
         position = new Vector2(x, y);
-        velocity = new Vector2(0 , STARTING_VELOCITY);
+        velocity = new Vector2(xV , yV);
+        acceleration = new Vector2(xAccel , yAccel);
         HP = 1000;
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
     }
@@ -68,7 +69,10 @@ public class EnemyEntityShooterSpread extends EnemyEntityShooterBasic{
 
     @Override
     protected void move(float dt){
+        Vector2 halfAccel = Vector2.scale(acceleration , .5f*dt);
+        velocity.add(halfAccel);
         this.position.add(Vector2.scale(velocity , dt));
+        velocity.add(halfAccel);
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }
 

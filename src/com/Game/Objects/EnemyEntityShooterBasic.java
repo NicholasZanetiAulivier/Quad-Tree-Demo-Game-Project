@@ -23,7 +23,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = .5f;
+    private static final float BASIC_COOLDOWN = .4f;
 
     private Vector2 acceleration;
     private Vector2 velocity;

@@ -57,7 +57,7 @@ public class ShooterGame extends Scene{
 
     public boolean retry = false;
     public float timeCooldown = 1f;
-    public int wave = 1;
+    public int wave = 2;
     public int phase = 0;
     public float survivedFor = 0;
     public float deathCD = 2f;
@@ -465,7 +465,7 @@ public class ShooterGame extends Scene{
                 if(n == KeyEvent.VK_DOWN) down = true;
                 if(n == KeyEvent.VK_LEFT) left = true;
                 if(n == KeyEvent.VK_RIGHT) right = true;
-                if(n == KeyEvent.VK_SHIFT) player.switchSpeed();
+                if(n == KeyEvent.VK_SHIFT) player.goSlow();
                 if(n == KeyEvent.VK_Z) player.startShooting();
                 if(n == KeyEvent.VK_R) retry = true;
                 if(n == KeyEvent.VK_F3) debug = !debug;
@@ -479,7 +479,7 @@ public class ShooterGame extends Scene{
                 if(n == KeyEvent.VK_DOWN) down = false;
                 if(n == KeyEvent.VK_LEFT) left = false;
                 if(n == KeyEvent.VK_RIGHT) right = false;
-                if(n == KeyEvent.VK_SHIFT) player.switchSpeed();
+                if(n == KeyEvent.VK_SHIFT) player.goFast();
                 if(n == KeyEvent.VK_Z) player.stopShooting();
             }
         );
@@ -545,7 +545,7 @@ public class ShooterGame extends Scene{
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_SPREAD :{
-                enemyShips.append(new EnemyEntityShooterSpread(xLoc , yLoc));
+                enemyShips.append(new EnemyEntityShooterSpread(xLoc , yLoc , xDir , yDir , xAccel , yAccel));
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_STRAFE : {
@@ -677,11 +677,62 @@ public class ShooterGame extends Scene{
                             phase = 0;
                             bufferCounter = 0;
                             timeCooldown = 2f;
+                            player.bulletCount++;
                             return;
                         } else {
                             phase = 7;
                         }
                         bufferCounter -= 30;
+                        break;
+                    }
+                }
+                break;
+            }
+            
+            //Wave 3: SURVIVE WAVE
+            case 2 : {
+                switch(phase++){
+                    case 0:{
+                        timeCooldown = .7f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , (Global.originalWidth-EnemyEntityShooterSpread.SPRITE_WIDTH)/2 , -80+(float)Math.random()*30-15 , 0 , 200 , 0 ,0);
+                        if(bufferCounter++ == 5) {
+                            bufferCounter = 0;
+                            return;
+                        }
+                        else phase = 0;
+                        break;
+                    }
+
+                    case 1: {
+                        timeCooldown = .7f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , (Global.originalWidth-EnemyEntityShooterSpread.SPRITE_WIDTH)/2-200 , -80+(float)Math.random()*30-15 , 0 , 200 , 0 ,0);
+                        if(bufferCounter++ == 5){
+                            bufferCounter = 0;
+                            return;
+                        }
+                        else phase = 1;
+                        break;
+                    }
+
+                    case 2 : {
+                        timeCooldown = .7f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , (Global.originalWidth-EnemyEntityShooterSpread.SPRITE_WIDTH)/2+200 , -80+(float)Math.random()*30-15 , 0 , 200 , 0 ,0);
+                        if(bufferCounter++ == 5){
+                            bufferCounter = 0;
+                            return;
+                        }
+                        else phase = 2;
+                        break;
+                    }
+
+                    case 3 :{
+                        timeCooldown = .2f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , (Global.originalWidth-EnemyEntityShooterSpread.SPRITE_WIDTH)/2-200+200*(bufferCounter%3) , -80+(float)Math.random()*30-15 , 0 , 400 , 0 ,0);
+                        if(bufferCounter++ == 18){
+                            bufferCounter = 0;
+                            return;
+                        }
+                        else phase = 3;
                         break;
                     }
                 }
