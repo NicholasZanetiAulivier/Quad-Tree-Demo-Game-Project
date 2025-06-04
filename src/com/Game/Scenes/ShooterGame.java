@@ -120,6 +120,7 @@ public class ShooterGame extends Scene{
 
                     points = 0;
                     timeCooldown = 1f;
+                    survivedFor = 0;
                     wave = 0;
                     phase = 0;
                     retry = false;
