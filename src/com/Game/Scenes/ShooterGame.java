@@ -60,6 +60,8 @@ public class ShooterGame extends Scene{
     public int wave = 1;
     public int phase = 0;
     public float survivedFor = 0;
+    public float deathCD = 2f;
+    public int lives = 2;
     public int bufferCounter = 0;
     public float backgroundYLevel = 0;
     static final float backGroundScrollSpeed = 100;
@@ -105,6 +107,16 @@ public class ShooterGame extends Scene{
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
+                if(player.dead && lives > 0){
+                    deathCD -= dt;
+                    if(deathCD <= 0){
+                        player = new PlayerCharacter();
+                        deathCD = 2f;
+                        for(int i = 0 ; i < 4 ; i++)
+                            enemyBullets[i] = new DoublyLinkedList<>();
+                        lives--;
+                    }
+                }
 
                 backgroundYLevel += dt * backGroundScrollSpeed;
                 if(backgroundYLevel >= 0) backgroundYLevel -= mapHeight;
@@ -119,6 +131,8 @@ public class ShooterGame extends Scene{
 
                     points = 0;
                     timeCooldown = 1f;
+                    lives = 2;
+                    deathCD = 2f;
                     survivedFor = 0;
                     wave = 0;
                     phase = 0;
@@ -193,7 +207,7 @@ public class ShooterGame extends Scene{
 
 
                 //Collision detect player-enemyBullet
-                if(!player.dead){
+                if(!(player.dead || player.autoMoving) && (player.invincibleCD -= dt) < 0){
                     for (int i = 0 ; i < 4 ; i++){
                         enemyBullet = enemyBullets[i].getHead();
                         while(enemyBullet != null){
@@ -575,6 +589,7 @@ public class ShooterGame extends Scene{
                         break;
                     }
 
+                    //Desperation Phase
                     case 4:{
                         timeCooldown = .25f;
                         int offset = bufferCounter%2;
@@ -619,7 +634,7 @@ public class ShooterGame extends Scene{
                         spawn(CollisionObject.ENEMY_BASIC , c+120 , -64 , 200 , 50 , 0 , 100);
                         spawn(CollisionObject.ENEMY_BASIC , c-120 , -64 , -200 , 50 , 0 , 100);
 
-                        if(survivedFor > 15 || points >= 1000 ){
+                        if(survivedFor > 30 || points >= 1500 ){
                             phase = 5;
                             return;
                         }

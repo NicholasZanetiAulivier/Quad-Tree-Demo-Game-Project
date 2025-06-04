@@ -35,11 +35,14 @@ public class PlayerCharacter extends PlayerObject{
     public boolean bouncingBullets = false;
 
     private float shootCD = .05f;
+    public float invincibleCD = 1f;
+    public boolean autoMoving;
 
     public int bulletCount = 2;
 
     public PlayerCharacter(){
-        position = new Vector2(Global.realWidth/2,Global.realHeight/2);
+        position = new Vector2((Global.realWidth-SPRITE_WIDTH)/2,Global.realHeight);
+        autoMoving = true;
         hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH,HITBOX_HEIGHT);
     }
 
@@ -96,6 +99,14 @@ public class PlayerCharacter extends PlayerObject{
     @Override
     public void update(float dt){
         //TODO: make update function for player
+        if(autoMoving){
+            position.y -= 100*dt;
+            if(position.y < 500){
+                autoMoving = false;
+                invincibleCD = 1f;
+            }
+            else return;
+        }
 
         if(!dead){
             //  Move Player
