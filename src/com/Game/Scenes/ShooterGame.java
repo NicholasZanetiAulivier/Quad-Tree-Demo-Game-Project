@@ -648,13 +648,40 @@ public class ShooterGame extends Scene{
                         spawn(CollisionObject.ENEMY_SHOOTER_BASIC , Global.realWidth-80 , -64 , 0 , 300 , 0 , 0);
                         spawn(CollisionObject.ENEMY_SHOOTER_BASIC , 16 , -64 , 0 , 300 , 0 , 0);
                         if(bufferCounter++ > 5){
-                            timeCooldown = 2f;
+                            timeCooldown = .5f;
                             bufferCounter = 0;
-                            wave++;
-                            phase = 0;
                             return;
                         }
                         phase = 5;
+                        break;
+                    }
+
+                    //Desparation Phase
+                    case 6 :{
+                        timeCooldown = .1f;
+                        bufferCounter += 30;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , bufferCounter , -64 , 0 , 700 , 0 , -1500);
+                        if(bufferCounter > 750){
+                            phase = 7;
+                        } else {
+                            phase = 6;
+                        }
+                        break;
+                    }
+
+                    case 7: {
+                        timeCooldown = .1f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , bufferCounter , -64 , 0 , 700 , 0 , -1500);
+                        if(bufferCounter < 60){
+                            wave++;
+                            phase = 0;
+                            bufferCounter = 0;
+                            timeCooldown = 2f;
+                            return;
+                        } else {
+                            phase = 7;
+                        }
+                        bufferCounter -= 30;
                         break;
                     }
                 }
