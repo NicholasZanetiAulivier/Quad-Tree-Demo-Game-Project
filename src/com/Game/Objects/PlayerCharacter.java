@@ -99,7 +99,7 @@ public class PlayerCharacter extends PlayerObject{
 
         if(!dead){
             //  Move Player
-            ShooterGame currScene = (ShooterGame)Global.currentScene;
+            ShooterGame currScene = Global.Game;
             Vector2 speed = new Vector2(0,0);
             if(currScene.up) speed.y -= 1;
             if(currScene.down) speed.y += 1;
@@ -109,8 +109,7 @@ public class PlayerCharacter extends PlayerObject{
             speed.normalize();
             speed.multiply((goingFast ? PLAYER_SPEED_FAST:PLAYER_SPEED)*dt);
             position.add(speed);
-            // System.out.println(speed);
-            if(position.x < -30) setX(-30);
+            if (position.x < -30) setX(-30);
             else if (position.x > Global.realWidth-SPRITE_WIDTH+30) setX(Global.realWidth-SPRITE_WIDTH+30);
             if(position.y < -30) setY(-30);
             else if (position.y > Global.realHeight-SPRITE_HEIGHT+30) setY(Global.realHeight-SPRITE_HEIGHT+30);
@@ -178,12 +177,12 @@ public class PlayerCharacter extends PlayerObject{
     public void shoot(){
         shootCD = 0.05f;
         for(int i = 0 ; i < bulletCount ; i++)
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30+(int)(Math.random()*10-20), ((float)Math.random()/4-.125f) ,  -1));
+            Global.Game.friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30+(int)(Math.random()*10-20), ((float)Math.random()/4-.125f) ,  -1));
         if (bouncingBullets){
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-3f));
-            ((ShooterGame)Global.currentScene).friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-3f));
+            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
+            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
+            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-3f));
+            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-3f));
         }
     }
 

@@ -72,7 +72,7 @@ public class ShooterGame extends Scene{
 
         backgrounds = new Image[2];
         backgrounds[0] = ImageIO.read(ShooterGame.class.getResource("background/map.png"));
-        backgrounds[0] = backgrounds[0].getScaledInstance(((BufferedImage)backgrounds[0]).getWidth()*2,((BufferedImage)backgrounds[0]).getHeight()*2 , points);
+        backgrounds[0] = backgrounds[0].getScaledInstance(Global.originalWidth,((BufferedImage)backgrounds[0]).getHeight()*2 , Image.SCALE_DEFAULT);
         mapHeight = backgrounds[0].getHeight(null);
         mapWidth = backgrounds[0].getWidth(null);
         backgrounds[1] = ImageIO.read(ShooterGame.class.getResource("background/cloudBackground.jpg"));
@@ -568,6 +568,22 @@ public class ShooterGame extends Scene{
                             spawn(CollisionObject.ENEMY_BASIC , (float)Math.random()*(Global.realWidth-50),-64 , (float)Math.random()*200-100 , 900, (float)Math.random()*200-100 , -500);
                         }
                         if(points >= 500 || survivedFor > 60){
+                            phase = 4;
+                            return;
+                        }
+                        phase = phase % 4;
+                        break;
+                    }
+
+                    case 4:{
+                        timeCooldown = .25f;
+                        int offset = bufferCounter%2;
+                        float xAcc = offset*200 * (offset == 1 ? -1 : 1);
+                        float spacing = Global.realWidth/8f;
+                        for (int i = 0 ; i < 4 ; i++){
+                            spawn(CollisionObject.ENEMY_BASIC, spacing*(2*i+offset), -64, 0, 900, xAcc , -100);
+                        }
+                        if(bufferCounter++ == 20){
                             wave++;
                             phase = 0;
                             survivedFor = 0;
@@ -576,7 +592,7 @@ public class ShooterGame extends Scene{
                             player.bulletCount += 1;
                             return;
                         }
-                        phase = phase % 4;
+                        phase = 4;
                         break;
                     }
                 }
