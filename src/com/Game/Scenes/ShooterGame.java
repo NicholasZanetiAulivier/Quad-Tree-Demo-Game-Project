@@ -53,9 +53,10 @@ public class ShooterGame extends Scene{
 
     public int points=0;
     public int totalPoints = 0;
-
+    
     public boolean debug = false;
-
+    
+    public boolean pause = false;
     public boolean retry = false;
     public float timeCooldown = 1f;
     public int wave = 3;
@@ -109,6 +110,27 @@ public class ShooterGame extends Scene{
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
+                if (retry){
+                    friendlyBullets = new DoublyLinkedList<>();
+                    enemyShips = new DoublyLinkedList<>();
+                    items = new DoublyLinkedList<>();
+                    for(int i = 0 ; i < 4 ; i++)
+                        enemyBullets[i] = new DoublyLinkedList<>();
+                    player = new PlayerCharacter();
+
+                    points = 0;
+                    timeCooldown = 1f;
+                    lives = 2;
+                    deathCD = 2f;
+                    survivedFor = 0;
+                    wave = 0;
+                    phase = 0;
+                    retry = false;
+                    pause = false;
+                    return;
+                }
+                if(pause) return;
+
                 if(player.dead && lives > 0){
                     deathCD -= dt;
                     if(deathCD <= 0){
@@ -127,24 +149,6 @@ public class ShooterGame extends Scene{
                 backgroundYLevel += dt * backGroundScrollSpeed;
                 if(backgroundYLevel >= 0) backgroundYLevel -= mapHeight;
 
-                if (retry){
-                    friendlyBullets = new DoublyLinkedList<>();
-                    enemyShips = new DoublyLinkedList<>();
-                    items = new DoublyLinkedList<>();
-                    for(int i = 0 ; i < 4 ; i++)
-                        enemyBullets[i] = new DoublyLinkedList<>();
-                    player = new PlayerCharacter();
-
-                    points = 0;
-                    timeCooldown = 1f;
-                    lives = 2;
-                    deathCD = 2f;
-                    survivedFor = 0;
-                    wave = 0;
-                    phase = 0;
-                    retry = false;
-                    return;
-                }
 
                 Denode<PlayerBullet> friendlyBullet;
                 Denode<EnemyEntityBasic> enemy;
@@ -384,6 +388,10 @@ public class ShooterGame extends Scene{
                     enemyBullet = enemyBullet.getNext();
                 }
 
+                if(pause){
+                    g.setColor(new Color(.5f,.5f,.5f,.5f));
+                    g.fillRect(0, 0, Global.originalWidth, Global.originalHeight);
+                }
                 g.drawString(String.valueOf(points), 10, Global.realHeight-10);
             }
         );
@@ -475,6 +483,7 @@ public class ShooterGame extends Scene{
                 if(n == KeyEvent.VK_Z) player.startShooting();
                 if(n == KeyEvent.VK_R) retry = true;
                 if(n == KeyEvent.VK_F3) debug = !debug;
+                if(n == KeyEvent.VK_ESCAPE || n == KeyEvent.VK_P) pause = !pause;
             }
         );
 
