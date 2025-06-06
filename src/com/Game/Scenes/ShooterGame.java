@@ -58,8 +58,9 @@ public class ShooterGame extends Scene{
     
     public boolean pause = false;
     public boolean retry = false;
+    public boolean bossDefeated = false;
     public float timeCooldown = 1f;
-    public int wave = 3;
+    public int wave = 4;
     public int phase = 0;
     public float survivedFor = 0;
     public float deathCD = 2f;
@@ -107,6 +108,7 @@ public class ShooterGame extends Scene{
             enemyBullets[i] = new DoublyLinkedList<>();
         }
         items = new DoublyLinkedList<>();
+        EnemyBulletBasic.BULLET_VELOCITY = 400;
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
@@ -118,6 +120,7 @@ public class ShooterGame extends Scene{
                         enemyBullets[i] = new DoublyLinkedList<>();
                     player = new PlayerCharacter();
 
+                    EnemyBulletBasic.BULLET_VELOCITY = 400;
                     points = 0;
                     timeCooldown = 1f;
                     lives = 2;
@@ -126,6 +129,7 @@ public class ShooterGame extends Scene{
                     wave = 0;
                     phase = 0;
                     retry = false;
+                    bossDefeated = false;
                     pause = false;
                     return;
                 }
@@ -300,9 +304,11 @@ public class ShooterGame extends Scene{
                  */
 
                 //At certain times, randomly call a new wave
-                timeCooldown -= dt;
-                survivedFor += dt;
-                if(timeCooldown <= 0) runRandomScriptedEvent();
+                if(lives >= 0){
+                    timeCooldown -= dt;
+                    survivedFor += dt;
+                    if(timeCooldown <= 0) runRandomScriptedEvent();
+                }
 
 
                 //  Update Player
@@ -388,9 +394,12 @@ public class ShooterGame extends Scene{
                     enemyBullet = enemyBullet.getNext();
                 }
 
-                if(pause){
+                if(pause || lives < 0){
                     g.setColor(new Color(.5f,.5f,.5f,.5f));
                     g.fillRect(0, 0, Global.originalWidth, Global.originalHeight);
+                    if(lives < 0){
+                        //TODO : WRITE PLAYER DEAD
+                    }
                 }
                 g.drawString(String.valueOf(points), 10, Global.realHeight-10);
             }
@@ -669,6 +678,7 @@ public class ShooterGame extends Scene{
                         if(bufferCounter++ > 5){
                             timeCooldown = .5f;
                             bufferCounter = 0;
+                            EnemyBulletBasic.BULLET_VELOCITY = 800;
                             return;
                         }
                         phase = 5;
@@ -745,20 +755,28 @@ public class ShooterGame extends Scene{
                     }
 
                     case 3 :{
+                        timeCooldown = .1f;
+                        EnemyBulletBasic.BULLET_VELOCITY = 200;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , (Global.originalWidth-EnemyEntityShooterBasic.SPRITE_WIDTH)/2 , -80+(float)Math.random()*30-15 , 0 , 100 , 0 ,0);
+                        break;
+                    }
+
+                    case 4 :{
                         timeCooldown = .2f;
                         spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , (Global.originalWidth-EnemyEntityShooterSpread.SPRITE_WIDTH)/2-200+200*(bufferCounter%3) , -80+(float)Math.random()*30-15 , 0 , 400 , 0 ,0);
                         if(bufferCounter++ == 18){
                             bufferCounter = 0;
+                            bufferCounter2 = 0;
                             wave++;
                             phase = 0;
                             timeCooldown = 4f;
                             player.bouncingBullets1 = true;
                             totalPoints += points;
                             points = 0;
-                            EnemyBulletBasic.BULLET_VELOCITY = 200;
+                            EnemyBulletBasic.BULLET_VELOCITY = 700;
                             return;
                         }
-                        else phase = 3;
+                        else phase = 4;
                         break;
                     }
                 }
@@ -841,6 +859,7 @@ public class ShooterGame extends Scene{
                             case 5 : {
                                 phase = 0;
                                 player.bouncingBullets2 = true;
+                                bufferCounter = bufferCounter2 = 0;
                                 totalPoints += points;
                                 points = 0;
                                 wave++;
@@ -850,6 +869,58 @@ public class ShooterGame extends Scene{
                         break;
                     }
                 }
+                break;
+            }
+
+            //WAVE 5: ENEMY BOMBER BOSS BATTLE
+            case 4 : {
+                switch (phase++) {
+                    case 0 :{
+                        bossDefeated = false;
+                        timeCooldown = 1f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BOMB , -80,-80 , 0,0,0,0 );
+                        break;
+                    }
+                    
+                    case 1 : {
+                        timeCooldown = .1f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 0 , -64 , 0 , 300 , 0,0);
+                    }
+                    
+                    case 2 : {
+                        timeCooldown = 3f;
+                        spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth-30 , -64 , 0 , 300 , 0,0);
+                        if(bufferCounter++ >= 3){
+                            timeCooldown = .2f;
+                            bufferCounter = 0;
+                        } else
+                            phase = 1;
+                    }
+
+                    case 3 : {
+                        timeCooldown = .2f;
+                        spawn(CollisionObject.ENEMY_HOMING , (float)Math.random()*Global.originalWidth , -64 , 0,0,0,0);
+                        if(bossDefeated){
+                            timeCooldown = 3f;
+                            phase = 0;
+                            wave++;
+                            bufferCounter = 0;
+                            totalPoints += points;
+                            points = 0;
+                            return;
+                        }
+                        
+                        if(bufferCounter++ >= 10){
+                            timeCooldown = 3f;
+                            phase = 1;
+                            bufferCounter = 0;
+                        } else {
+                            phase = 3;
+                        }
+                    }
+
+                }
+                break;
             }
         }
     }

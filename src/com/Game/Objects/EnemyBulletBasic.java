@@ -30,6 +30,7 @@ public class EnemyBulletBasic extends EnemyBullet{
         position = pos;
         direction = dire;
         direction.normalize();
+        direction.multiply(BULLET_VELOCITY);
         rotatedImage = new BufferedImage(sprite.getWidth(),sprite.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE);
         Graphics2D gs = rotatedImage.createGraphics();
         if(direction.x < 0)
@@ -71,7 +72,7 @@ public class EnemyBulletBasic extends EnemyBullet{
     }
 
     protected void move(float dt){
-        position.add(Vector2.scale(direction, dt*BULLET_VELOCITY));
+        position.add(Vector2.scale(direction, dt));
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }
 

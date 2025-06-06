@@ -51,7 +51,7 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
             thisShootShape[i][0] = temp.x;
             thisShootShape[i][1] = temp.y;
         }
-        HP = 100;
+        HP = 1000;
         rotatedImage = new BufferedImage(sprite[0].getWidth(), sprite[0].getHeight(), BufferedImage.TYPE_INT_ARGB);
         hitbox = new HitboxCircular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_RADIUS);
     }

@@ -20,8 +20,8 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static final int HITBOX_WIDTH = 51;
     private static final int HITBOX_HEIGHT = 48;
     
-    private static final int SPRITE_WIDTH = 64;
-    private static final int SPRITE_HEIGHT = 80;
+    public static final int SPRITE_WIDTH = 64;
+    public static final int SPRITE_HEIGHT = 80;
     
     private static final float BASIC_COOLDOWN = .4f;
 

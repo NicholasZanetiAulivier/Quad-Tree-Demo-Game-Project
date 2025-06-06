@@ -30,11 +30,11 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
     private boolean stationary = false;
     private float shootCD = BASIC_COOLDOWN;
 
-    public EnemyEntityShooterBomb(float x , float y){
+    public EnemyEntityShooterBomb(float x , float y ){
         position = new Vector2(-Global.realWidth/2, -100);
         // position = new Vector2(x,y);
         whereToGo = new Vector2(x,y);
-        HP = 2000;
+        HP = 10000;
         hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
     }
 
@@ -116,5 +116,19 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
     private int cycle(){
         cycleTime = ++cycleTime % 16;
         return cycleTime/8;
+    }
+
+    @Override
+    public void isColliding(CollisionObject c){
+        colliding = true;
+        short id = c.getIdentity();
+        if(id == CollisionObject.PLAYER_BULLET_BASIC || id == CollisionObject.PLAYER_BULLET_BOUNCING){
+            HP = HP - ((PlayerBullet)c).damage;
+            if(HP <= 0){
+                shouldDestroy = true;
+                dropItems(new Item_10(position.x,position.y));
+                Global.Game.bossDefeated = true;
+            }
+        }
     }
 }
