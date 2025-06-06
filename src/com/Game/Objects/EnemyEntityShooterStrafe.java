@@ -22,8 +22,7 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
     private static final int SPRITE_WIDTH = 30;
     private static final int SPRITE_HEIGHT = 30;
     
-    private static final float BASIC_COOLDOWN = .5f;
-    private static final float STARTING_VELOCITY = 200;
+    private static final float BASIC_COOLDOWN = .1f;
 
     private static final float[][] shootShape = {
         {-1f,1f},
@@ -32,24 +31,26 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
 
     private float[][] thisShootShape;
     private Vector2 velocity;
+    private Vector2 acceleration;
     private float shootCD = BASIC_COOLDOWN;
     private int currState = 0;
     private BufferedImage rotatedImage;
 
-    public EnemyEntityShooterStrafe(float x , float y , float dirX , float dirY){
+    public EnemyEntityShooterStrafe(float x , float y , float dirX , float dirY , float xAccel , float yAccel){
         position = new Vector2(x, y);
         velocity = new Vector2(dirX , dirY);
-        velocity.normalize();
+        Vector2 temp2 = new Vector2(dirX,dirY);
+        temp2.normalize();
+        acceleration = new Vector2(xAccel , yAccel);
         thisShootShape = new float[2][2];
         for (int i = 0 ; i < 2 ; i++){
             Vector2 temp = new Vector2(shootShape[i][0],shootShape[i][1]);
             // temp.imaginaryMultiply(velocity);
-            temp.add(velocity);
+            temp.add(temp2);
             temp.normalize();
             thisShootShape[i][0] = temp.x;
             thisShootShape[i][1] = temp.y;
         }
-        velocity.multiply(STARTING_VELOCITY);
         HP = 100;
         rotatedImage = new BufferedImage(sprite[0].getWidth(), sprite[0].getHeight(), BufferedImage.TYPE_INT_ARGB);
         hitbox = new HitboxCircular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_RADIUS);
@@ -71,7 +72,10 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
 
     @Override
     protected void move(float dt){
+        Vector2 halfAccel = Vector2.scale(acceleration , .5f*dt);
+        velocity.add(halfAccel);
         this.position.add(Vector2.scale(velocity , dt));
+        velocity.add(halfAccel);
         hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
     }
 

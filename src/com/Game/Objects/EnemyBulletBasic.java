@@ -15,7 +15,7 @@ import com.Game.Engine.Global;
 public class EnemyBulletBasic extends EnemyBullet{
     private static BufferedImage sprite;
     
-    private static final float BULLET_VELOCITY = 400;
+    public static float BULLET_VELOCITY = 400;
     private static final int BULLET_WIDTH = 24;
     private static final int BULLET_HEIGHT = 24;
     

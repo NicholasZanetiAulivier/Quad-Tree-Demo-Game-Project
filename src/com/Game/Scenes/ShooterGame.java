@@ -52,17 +52,19 @@ public class ShooterGame extends Scene{
     public boolean right = false;
 
     public int points=0;
+    public int totalPoints = 0;
 
     public boolean debug = false;
 
     public boolean retry = false;
     public float timeCooldown = 1f;
-    public int wave = 2;
+    public int wave = 3;
     public int phase = 0;
     public float survivedFor = 0;
     public float deathCD = 2f;
     public int lives = 2;
     public int bufferCounter = 0;
+    public int bufferCounter2 = 0;
     public float backgroundYLevel = 0;
     static final float backGroundScrollSpeed = 100;
     static int mapHeight;
@@ -110,7 +112,11 @@ public class ShooterGame extends Scene{
                 if(player.dead && lives > 0){
                     deathCD -= dt;
                     if(deathCD <= 0){
+                        PlayerCharacter temp = player;
                         player = new PlayerCharacter();
+                        player.bouncingBullets1 = temp.bouncingBullets1;
+                        player.bouncingBullets2 = temp.bouncingBullets2;
+                        player.bulletCount = temp.bulletCount;
                         deathCD = 2f;
                         for(int i = 0 ; i < 4 ; i++)
                             enemyBullets[i] = new DoublyLinkedList<>();
@@ -549,7 +555,7 @@ public class ShooterGame extends Scene{
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_STRAFE : {
-                enemyShips.append(new EnemyEntityShooterStrafe(xLoc, yLoc, xDir, yDir));
+                enemyShips.append(new EnemyEntityShooterStrafe(xLoc, yLoc, xDir, yDir , xAccel , yAccel));
                 break;
             }
             case CollisionObject.ENEMY_SHOOTER_BOMB : {
@@ -598,13 +604,15 @@ public class ShooterGame extends Scene{
                         for (int i = 0 ; i < 4 ; i++){
                             spawn(CollisionObject.ENEMY_BASIC, spacing*(2*i+offset), -64, 0, 900, xAcc , -100);
                         }
-                        if(bufferCounter++ == 20){
+                        if(bufferCounter++ >= 20){
                             wave++;
                             phase = 0;
                             survivedFor = 0;
                             timeCooldown = 3f;
                             System.out.println("Wave 2");
                             player.bulletCount += 1;
+                            totalPoints += points;
+                            points = 0;
                             return;
                         }
                         phase = 4;
@@ -634,8 +642,10 @@ public class ShooterGame extends Scene{
                         spawn(CollisionObject.ENEMY_BASIC , c+120 , -64 , 200 , 50 , 0 , 100);
                         spawn(CollisionObject.ENEMY_BASIC , c-120 , -64 , -200 , 50 , 0 , 100);
 
-                        if(survivedFor > 30 || points >= 1500 ){
+                        if(survivedFor > 30 || points >= 1000 ){
                             phase = 5;
+                            totalPoints += points;
+                            points = 0;
                             return;
                         }
 
@@ -676,7 +686,7 @@ public class ShooterGame extends Scene{
                             wave++;
                             phase = 0;
                             bufferCounter = 0;
-                            timeCooldown = 2f;
+                            timeCooldown = 4f;
                             player.bulletCount++;
                             return;
                         } else {
@@ -730,6 +740,13 @@ public class ShooterGame extends Scene{
                         spawn(CollisionObject.ENEMY_SHOOTER_SPREAD , (Global.originalWidth-EnemyEntityShooterSpread.SPRITE_WIDTH)/2-200+200*(bufferCounter%3) , -80+(float)Math.random()*30-15 , 0 , 400 , 0 ,0);
                         if(bufferCounter++ == 18){
                             bufferCounter = 0;
+                            wave++;
+                            phase = 0;
+                            timeCooldown = 4f;
+                            player.bouncingBullets1 = true;
+                            totalPoints += points;
+                            points = 0;
+                            EnemyBulletBasic.BULLET_VELOCITY = 200;
                             return;
                         }
                         else phase = 3;
@@ -737,6 +754,93 @@ public class ShooterGame extends Scene{
                     }
                 }
                 break;
+            }
+
+            //WAVE 4 SURVIVE WAVE
+            case 3 : {
+                switch(phase++){
+                    case 0 :{
+                        timeCooldown = .1f;
+                        float c = (float)Math.random()*800-100;
+                        spawn(CollisionObject.ENEMY_SHOOTER_BASIC , c , -64 , 0 , c/4 , (400-c) , 100 );
+                        if(bufferCounter++ <= 10){
+                            phase = 0 ;
+                        } else bufferCounter = 0;
+                        break;
+                    }
+
+                    case 1 : {
+                        timeCooldown = .1f;
+                        spawn(CollisionObject.ENEMY_BASIC , bufferCounter*50 , -64 , 0 , 400 , 0 , 300);
+                        if(bufferCounter++ != 5){
+                            phase = 1 ;
+                        } else bufferCounter = 0;
+                        break;
+                    }
+                    
+                    case 2 : {
+                        timeCooldown = .1f;
+                        spawn(CollisionObject.ENEMY_BASIC , Global.realWidth-bufferCounter*60 , -64 , 0 , 400 , 0 , 300);
+                        if(bufferCounter++ != 5){
+                            phase = 2;
+                        } else{
+                            bufferCounter = 0;
+                            
+                            bufferCounter2++;
+                        }
+                        break;
+                    }
+
+                    case 3 : {
+                        timeCooldown = 2f;
+                        switch(bufferCounter2){
+                            case 0 :{
+                                phase = 0;
+                            }
+                            case 1 : {
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth - 200 , -64 , 0, 300 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth - 150 , -64 , 0, 300 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 100 , -64 , 0, 300 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 150 , -64 , 0, 300 , 0 , 0);
+                                phase = 0;
+                                break;
+                            }
+                            case 2 : {
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , -64 , Global.originalHeight - 200 , 300, 0 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , -64 , Global.originalHeight - 150 , 300, 0 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , -64 , 100 , 300, 0 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , -64 , 150 , 300, 0 , 0 , 0);
+                                phase = 0;
+                                break;
+                            }
+                            case 3 : {
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth - 200 , Global.originalHeight , 0, -300 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth - 150 , Global.originalHeight , 0, -300 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 100 , -64 , 0, 300 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , 150 , -64 , 0, 300 , 0 , 0);
+                                phase = 0;
+                                break;
+                            }
+                            case 4 : {
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , -64 , Global.originalHeight - 200 , 300, 0 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , -64 , Global.originalHeight - 150 , 300, 0 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth+64 , 100 , -300, 0 , 0 , 0);
+                                spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth+64 , 150 , -300, 0 , 0 , 0);
+                                phase = 0;
+                                break;
+                            }
+                            case 5 : {
+                                phase = 0;
+                                player.bouncingBullets2 = true;
+                                totalPoints += points;
+                                points = 0;
+                                wave++;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
             }
         }
     }
