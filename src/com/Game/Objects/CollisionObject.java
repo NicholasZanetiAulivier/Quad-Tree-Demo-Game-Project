@@ -17,6 +17,11 @@ public interface CollisionObject {
     static final short ENEMY_SHOOTER_BASIC = 2004;
     static final short ENEMY_SHOOTER_BOMB = 2009;
 
+    static final short ENEMY_BIG_BOSS = 2010;
+    static final short ENEMY_SUMMONER_BOSS = 2011;
+    static final short ENEMY_DASHER_BOSS = 2012;
+    static final short ENEMY_SHOOTER_BOSS = 2013;
+
     static final short ENEMY_BULLET_BASIC = 2002;
     static final short ENEMY_BULLET_SPREAD = 2003;
     static final short ENEMY_BULLET_ACCEL = 2006;

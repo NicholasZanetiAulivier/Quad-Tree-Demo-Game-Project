@@ -36,6 +36,7 @@ public abstract class EnemyObject implements CollisionObject, Entity , Drawable{
     }
 
     public boolean checkCollision(Shape r){
+        if(r == null) return false;
         if (r.contains(this.getBounds()) || r.intersects(this.getBounds())) return true;
         else return false;
     }

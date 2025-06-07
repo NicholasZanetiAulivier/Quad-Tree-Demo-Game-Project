@@ -1,13 +1,15 @@
 package com.Game.Scenes;
 
 import com.Game.Engine.Global;
-import com.Game.Objects.PlayerBulletBasic;
+import com.Game.Objects.EnemyEntityShooterFinalBoss;
 /*
  * Scene to visualize hitbox
  */
 
 public class HitboxVisualizer extends Scene {
-    public PlayerBulletBasic[] curr;
+    public EnemyEntityShooterFinalBoss.Dasher currD;
+    public EnemyEntityShooterFinalBoss.Summoner currS;
+    public EnemyEntityShooterFinalBoss.Shooter currSh;
 
     @Override
     public void switchScene() throws Exception{
@@ -19,28 +21,29 @@ public class HitboxVisualizer extends Scene {
     public void loadScene() throws Exception{
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
+                currD.update(dt);
+
             }
         );
 
         Global.CANVAS[0].setDrawFunction(
             (g) ->{
-                for(PlayerBulletBasic i : curr){
-                    i.draw(g, Global.CANVAS[0]);
-                    i.getHitbox().draw(g,Global.CANVAS[0]);
-                }
+                currD.draw(g,Global.CANVAS[0]);
+                currD.getHitbox().draw(g,Global.CANVAS[0]);
+                currS.draw(g,Global.CANVAS[0]);
+                currS.getHitbox().draw(g,Global.CANVAS[0]);
+                currSh.draw(g,Global.CANVAS[0]);
+                currSh.getHitbox().draw(g,Global.CANVAS[0]);
             }
         );
 
         //Load Classes
-        PlayerBulletBasic.loadSprite();
+        EnemyEntityShooterFinalBoss.loadSprite();
 
         //Load Objects
-        this.curr = new PlayerBulletBasic[1];
-        try{
-            curr[0] = new PlayerBulletBasic(300,200 , 0 , 0);
-        } catch(Throwable e){
-            e.printStackTrace();
-        }
+        currSh = new EnemyEntityShooterFinalBoss.Shooter(10, 10);
+        currD = new EnemyEntityShooterFinalBoss.Dasher(200, 200);
+        currS = new EnemyEntityShooterFinalBoss.Summoner(200, 400);
     }
 
     @Override
