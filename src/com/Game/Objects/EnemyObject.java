@@ -27,6 +27,7 @@ public abstract class EnemyObject implements CollisionObject, Entity , Drawable{
                 collides = checkCollision((Ellipse2D)c.getHitbox().getHitbox());
                 break;
             }
+            
         }
         if(collides){
             colliding = true;

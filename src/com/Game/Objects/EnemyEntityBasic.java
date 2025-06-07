@@ -15,8 +15,8 @@ import com.Game.Engine.Global;
 public class EnemyEntityBasic extends EnemyObject{
     private static BufferedImage sprite;
 
-    private static final int SPRITE_WIDTH = 64;
-    private static final int SPRITE_HEIGHT = 64;
+    public static final int SPRITE_WIDTH = 64;
+    public static final int SPRITE_HEIGHT = 64;
 
     private static final float HITBOX_X_OFFSET = 16;
     private static final float HITBOX_Y_OFFSET = 20;
@@ -103,6 +103,7 @@ public class EnemyEntityBasic extends EnemyObject{
 
     @Override
     public Rectangle getBounds(){
+        if(hitbox == null) return null;
         return hitbox.getBounds();
     }
 

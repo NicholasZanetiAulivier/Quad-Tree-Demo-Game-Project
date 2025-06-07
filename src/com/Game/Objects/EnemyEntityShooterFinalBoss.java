@@ -4,38 +4,54 @@ import java.io.IOException;
 
 import java.awt.Color;
 import javax.imageio.ImageIO;
+import javax.management.MalformedObjectNameException;
+
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-
 import com.DataType.Vector2;
+import com.Game.Engine.Global;
+
+
 public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
     public Summoner summoner;
     public Dasher dasher;
     public Shooter shooter;
 
+    public static final float SWITCH_TIMER = 10f;
+
+    public int whoseTurn;
+    public float timer = SWITCH_TIMER;
+    public EnemyEntityShooterBasic currentActive = null;
+
 
     public static class Summoner extends EnemyEntityShooterBasic{
         private static BufferedImage sprite;
 
         private static final int HITBOX_X_OFFSET = 6;
-        private static final int HITBOX_Y_OFFSET = 22;
-        private static final int HITBOX_WIDTH = 51;
+        private static final int HITBOX_Y_OFFSET = 24;
+        private static final int HITBOX_WIDTH = 89;
         private static final int HITBOX_HEIGHT = 48;
 
         public static final int SPRITE_WIDTH = 100;
         public static final int SPRITE_HEIGHT = 100;
+
+        public static final float GO_BACK_SPEED = 200;
         
         public Vector2 velocity;
+        public Vector2 whereToGo;
+        public int shootingWhomst = 0;
         public boolean isActive;
-        private static float COOLDOWN = 1.2f;
-        private float CD = COOLDOWN;
+        private float timeCooldown = .5f;
+        private boolean shooting = false;
 
         public Summoner( float x , float y){
             position = new Vector2(x,y);
             velocity = new Vector2(0,0);
+            shooting = false;
+            isActive = true;
             HP=30000;
             hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
         }
@@ -56,7 +72,156 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         @Override
         public void update(float dt){
             move(dt);
-            shoot(dt);
+            if(shooting)shoot(dt);
+        }
+
+        @Override
+        public void move(float dt){
+            if(isActive){
+                if(position.y < 0){
+                    position.y += GO_BACK_SPEED * dt;
+                }
+                if(!shooting){
+                    float x = (float)Math.random()*(Global.originalWidth-SPRITE_WIDTH);
+                    float y = (float)Math.random()*(50);
+                    whereToGo = new Vector2(x,y);
+                    velocity = new Vector2(.5f*(x-position.x) , .5f*(y-position.y));
+                    shooting = true;
+                } else {
+                    position.add(Vector2.scale(velocity, dt));
+                    if(Vector2.getDistance(whereToGo, position) <= 100){
+                        shooting = false;
+                    }
+                }
+            } else{
+                shooting = false;
+                if(position.y+SPRITE_HEIGHT > 0){
+                    position.y -= GO_BACK_SPEED * dt;        
+                }
+            }
+            hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        }
+
+        @Override
+        public void shoot(float dt){
+            if(isActive){
+                timeCooldown -= dt;
+                if(timeCooldown <= 0){
+                    cycleAmmo();
+                    switch(shootingWhomst){
+                        case 0 : case 4 : case 5 : case 6 :{
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_BASIC,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                (float)Math.random()*(1000)-500,
+                                -100,
+                                (float)Math.random()*(500)-250,
+                                200
+                            );
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_BASIC,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                (float)Math.random()*(1000)-500,
+                                -100,
+                                (float)Math.random()*(500)-250,
+                                200
+                            );
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_BASIC,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                (float)Math.random()*(200)-100,
+                                -50,
+                                (float)Math.random()*(100)-50,
+                                200
+                            );
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_BASIC,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                (float)Math.random()*(200)-100,
+                                -50,
+                                (float)Math.random()*(100)-50,
+                                200
+                            );
+                            timeCooldown = .1f;
+                            break;
+                        }
+                        case 1 :{
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_SHOOTER_STRAFE ,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                0,
+                                300,
+                                0,
+                                100
+                            );
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_SHOOTER_STRAFE ,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                200,
+                                200,
+                                0,
+                                100
+                            );
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_SHOOTER_STRAFE ,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                -200,
+                                200,
+                                0,
+                                100
+                            );
+                            timeCooldown = .5f;
+                            break;
+                        }
+                        case 2 : case 8 : case 9 :{
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_SHOOTER_BASIC,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                100,
+                                50,
+                                -20,
+                                -5
+                            );
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_SHOOTER_BASIC,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                -100,
+                                50,
+                                20,
+                                -5
+                            );
+                            timeCooldown = .5f;
+                            break;
+                        }
+                        case 3 : case 7 :{
+                            Global.Game.spawn(
+                                CollisionObject.ENEMY_SHOOTER_SPREAD,
+                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                0,
+                                300,
+                                0,
+                                0
+                            );
+                            timeCooldown = .5f;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void cycleAmmo(){
+            shootingWhomst = (int)Math.round(Math.random()*9);
         }
 
         @Override
@@ -79,14 +244,16 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         private static BufferedImage sprite;
 
         private static final int HITBOX_X_OFFSET = 6;
-        private static final int HITBOX_Y_OFFSET = 22;
-        private static final int HITBOX_WIDTH = 51;
+        private static final int HITBOX_Y_OFFSET = 28;
+        private static final int HITBOX_WIDTH =89;
         private static final int HITBOX_HEIGHT = 48;
 
         public Vector2 velocity;
         public boolean isActive;
         private static float COOLDOWN = 1.2f;
         private float CD = COOLDOWN;
+
+        public boolean shooting = false;
 
         public static final int SPRITE_WIDTH = 100;
         public static final int SPRITE_HEIGHT = 100;
@@ -113,7 +280,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         @Override
         public void update(float dt){
             move(dt);
-            shoot(dt);
+            if(shooting)shoot(dt);
         }
 
         @Override
@@ -140,9 +307,9 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         private static float COOLDOWN = 1.2f;
         private float CD = COOLDOWN;
 
-        private static final int HITBOX_X_OFFSET = 6;
-        private static final int HITBOX_Y_OFFSET = 22;
-        private static final int HITBOX_RADIUS = 50;
+        private static final int HITBOX_X_OFFSET = 25;
+        private static final int HITBOX_Y_OFFSET = 25;
+        private static final int HITBOX_RADIUS = 24;
 
         public static final int SPRITE_WIDTH = 100;
         public static final int SPRITE_HEIGHT = 100;
@@ -150,7 +317,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         public Dasher(float x , float y){
             position = new Vector2(x,y);
             velocity = new Vector2(1,1);
-            HP = 30000;
+            HP = 10000;
             hitbox = new HitboxCircular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_RADIUS);
             rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
         }
@@ -171,7 +338,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         public void update(float dt){
             // move(dt);
             // shoot(dt);
-            velocity.rotate(dt);
+            // velocity.rotate(dt);
         }
 
 
@@ -201,16 +368,50 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
     }
 
     public EnemyEntityShooterFinalBoss(){
-        position = new Vector2(-100, -100);
-        velocity = new Vector2(0 , 0);
-        acceleration = new Vector2(0, 0);
-        HP = 100000;
 
         shooter = new Shooter(-100, -100);
+        Global.Game.enemyShips.append(shooter);
         summoner = new Summoner(-100, -100);
+        Global.Game.enemyShips.append(summoner);
         dasher = new Dasher(-100, -100);
+        Global.Game.enemyShips.append(dasher);
+
+        whoseTurn = Math.round((float)(Math.random()*3));
+        //Temp
+        whoseTurn = 0;
+        switchTurns();
+
 
         hitbox = null;
+    }
+
+    public void switchTurns(){
+        whoseTurn = ++whoseTurn % 3;
+        switch(whoseTurn){
+            case 0 : {
+                currentActive = shooter;
+                shooter.isActive = true;
+                summoner.isActive = false;
+                dasher.isActive = false;
+                break;
+            }
+
+            case 1 : {
+                currentActive = summoner;
+                summoner.isActive = true;
+                shooter.isActive = false;
+                dasher.isActive = false;
+                break;
+            }
+
+            case 2 : {
+                currentActive = dasher;
+                dasher.isActive = true;
+                shooter.isActive = false;
+                summoner.isActive = false;
+                break;
+            } 
+        }
     }
 
     public static void loadSprite() throws IOException{
@@ -233,6 +434,11 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
     @Override
     protected void move(float dt){
+        timer -= dt;
+        if(timer <= 0){
+            switchTurns();
+            timer = SWITCH_TIMER;
+        }
     }
 
     protected void shoot(float dt){
@@ -240,9 +446,6 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
     @Override
     public void draw(Graphics g , ImageObserver observer){
-        shooter.draw(g, observer);
-        summoner.draw(g, observer);
-        dasher.draw(g, observer);
     }
 
     @Override
@@ -253,5 +456,9 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
     @Override
     public short getIdentity(){
         return CollisionObject.ENEMY_BIG_BOSS;
+    }
+
+    public void checkCollision(CollisionObject o){
+        return;
     }
 }

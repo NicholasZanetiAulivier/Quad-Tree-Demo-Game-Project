@@ -21,6 +21,7 @@ import com.Game.Objects.EnemyEntityBasic;
 import com.Game.Objects.EnemyEntityHoming;
 import com.Game.Objects.EnemyEntityShooterBasic;
 import com.Game.Objects.EnemyEntityShooterBomb;
+import com.Game.Objects.EnemyEntityShooterFinalBoss;
 import com.Game.Objects.EnemyEntityShooterSpread;
 import com.Game.Objects.EnemyEntityShooterStrafe;
 import com.Game.Objects.PlayerBulletBasic;
@@ -60,7 +61,7 @@ public class ShooterGame extends Scene{
     public boolean retry = false;
     public boolean bossDefeated = false;
     public float timeCooldown = 1f;
-    public int wave = 4;
+    public int wave = 5;
     public int phase = 0;
     public float survivedFor = 0;
     public float deathCD = 2f;
@@ -97,6 +98,7 @@ public class ShooterGame extends Scene{
         EnemyBulletSpread.loadSprite();
         EnemyBulletAccelerating.loadSprite();
         EnemyBulletExploding.loadSprite();
+        EnemyEntityShooterFinalBoss.loadSprite();
         Item_10.loadSprite();
 
         //Load objects
@@ -540,6 +542,7 @@ public class ShooterGame extends Scene{
         EnemyEntityShooterSpread.unload();
         EnemyBulletAccelerating.unload();
         EnemyBulletExploding.unload();
+        EnemyEntityShooterFinalBoss.unload();
         Item_10.unload();
 
         //Unload draw
@@ -907,6 +910,7 @@ public class ShooterGame extends Scene{
                             bufferCounter = 0;
                             totalPoints += points;
                             points = 0;
+                            bossDefeated = false;
                             return;
                         }
                         
@@ -921,6 +925,28 @@ public class ShooterGame extends Scene{
 
                 }
                 break;
+            }
+
+            //FINAL WAVE: BOSS
+            case 5 :{
+                switch (phase) {
+                    case 0 : {
+                        bossDefeated = false;
+                        enemyShips.append(new EnemyEntityShooterFinalBoss());
+                        phase++;
+                        timeCooldown = 999f;
+                        break;
+                    }
+                    
+                    case 1 : {
+                        enemyShips.getHead().getData().shouldDestroy = true;
+                        totalPoints += points;
+                        points = 0;
+                        wave++;
+                        phase = 0;
+                        break;
+                    }
+                }
             }
         }
     }
