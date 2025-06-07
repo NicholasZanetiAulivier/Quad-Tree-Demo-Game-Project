@@ -14,7 +14,7 @@ public class EnemyBulletSpread extends EnemyBulletBasic{
     private static BufferedImage sprite;
     private static final int BULLET_WIDTH = 16;
     private static final int BULLET_HEIGHT = 16;
-    private static final int BULLET_VELOCITY = 200;
+    private static final int BULLET_VELOCITY = 100;
     
     private static final int HITBOX_RADIUS = 6;
     private static final int HITBOX_X_OFFSET = 2;

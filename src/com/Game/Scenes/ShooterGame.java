@@ -64,7 +64,7 @@ public class ShooterGame extends Scene{
     public int phase = 0;
     public float survivedFor = 0;
     public float deathCD = 2f;
-    public int lives = 2;
+    public int lives = 5;
     public int bufferCounter = 0;
     public int bufferCounter2 = 0;
     public float backgroundYLevel = 0;
@@ -123,13 +123,15 @@ public class ShooterGame extends Scene{
                     EnemyBulletBasic.BULLET_VELOCITY = 400;
                     points = 0;
                     timeCooldown = 1f;
-                    lives = 2;
+                    lives = 5;
                     deathCD = 2f;
                     survivedFor = 0;
                     wave = 0;
                     phase = 0;
                     retry = false;
                     bossDefeated = false;
+                    bufferCounter = 0;
+                    bufferCounter2 = 0;
                     pause = false;
                     return;
                 }
@@ -159,59 +161,57 @@ public class ShooterGame extends Scene{
                 Denode<EnemyBullet> enemyBullet;
                 Denode<Item> item;
                 
-                /*
-                 * Collision Detection (QuadTree)
-                 */
-
-                partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
-                
-                //Insert player bullet ke QuadTree
-                friendlyBullet = friendlyBullets.getHead();
-                while(friendlyBullet != null){
-                    partition.insert((CollisionObject)friendlyBullet.getData());
-                    friendlyBullet = friendlyBullet.getNext();
-                }
-                
-
-                //Collision Detect enemy-player bullet
-                enemy = enemyShips.getHead();
+                // //Collision Detect enemy-player bullet
                 int checks = 0;
+                enemy = enemyShips.getHead();
+
+                // /*
+                //  * Collision Detection (QuadTree)
+                //  */
+
+                // /*
+                //  * THIS IS THE QUADTREE IMPLEMENTATION
+                //  */
+                // partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
                 
-                /*
-                 * THIS IS THE QUADTREE IMPLEMENTATION
-                 */
+                // //Insert player bullet ke QuadTree
+                // friendlyBullet = friendlyBullets.getHead();
+                // while(friendlyBullet != null){
+                //     partition.insert((CollisionObject)friendlyBullet.getData());
+                //     friendlyBullet = friendlyBullet.getNext();
+                // }
+            
+                // while(enemy != null){
+                //     CollisionObject e = (CollisionObject)enemy.getData();
+                //     Denode<CollisionObject> pBullet = partition.retrieve(e).getHead();
+                //     while(pBullet != null){
+                //         CollisionObject p = pBullet.getData();
+                //         e.checkCollision(p);
+                //         pBullet = pBullet.getNext();
+                //         checks++; 
+                //     }
+                //     enemy = enemy.getNext();
+                // }
 
-                while(enemy != null){
-                    CollisionObject e = (CollisionObject)enemy.getData();
-                    Denode<CollisionObject> pBullet = partition.retrieve(e).getHead();
-                    while(pBullet != null){
-                        CollisionObject p = pBullet.getData();
-                        e.checkCollision(p);
-                        pBullet = pBullet.getNext();
-                        checks++; 
-                    }
-                    enemy = enemy.getNext();
-                }
-
-                /*
-                 * END QUADTREE IMPLEMENTATION
-                 */
+                // /*
+                //  * END QUADTREE IMPLEMENTATION
+                //  */
 
                 /*
                 * BRUTEFORCE IMPLEMENTATION
                 */
 
-                // while (enemy != null){
-                //     CollisionObject e = (CollisionObject)enemy.getData();
-                //     Denode<PlayerBullet> pBullet = friendlyBullets.getHead();
-                //     while(pBullet != null){
-                //         CollisionObject p = (CollisionObject)pBullet.getData();
-                //         e.checkCollision(p);
-                //         pBullet = pBullet.getNext();
-                //         checks++;
-                //     }
-                //     enemy = enemy.getNext();
-                // }
+                while (enemy != null){
+                    CollisionObject e = (CollisionObject)enemy.getData();
+                    Denode<PlayerBullet> pBullet = friendlyBullets.getHead();
+                    while(pBullet != null){
+                        CollisionObject p = (CollisionObject)pBullet.getData();
+                        e.checkCollision(p);
+                        pBullet = pBullet.getNext();
+                        checks++;
+                    }
+                    enemy = enemy.getNext();
+                }
                 
                 /*
                 * END BRUITEFORCE IMPLEMENTATION
@@ -371,7 +371,7 @@ public class ShooterGame extends Scene{
                         i = i.getNext();
                     }
                     player.getHitbox().draw(g,Global.DEBUG_CANVAS);
-                    partition.draw(g);
+                    if(partition != null)partition.draw(g);
                 }
             }
         );
@@ -888,7 +888,7 @@ public class ShooterGame extends Scene{
                     }
                     
                     case 2 : {
-                        timeCooldown = 3f;
+                        timeCooldown = 1f;
                         spawn(CollisionObject.ENEMY_SHOOTER_STRAFE , Global.originalWidth-30 , -64 , 0 , 300 , 0,0);
                         if(bufferCounter++ >= 3){
                             timeCooldown = .2f;

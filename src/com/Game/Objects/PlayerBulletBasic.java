@@ -15,8 +15,8 @@ public class PlayerBulletBasic extends PlayerBullet{
     protected static BufferedImage popSprite;
 
     private static final float BULLET_VELOCITY = 1750;
-    private static final int BULLET_WIDTH = 6;
-    private static final int BULLET_HEIGHT = 16;
+    public static final int BULLET_WIDTH = 6;
+    public static final int BULLET_HEIGHT = 16;
 
     private static final int HITBOX_WIDTH = 7;
     private static final int HITBOX_HEIGHT = 16;

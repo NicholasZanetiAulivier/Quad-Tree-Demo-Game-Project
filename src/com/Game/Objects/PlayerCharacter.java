@@ -185,14 +185,14 @@ public class PlayerCharacter extends PlayerObject{
     public void shoot(){
         shootCD = 0.05f;
         for(int i = 0 ; i < bulletCount ; i++)
-            Global.Game.friendlyBullets.append(new PlayerBulletBasic(position.x+SPRITE_WIDTH/2-8, position.y+30+(int)(Math.random()*10-20), ((float)Math.random()/4-.125f) ,  -1));
+            Global.Game.friendlyBullets.append(new PlayerBulletBasic(position.x+(SPRITE_WIDTH-PlayerBulletBasic.BULLET_WIDTH)/2, position.y+30+(int)(Math.random()*10-20), ((float)Math.random()/4-.125f) ,  -1));
         if (bouncingBullets1){
-            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-.2f));
-            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-.2f));
+            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2-5 , -1,-.2f));
+            Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2-5 , 1,-.2f));
             
             if(bouncingBullets2){
-                Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , -1,-3f));
-                Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2 , 1,-3f));
+                Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2-5 , -1,-3f));
+                Global.Game.friendlyBullets.append(new PlayerBulletBouncing(position.x+SPRITE_WIDTH/2-8, position.y+SPRITE_HEIGHT/2-5 , 1,-3f));
             }
         }
     }

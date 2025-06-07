@@ -23,7 +23,7 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
     private static final int SPRITE_WIDTH = 64;
     private static final int SPRITE_HEIGHT = 80;
     
-    private static final float BASIC_COOLDOWN = 1f;
+    private static final float BASIC_COOLDOWN = .5f;
 
     private Vector2 whereToGo;
     private int cycleTime = 0;
