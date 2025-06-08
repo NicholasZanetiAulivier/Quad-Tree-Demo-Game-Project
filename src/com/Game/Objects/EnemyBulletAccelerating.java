@@ -12,17 +12,17 @@ import com.Game.Engine.Global;
 
 public class EnemyBulletAccelerating extends EnemyBulletBasic {
     private static BufferedImage[] sprite;
-    private static final int BULLET_WIDTH = 16;
-    private static final int BULLET_HEIGHT = 16;
+    public static final int BULLET_WIDTH = 16;
+    public static final int BULLET_HEIGHT = 16;
 
-    private static final int BULLET_VELOCITY = 100;
-    private static final int BULLET_SLOWDOWN = 50;
+    public static int BULLET_VELOCITY = 100;
+    public static int BULLET_SLOWDOWN = 50;
 
     private static final int HITBOX_RADIUS = 6;
     private static final int HITBOX_X_OFFSET = 2;
     private static final int HITBOX_Y_OFFSET = 2;
 
-    private Vector2 acceleration;
+    public Vector2 acceleration;
     private int currState = 0;
     private float fadeDelay = 1f;
     
