@@ -10,10 +10,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
 import com.DataType.Vector2;
+import com.Game.Audio.SoundEffects;
 import com.Game.Engine.Global;
 
 
 public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
+
+    public static SoundEffects defeat;
 
     public Summoner summoner;
     public Dasher dasher;
@@ -73,6 +76,20 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         public void update(float dt){
             if(!shouldDestroy){move(dt);
             if(shooting)shoot(dt);}
+        }
+
+        @Override
+        public void isColliding(CollisionObject c){
+            colliding = true;
+            short id = c.getIdentity();
+            if(id == CollisionObject.PLAYER_BULLET_BASIC || id == CollisionObject.PLAYER_BULLET_BOUNCING){
+                HP = HP - ((PlayerBullet)c).damage;
+                if(HP <= 0){
+                    shouldDestroy = true;
+                    EnemyEntityShooterFinalBoss.defeat.play();
+                    dropItems(new Item_10(position.x,position.y));
+                }
+            }
         }
 
         @Override
@@ -226,6 +243,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         public void activate(){
             isActive = true;
+            EnemyBulletAccelerating.BULLET_SLOWDOWN = 50;
+            EnemyBulletAccelerating.BULLET_VELOCITY = 100;
         }
 
         public void deactivate(){
@@ -301,6 +320,20 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         }
 
         @Override
+        public void isColliding(CollisionObject c){
+            colliding = true;
+            short id = c.getIdentity();
+            if(id == CollisionObject.PLAYER_BULLET_BASIC || id == CollisionObject.PLAYER_BULLET_BOUNCING){
+                HP = HP - ((PlayerBullet)c).damage;
+                if(HP <= 0){
+                    shouldDestroy = true;
+                    EnemyEntityShooterFinalBoss.defeat.play();
+                    dropItems(new Item_10(position.x,position.y));
+                }
+            }
+        }
+
+        @Override
         public void move(float dt){
             if(isActive){
                 if(position.y < 0){
@@ -347,11 +380,13 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                         Global.Game.enemyBullets[Global.counter()].append(
                                             new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter) , (float)Math.cos(bufferCounter))
                                         );
+                                        shoot.play();
                                         if(bufferCounter2 >0){
                                             Global.Game.enemyBullets[Global.counter()].append(
                                                 new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(Math.PI-bufferCounter) , (float)Math.cos(Math.PI-bufferCounter))
                                             );
                                         }
+                                        shoot.play();
                                     } catch(Throwable e ){e.printStackTrace();}
                                     else {
                                         bulletPhase++;
@@ -375,11 +410,12 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                         Global.Game.enemyBullets[Global.counter()].append(
                                             new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter) , (float)Math.cos(bufferCounter))
                                         );
-
+                                        shoot.play();
                                         if(bufferCounter2 >0){
                                             Global.Game.enemyBullets[Global.counter()].append(
                                                 new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(Math.PI-bufferCounter) , (float)Math.cos(Math.PI-bufferCounter))
                                             );
+                                            shoot.play();
                                         }
                                     } catch(Throwable e ){e.printStackTrace();}
                                     else if(bufferCounter2 == 0){
@@ -426,10 +462,13 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                                 new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter) , (float)Math.cos(bufferCounter))
                                             );
 
+                                            shoot.play();
+
                                             if(bufferCounter2 >0){
                                                 Global.Game.enemyBullets[Global.counter()].append(
                                                     new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(Math.PI-bufferCounter) , (float)Math.cos(Math.PI-bufferCounter))
                                                 );
+                                                shoot.play();
                                             }
                                         } catch(Throwable e ){e.printStackTrace();}
                                         bufferCounter += .5f;
@@ -466,6 +505,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                             Global.Game.enemyBullets[Global.counter()].append(
                                                 new EnemyBulletAccelerating(position.x+(SPRITE_WIDTH-EnemyBulletAccelerating.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletAccelerating.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter-Math.PI/2), (float)Math.cos(bufferCounter-Math.PI/2))
                                             );
+                                            shoot.play();
                                         } catch(Throwable e ){e.printStackTrace();}
                                         bufferCounter+=.1f;
                                     }
@@ -508,6 +548,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                                 Global.Game.enemyBullets[Global.counter()].append(
                                                     new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter-Math.PI/2) , (float)Math.cos(bufferCounter-Math.PI/2))
                                                 );
+                                                shoot.play();
                                             } catch(Throwable e ){e.printStackTrace();}
                                             bufferCounter += .2f;
                                         }
@@ -606,6 +647,20 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
             if(!shouldDestroy){
                 move(dt);
                 phase(dt);
+            }
+        }
+
+        @Override
+        public void isColliding(CollisionObject c){
+            colliding = true;
+            short id = c.getIdentity();
+            if(id == CollisionObject.PLAYER_BULLET_BASIC || id == CollisionObject.PLAYER_BULLET_BOUNCING){
+                HP = HP - ((PlayerBullet)c).damage;
+                if(HP <= 0){
+                    shouldDestroy = true;
+                    EnemyEntityShooterFinalBoss.defeat.play();
+                    dropItems(new Item_10(position.x,position.y));
+                }
             }
         }
 
@@ -817,12 +872,16 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         Summoner.loadSprite();
         Shooter.loadSprite();
         Dasher.loadSprite();
+        try{
+            defeat = new SoundEffects("sfx/BossDeath.wav", 1);
+        } catch(Exception e){}
     }
 
     public static void unload(){
         Summoner.unload();
         Shooter.unload();
         Dasher.unload();
+        defeat.unload();
     }
 
     @Override

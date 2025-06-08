@@ -88,6 +88,7 @@ public class EnemyEntityShooterSpread extends EnemyEntityShooterBasic{
                     ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletSpread(
                         new Vector2(xBPos , yBPos), new Vector2(i[0],i[1]))
                     );
+                    shoot.play();
             } catch(Throwable e ){
                 e.printStackTrace();
             }

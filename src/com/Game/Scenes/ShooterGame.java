@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 
 import com.DataStruct.DoublyLinkedList;
 import com.DataStruct.GameQuadTree;
+import com.Game.Audio.BackGroundMusic;
+import com.Game.Audio.SoundEffects;
 import com.Game.Engine.Global;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyBullet;
@@ -39,6 +41,10 @@ import com.Game.Objects.Item_10;
 
 public class ShooterGame extends Scene{
     public Image[] backgrounds;
+
+    public BackGroundMusic bgm;
+    public BackGroundMusic bossMusic;
+    public SoundEffects nextWave ;
 
     public EnemyEntityShooterFinalBoss boss;
     public PlayerCharacter player;
@@ -79,6 +85,13 @@ public class ShooterGame extends Scene{
     public void loadScene() throws Exception{
         //TODO: Make a loadScene function
 
+        String[] bgms = {"bgm/BGM1.wav","bgm/BGM2.wav","bgm/BGM3.wav"};
+        String[] t = {"bgm/Boss.wav"};
+        bgm = new BackGroundMusic(bgms);
+        bgm.play();
+        nextWave = new SoundEffects("sfx/nextWave.wav", 1);
+        bossMusic = new BackGroundMusic(t);
+
         backgrounds = new Image[2];
         backgrounds[0] = ImageIO.read(ShooterGame.class.getResource("background/map.png"));
         backgrounds[0] = backgrounds[0].getScaledInstance(Global.originalWidth,((BufferedImage)backgrounds[0]).getHeight()*2 , Image.SCALE_DEFAULT);
@@ -116,6 +129,7 @@ public class ShooterGame extends Scene{
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
+                // bgm.play();
                 if (retry){
                     friendlyBullets = new DoublyLinkedList<>();
                     enemyShips = new DoublyLinkedList<>();
@@ -175,29 +189,29 @@ public class ShooterGame extends Scene{
                 //  * Collision Detection (QuadTree)
                 //  */
 
-                // /*
-                //  * THIS IS THE QUADTREE IMPLEMENTATION
-                //  */
-                // partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
+                /*
+                 * THIS IS THE QUADTREE IMPLEMENTATION
+                 */
+                partition = new GameQuadTree(0, 0, Global.realWidth, Global.realHeight,1);
                 
-                // //Insert player bullet ke QuadTree
-                // friendlyBullet = friendlyBullets.getHead();
-                // while(friendlyBullet != null){
-                //     partition.insert((CollisionObject)friendlyBullet.getData());
-                //     friendlyBullet = friendlyBullet.getNext();
-                // }
+                //Insert player bullet ke QuadTree
+                friendlyBullet = friendlyBullets.getHead();
+                while(friendlyBullet != null){
+                    partition.insert((CollisionObject)friendlyBullet.getData());
+                    friendlyBullet = friendlyBullet.getNext();
+                }
             
-                // while(enemy != null){
-                //     CollisionObject e = (CollisionObject)enemy.getData();
-                //     Denode<CollisionObject> pBullet = partition.retrieve(e).getHead();
-                //     while(pBullet != null){
-                //         CollisionObject p = pBullet.getData();
-                //         e.checkCollision(p);
-                //         pBullet = pBullet.getNext();
-                //         checks++; 
-                //     }
-                //     enemy = enemy.getNext();
-                // }
+                while(enemy != null){
+                    CollisionObject e = (CollisionObject)enemy.getData();
+                    Denode<CollisionObject> pBullet = partition.retrieve(e).getHead();
+                    while(pBullet != null){
+                        CollisionObject p = pBullet.getData();
+                        e.checkCollision(p);
+                        pBullet = pBullet.getNext();
+                        checks++; 
+                    }
+                    enemy = enemy.getNext();
+                }
 
                 // /*
                 //  * END QUADTREE IMPLEMENTATION
@@ -207,17 +221,17 @@ public class ShooterGame extends Scene{
                 * BRUTEFORCE IMPLEMENTATION
                 */
 
-                while (enemy != null){
-                    CollisionObject e = (CollisionObject)enemy.getData();
-                    Denode<PlayerBullet> pBullet = friendlyBullets.getHead();
-                    while(pBullet != null){
-                        CollisionObject p = (CollisionObject)pBullet.getData();
-                        e.checkCollision(p);
-                        pBullet = pBullet.getNext();
-                        checks++;
-                    }
-                    enemy = enemy.getNext();
-                }
+                // while (enemy != null){
+                //     CollisionObject e = (CollisionObject)enemy.getData();
+                //     Denode<PlayerBullet> pBullet = friendlyBullets.getHead();
+                //     while(pBullet != null){
+                //         CollisionObject p = (CollisionObject)pBullet.getData();
+                //         e.checkCollision(p);
+                //         pBullet = pBullet.getNext();
+                //         checks++;
+                //     }
+                //     enemy = enemy.getNext();
+                // }
                 
                 /*
                 * END BRUITEFORCE IMPLEMENTATION
@@ -552,6 +566,8 @@ public class ShooterGame extends Scene{
         EnemyBulletExploding.unload();
         EnemyEntityShooterFinalBoss.unload();
         Item_10.unload();
+        bgm.unload();
+        nextWave.unload();
 
         //Unload draw
         for(int i = 0 ; i < 8 ; i++){
@@ -598,7 +614,6 @@ public class ShooterGame extends Scene{
     public void runRandomScriptedEvent(){
         //Just hardcode all the events
         switch(wave){
-
             //Wave 1
             case 0: {
                 switch(phase++) {
@@ -638,7 +653,7 @@ public class ShooterGame extends Scene{
                             phase = 0;
                             survivedFor = 0;
                             timeCooldown = 3f;
-                            System.out.println("Wave 2");
+                            nextWave.play();
                             player.bulletCount += 1;
                             totalPoints += points;
                             points = 0;
@@ -718,6 +733,7 @@ public class ShooterGame extends Scene{
                             bufferCounter = 0;
                             timeCooldown = 4f;
                             player.bulletCount++;
+                            nextWave.play();
                             return;
                         } else {
                             phase = 7;
@@ -785,6 +801,7 @@ public class ShooterGame extends Scene{
                             totalPoints += points;
                             points = 0;
                             EnemyBulletBasic.BULLET_VELOCITY = 700;
+                            nextWave.play();
                             return;
                         }
                         else phase = 4;
@@ -873,6 +890,7 @@ public class ShooterGame extends Scene{
                                 bufferCounter = bufferCounter2 = 0;
                                 totalPoints += points;
                                 points = 0;
+                                nextWave.play();
                                 wave++;
                                 break;
                             }
@@ -918,6 +936,7 @@ public class ShooterGame extends Scene{
                             bufferCounter = 0;
                             totalPoints += points;
                             points = 0;
+                            nextWave.play();
                             bossDefeated = false;
                             return;
                         }
@@ -937,8 +956,11 @@ public class ShooterGame extends Scene{
 
             //FINAL WAVE: BOSS
             case 5 :{
+                bgm.stop();
                 switch (phase) {
                     case 0 : {
+                        bgm.stop();
+                        bossMusic.play();
                         EnemyBulletBasic.BULLET_VELOCITY = 200;
                         bossDefeated = false;
                         boss = new EnemyEntityShooterFinalBoss();

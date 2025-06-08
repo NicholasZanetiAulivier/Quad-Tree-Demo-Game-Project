@@ -3,6 +3,7 @@ package com.Game.Audio;
 import com.DataStruct.ArrayList;
 
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Clip;
 
 public class SoundEffects extends ArrayList<Clip> implements Sound{
@@ -16,6 +17,10 @@ public class SoundEffects extends ArrayList<Clip> implements Sound{
         for (int i = 0 ; i < channels ; i++){
             Clip temp = AudioSystem.getClip();
             temp.open(AudioSystem.getAudioInputStream(SoundEffects.class.getResource(relativePath)));
+            FloatControl x = (FloatControl)temp.getControl(FloatControl.Type.MASTER_GAIN);
+            double gain = .05; // number between 0 and 1 (loudest)
+            float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+            x.setValue(dB);
             this.addElement(temp);
         }
     }
@@ -30,6 +35,15 @@ public class SoundEffects extends ArrayList<Clip> implements Sound{
         curr.flush();
         curr.setFramePosition(0);
         curr.start();
+    }
+
+    public void unload(){
+        for(Clip t : this.getArray()){
+            if(t != null){
+                t.close();
+            }
+        }
+        this.arr = null;
     }
 
     private int incrementClip(){

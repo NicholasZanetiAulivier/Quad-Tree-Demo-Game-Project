@@ -9,11 +9,14 @@ import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
 
 import com.DataType.Vector2;
+import com.Game.Audio.SoundEffects;
 import com.Game.Engine.Global;
 import com.Game.Scenes.ShooterGame;
 
 public class EnemyEntityShooterBasic extends EnemyEntityBasic{
     private static BufferedImage sprite;
+
+    public static SoundEffects shoot;
     
     private static final int HITBOX_X_OFFSET = 6;
     private static final int HITBOX_Y_OFFSET = 22;
@@ -47,11 +50,13 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
         Graphics2D g = sprite.createGraphics();
         g.rotate(Math.toRadians(180) , temp.getWidth()/2 , temp.getHeight()/2);
         g.drawImage(temp , null , 0 , 0);
+        try {shoot = new SoundEffects("sfx/EnemyShooting.wav", 64);} catch(Exception e){}
     }
 
     public static void unload(){
         sprite.flush();
         sprite = null;
+        shoot.unload();
     }
 
     @Override
@@ -77,6 +82,7 @@ public class EnemyEntityShooterBasic extends EnemyEntityBasic{
                 ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletBasic(
                     new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position))
                 );
+                shoot.play();
             } catch(Throwable e ){
                 e.printStackTrace();
             }

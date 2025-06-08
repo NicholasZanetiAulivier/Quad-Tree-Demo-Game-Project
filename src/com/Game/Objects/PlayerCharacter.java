@@ -4,16 +4,18 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import com.DataType.Vector2;
+import com.Game.Audio.SoundEffects;
 import com.Game.Engine.Global;
 import com.Game.Scenes.ShooterGame;
 
 public class PlayerCharacter extends PlayerObject{
     private static BufferedImage[] sprite;
+    public static SoundEffects death;
+    public static SoundEffects shoot;
     
     private static final float PLAYER_SPEED = 300;
     private static final float PLAYER_SPEED_FAST = 600;
@@ -47,16 +49,20 @@ public class PlayerCharacter extends PlayerObject{
         hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH,HITBOX_HEIGHT);
     }
 
-    public static void loadSprite() throws IOException{
+    public static void loadSprite() throws Exception{
         BufferedImage temp = ImageIO.read(PlayerCharacter.class.getResource("rsc/Players/Ship_11.png"));
 
         sprite = new BufferedImage[2];
         sprite[0] = temp.getSubimage(0, 0,24, 24);
         sprite[1] = temp.getSubimage(0, 24, 24, 24);
+        death = new SoundEffects("sfx/death.wav", 1);
+        shoot = new SoundEffects("sfx/PlayerShooting.wav", 32);
     }
 
     public static void unload(){
         sprite[0].flush();
+        death.unload();
+        shoot.unload();
         sprite[1].flush();
         sprite = null;
     }
@@ -170,13 +176,21 @@ public class PlayerCharacter extends PlayerObject{
             case CollisionObject.ENEMY_BULLET_EXPLODE : {
                 if (((EnemyBulletExploding)o).exploding){
                     dead = true;
-                    System.out.println("Player died ex");
+                    death.play();
+                    if(Global.Game.lives < 0) {
+                        Global.Game.bgm.stop();
+                        Global.Game.bossMusic.stop();
+                    }
                 }
                 break;
             }
             default :{
                 dead = true;
-                System.out.println("Player died");
+                death.play();
+                if(Global.Game.lives < 0) {
+                    Global.Game.bgm.stop();
+                    Global.Game.bossMusic.stop();
+                }
                 break;
             }
         } 
@@ -184,6 +198,7 @@ public class PlayerCharacter extends PlayerObject{
 
     public void shoot(){
         shootCD = 0.05f;
+        shoot.play();
         for(int i = 0 ; i < bulletCount ; i++)
             Global.Game.friendlyBullets.append(new PlayerBulletBasic(position.x+(SPRITE_WIDTH-PlayerBulletBasic.BULLET_WIDTH)/2, position.y+30+(int)(Math.random()*10-20), ((float)Math.random()/4-.125f) ,  -1));
         if (bouncingBullets1){

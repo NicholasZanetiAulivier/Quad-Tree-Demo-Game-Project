@@ -89,9 +89,11 @@ public class EnemyEntityShooterBomb extends EnemyEntityBasic{
                 ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletExploding(
                     new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position) , (float)Math.random()*2)
                 );
+                EnemyEntityShooterBasic.shoot.play();
                 ((ShooterGame)Global.currentScene).enemyBullets[Global.counter()].append(new EnemyBulletExploding(
                     new Vector2(position.x+SPRITE_WIDTH/2 , position.y+SPRITE_HEIGHT/2), Vector2.add(Vector2.subtract(((ShooterGame)Global.currentScene).player.position,position) , new Vector2((float)Math.random()*1000-500 , (float)Math.random()*1000-500)) , (float)Math.random()*2)
-                );
+                    );
+                EnemyEntityShooterBasic.shoot.play();
             } catch(Throwable e ){
                 e.printStackTrace();
             }

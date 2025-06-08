@@ -105,6 +105,7 @@ public class GameQuadTree{
 
     public DoublyLinkedList<CollisionObject> retrieve( CollisionObject c){
         Rectangle2D item = c.getBounds();
+        if(item == null)return new DoublyLinkedList<>();
         DoublyLinkedList<CollisionObject> res = new DoublyLinkedList<>();
         if (!(this.boundingArea.intersects(item)||this.boundingArea.contains(item))) return res;
 
