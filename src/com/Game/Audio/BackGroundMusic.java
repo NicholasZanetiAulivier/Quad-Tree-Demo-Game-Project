@@ -20,6 +20,7 @@ public class BackGroundMusic extends ArrayList<Clip> implements Sound {
             Clip temp = AudioSystem.getClip();
             temp.addLineListener((e)->{
                 if(e.getType() == LineEvent.Type.STOP){
+                    if(playing)
                     this.play();
                 }
             });
@@ -33,7 +34,7 @@ public class BackGroundMusic extends ArrayList<Clip> implements Sound {
     }
 
     public void play(){
-        if(!playing)return;
+        playing = true;
         int i = incrementNext();
         Clip curr = (Clip)arr[i];
         curr.stop();
