@@ -40,6 +40,7 @@ import com.Game.Objects.Item_10;
 public class ShooterGame extends Scene{
     public Image[] backgrounds;
 
+    public EnemyEntityShooterFinalBoss boss;
     public PlayerCharacter player;
     public DoublyLinkedList<PlayerBullet> friendlyBullets;
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
@@ -62,7 +63,7 @@ public class ShooterGame extends Scene{
     public boolean retry = false;
     public boolean bossDefeated = false;
     public float timeCooldown = 1f;
-    public int wave = 5;
+    public int wave = 0;
     public int phase = 0;
     public float survivedFor = 0;
     public float deathCD = 2f;
@@ -124,6 +125,8 @@ public class ShooterGame extends Scene{
                     player = new PlayerCharacter();
 
                     EnemyBulletBasic.BULLET_VELOCITY = 400;
+                    EnemyBulletBasic.BULLET_VELOCITY = 200;
+                    EnemyEntityBasic.BASE_HP = 50;
                     points = 0;
                     timeCooldown = 1f;
                     lives = 5;
@@ -225,22 +228,22 @@ public class ShooterGame extends Scene{
 
                 //Collision detect player-enemyBullet
                 if(!(player.dead || player.autoMoving) && (player.invincibleCD -= dt) < 0){
-                    for (int i = 0 ; i < 4 ; i++){
-                        enemyBullet = enemyBullets[i].getHead();
-                        while(enemyBullet != null){
+                    // for (int i = 0 ; i < 4 ; i++){
+                    //     enemyBullet = enemyBullets[i].getHead();
+                    //     while(enemyBullet != null){
 
-                            CollisionObject p = enemyBullet.getData();
-                            player.checkCollision(p);
-                            enemyBullet = enemyBullet.getNext();
-                        }
-                    }
-                    //Collision detect player-enemy
-                    enemy = enemyShips.getHead();
-                    while(enemy != null){
-                        CollisionObject p = enemy.getData();
-                        player.checkCollision(p);
-                        enemy = enemy.getNext();
-                    }
+                    //         CollisionObject p = enemyBullet.getData();
+                    //         player.checkCollision(p);
+                    //         enemyBullet = enemyBullet.getNext();
+                    //     }
+                    // }
+                    // //Collision detect player-enemy
+                    // enemy = enemyShips.getHead();
+                    // while(enemy != null){
+                    //     CollisionObject p = enemy.getData();
+                    //     player.checkCollision(p);
+                    //     enemy = enemy.getNext();
+                    // }
 
                     //Collision detect player-item
                     item = items.getHead();
@@ -937,16 +940,17 @@ public class ShooterGame extends Scene{
                 switch (phase) {
                     case 0 : {
                         EnemyBulletBasic.BULLET_VELOCITY = 200;
-                        EnemyEntityBasic.BASE_HP = 200;
                         bossDefeated = false;
-                        enemyShips.append(new EnemyEntityShooterFinalBoss());
+                        boss = new EnemyEntityShooterFinalBoss();
+                        enemyShips.append(boss);
                         phase++;
                         timeCooldown = 999f;
                         break;
                     }
                     
                     case 1 : {
-                        enemyShips.getHead().getData().shouldDestroy = true;
+                        boss.shouldDestroy = true;
+                        System.out.println("Player Won");
                         totalPoints += points;
                         points = 0;
                         wave++;

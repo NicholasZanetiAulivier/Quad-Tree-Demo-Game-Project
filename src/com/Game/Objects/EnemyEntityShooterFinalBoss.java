@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import java.awt.Color;
 import javax.imageio.ImageIO;
-import javax.management.MalformedObjectNameException;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
@@ -72,8 +71,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         @Override
         public void update(float dt){
-            move(dt);
-            if(shooting)shoot(dt);
+            if(!shouldDestroy){move(dt);
+            if(shooting)shoot(dt);}
         }
 
         @Override
@@ -297,8 +296,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         @Override
         public void update(float dt){
-            move(dt);
-            shoot(dt);
+            if (!shouldDestroy){move(dt);
+            shoot(dt);}
         }
 
         @Override
@@ -387,7 +386,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                         bufferCounter2++;
                                         bulletPhase = 0;
                                     } else {
-                                        bulletPattern = (int)Math.round(Math.random()*3);
+                                        bulletPattern = (int)Math.round(Math.random()*2);
                                         parent.switchTurns();
                                         bufferCounter2 = 0;
                                         bulletPhase = 0;
@@ -410,7 +409,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                         whereToGo = new Vector2((float)Math.random()*600 , (float)Math.random()*70);
                                         bulletPhase++;
                                     } else {
-                                        bulletPattern = (int)Math.round(Math.random()*3);
+                                        bulletPattern = (int)Math.round(Math.random()*2);
                                         bulletPhase = 0;
                                         bufferCounter2 = 0;
                                         parent.switchTurns();
@@ -459,7 +458,6 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
                                 case 1 :{
                                     timeCooldown = .5f;
-                                    System.out.println("run");
                                     while(bufferCounter<= Math.PI){
                                         try{
                                             // Global.Game.enemyBullets[Global.counter()].append(
@@ -514,7 +512,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                                             bufferCounter += .2f;
                                         }
                                     } else{
-                                        bulletPattern = (int)Math.round(Math.random()*3);
+                                        bulletPattern = (int)Math.round(Math.random()*2);
                                         bulletPhase = 0;
                                         bufferCounter2 = 0;
                                         parent.switchTurns();
@@ -532,6 +530,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         public void activate(){
             isActive = true;
+            bufferCounter = 0;
+            bufferCounter2 = 0;
             bulletPhase = 0;
             timeCooldown = .5f;
         }
@@ -562,8 +562,6 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         private BufferedImage rotatedImage;
         public Vector2 velocity;
         public boolean isActive;
-        private static float COOLDOWN = 1.2f;
-        private float CD = COOLDOWN;
 
         private static final int HITBOX_X_OFFSET = 25;
         private static final int HITBOX_Y_OFFSET = 25;
@@ -574,12 +572,18 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         public int whichPattern;
         public int patternPhase;
-
+        public int bufferCounter = 0;
+        public int bufferCounter2 = 0;
+        
+        private float timeCooldown = .1f;
+        public boolean shouldMove = false;
         public EnemyEntityShooterFinalBoss parent;
+        public static final float GO_BACK_SPEED = 200;
 
         public Dasher(float x , float y){
             position = new Vector2(x,y);
             velocity = new Vector2(1,1);
+            isActive =false;
             HP = 5000;
             hitbox = new HitboxCircular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_RADIUS);
             rotatedImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), sprite.getType());
@@ -599,16 +603,109 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         @Override
         public void update(float dt){
-            move(dt);
+            if(!shouldDestroy){
+                move(dt);
+                phase(dt);
+            }
         }
 
         @Override
         public void move(float dt){
-            
+            if(isActive){
+                if(shouldMove){
+                    position.add(Vector2.scale(velocity, dt));
+                }
+            } else {
+                if(position.y + SPRITE_HEIGHT > 0){
+                    position.y -= GO_BACK_SPEED*dt;
+                }
+            }
+            hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        }
+
+        public void phase(float dt){
+            if(isActive){
+                timeCooldown -= dt;
+                if(timeCooldown <= 0){
+                    switch(whichPattern){
+                        //PATTERN 1
+                        case 0 :{
+                            switch(patternPhase){
+                                case 0 : {
+                                    bufferCounter2 = 0;
+                                    bufferCounter = 0;
+                                    patternPhase++;
+                                    break;
+                                }
+                                case 1:{
+                                    timeCooldown = 1f;
+                                    if(bufferCounter2 <= 5){
+                                        if(position.x < 0) position.x = -100;
+                                        else position.x = Global.originalWidth;
+                                        position.y = (float)Math.random()*(Global.realHeight-SPRITE_HEIGHT);
+                                        velocity = new Vector2(1500 * (position.x > 0 ? -1:1) , 50);
+                                        shouldMove =true;
+                                        bufferCounter2++;
+                                    } else {
+                                        whichPattern++;
+                                        patternPhase = 0;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                        //PATTERN 2
+                        case 1 : {
+                            switch(patternPhase){
+                                case 0 : {
+                                    bufferCounter2 = 0;
+                                    bufferCounter = 0;
+                                    patternPhase++;
+                                    break;
+                                }
+
+                                case 1:{
+                                    timeCooldown = .25f;
+                                    if(position.x > Global.originalWidth/2)position.x = Global.originalWidth;
+                                    else position.x = -100;
+                                    velocity = new Vector2(100 * (position.x > 0 ? -1:1) , 3000);
+                                    patternPhase++;
+                                    break;
+                                }
+
+                                case 2 : {
+                                    timeCooldown = .1f;
+                                    if(position.y > Global.originalHeight && velocity.y > 0 ||
+                                        position.y < -100 && velocity.y<0) velocity.y *= -1;
+                                    if(position.x > Global.originalWidth/2 && velocity.x >0||
+                                        position.x <= Global.originalWidth/2 && velocity.x < 0){
+                                            if(bufferCounter2 == 1){
+                                                parent.switchTurns();
+                                                timeCooldown = 1f;
+                                                position.x = -100;
+                                                position.y = -100;
+                                                velocity.multiply(0.000001f);
+                                            } else {
+                                                bufferCounter2++;
+                                                patternPhase = 1;
+                                            }
+                                        }
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public void activate(){
             isActive = true;
+            timeCooldown = 2f;
+            patternPhase = 0;
+            whichPattern = 0;
         }
 
         public void deactivate(){
@@ -654,8 +751,6 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         Global.Game.enemyShips.append(dasher);
 
         whoseTurn = Math.round((float)(Math.random()*3));
-        //Temp
-        whoseTurn = 2;
         switchTurns();
 
 
@@ -708,6 +803,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                 if(dasher.shouldDestroy && shooter.shouldDestroy && summoner.shouldDestroy){
                     whoseTurn = 2;
                     shouldDestroy = true;
+                    Global.Game.timeCooldown = 0;
                     return;
                 } else {
                     switchTurns();
@@ -731,6 +827,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
     @Override
     public void update(float dt){
+        if(currentActive.shouldDestroy)switchTurns();
         move(dt);
         shoot(dt);
     }
