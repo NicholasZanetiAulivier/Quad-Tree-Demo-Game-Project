@@ -19,8 +19,8 @@ public class EnemyEntityShooterStrafe extends EnemyEntityShooterBasic{
     private static final int HITBOX_Y_OFFSET = 6;
     private static final int HITBOX_RADIUS = 8;
     
-    private static final int SPRITE_WIDTH = 30;
-    private static final int SPRITE_HEIGHT = 30;
+    public static final int SPRITE_WIDTH = 30;
+    public static final int SPRITE_HEIGHT = 30;
     
     private static final float BASIC_COOLDOWN = .1f;
 

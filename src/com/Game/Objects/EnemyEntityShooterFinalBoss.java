@@ -20,7 +20,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
     public Dasher dasher;
     public Shooter shooter;
 
-    public static final float SWITCH_TIMER = 10f;
+    public static final float SWITCH_TIMER = 20f;
 
     public int whoseTurn;
     public float timer = SWITCH_TIMER;
@@ -44,6 +44,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         public Vector2 whereToGo;
         public int shootingWhomst = 0;
         public boolean isActive;
+        public EnemyEntityShooterFinalBoss parent;
         private float timeCooldown = .5f;
         private boolean shooting = false;
 
@@ -51,7 +52,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
             position = new Vector2(x,y);
             velocity = new Vector2(0,0);
             shooting = false;
-            isActive = true;
+            isActive = false;
             HP=30000;
             hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
         }
@@ -109,7 +110,7 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                 if(timeCooldown <= 0){
                     cycleAmmo();
                     switch(shootingWhomst){
-                        case 0 : case 4 : case 5 : case 6 :{
+                        case 0 : case 4 : case 5 : case 6 : case 8 : case 9 : case 7:{
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_BASIC,
                                 position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
@@ -152,8 +153,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                         case 1 :{
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_SHOOTER_STRAFE ,
-                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
-                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                position.x+(SPRITE_WIDTH-EnemyEntityShooterStrafe.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityShooterStrafe.SPRITE_HEIGHT)/2,
                                 0,
                                 300,
                                 0,
@@ -161,8 +162,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                             );
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_SHOOTER_STRAFE ,
-                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
-                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                position.x+(SPRITE_WIDTH-EnemyEntityShooterStrafe.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityShooterStrafe.SPRITE_HEIGHT)/2,
                                 200,
                                 200,
                                 0,
@@ -170,8 +171,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                             );
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_SHOOTER_STRAFE ,
-                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
-                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                position.x+(SPRITE_WIDTH-EnemyEntityShooterStrafe.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityShooterStrafe.SPRITE_HEIGHT)/2,
                                 -200,
                                 200,
                                 0,
@@ -180,11 +181,11 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                             timeCooldown = .5f;
                             break;
                         }
-                        case 2 : case 8 : case 9 :{
+                        case 2 : {
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_SHOOTER_BASIC,
-                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
-                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                position.x+(SPRITE_WIDTH-EnemyEntityShooterBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityShooterBasic.SPRITE_HEIGHT)/2,
                                 100,
                                 50,
                                 -20,
@@ -192,8 +193,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                             );
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_SHOOTER_BASIC,
-                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
-                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                position.x+(SPRITE_WIDTH-EnemyEntityShooterBasic.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityShooterBasic.SPRITE_HEIGHT)/2,
                                 -100,
                                 50,
                                 20,
@@ -202,11 +203,11 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
                             timeCooldown = .5f;
                             break;
                         }
-                        case 3 : case 7 :{
+                        case 3 :{
                             Global.Game.spawn(
                                 CollisionObject.ENEMY_SHOOTER_SPREAD,
-                                position.x+(SPRITE_WIDTH-EnemyEntityBasic.SPRITE_WIDTH)/2,
-                                position.y+(SPRITE_HEIGHT-EnemyEntityBasic.SPRITE_HEIGHT)/2,
+                                position.x+(SPRITE_WIDTH-EnemyEntityShooterSpread.SPRITE_WIDTH)/2,
+                                position.y+(SPRITE_HEIGHT-EnemyEntityShooterSpread.SPRITE_HEIGHT)/2,
                                 0,
                                 300,
                                 0,
@@ -222,6 +223,14 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
 
         public void cycleAmmo(){
             shootingWhomst = (int)Math.round(Math.random()*9);
+        }
+
+        public void activate(){
+            isActive = true;
+        }
+
+        public void deactivate(){
+            isActive = false;
         }
 
         @Override
@@ -248,19 +257,28 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         private static final int HITBOX_WIDTH =89;
         private static final int HITBOX_HEIGHT = 48;
 
-        public Vector2 velocity;
-        public boolean isActive;
-        private static float COOLDOWN = 1.2f;
-        private float CD = COOLDOWN;
-
-        public boolean shooting = false;
-
         public static final int SPRITE_WIDTH = 100;
         public static final int SPRITE_HEIGHT = 100;
+        
+        public EnemyEntityShooterFinalBoss parent ;
+
+        public static final float GO_BACK_SPEED = 200;
+
+        public Vector2 velocity;
+        public Vector2 whereToGo ;
+        public boolean isActive;
+        public int bulletPattern = 0;
+        public int bulletPhase = 0;
+        public float bufferCounter = 0;
+        public float bufferCounter2 = 0;
+        private float timeCooldown = .1f;
+        public boolean shouldMove = false;
+
 
         public Shooter(float x , float y){
             position = new Vector2(x,y);
             velocity = new Vector2(0,0);
+            isActive = false;
             HP=30000;
             hitbox = new HitboxRectangular(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET, HITBOX_WIDTH , HITBOX_HEIGHT);
         }
@@ -280,7 +298,117 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         @Override
         public void update(float dt){
             move(dt);
-            if(shooting)shoot(dt);
+            shoot(dt);
+        }
+
+        @Override
+        public void move(float dt){
+            if(isActive){
+                if(position.y < 0){
+                    position.y += GO_BACK_SPEED * dt;
+                }
+                if(shouldMove){
+                    velocity = Vector2.subtract(whereToGo, position);
+                    position.add(Vector2.scale(velocity,dt));
+                    if(Vector2.getDistance(whereToGo, position) <= 100){
+                        shouldMove = false;
+                    }
+                }
+            } else {
+                if(position.y + SPRITE_HEIGHT > 0){
+                    position.y -= GO_BACK_SPEED * dt;
+                }
+            }
+            hitbox.setPosition(position.x+HITBOX_X_OFFSET, position.y+HITBOX_Y_OFFSET);
+        }
+
+        @Override
+        public void shoot(float dt){
+            if(isActive){
+                timeCooldown -= dt;
+                if(timeCooldown <= 0){
+                    switch (bulletPattern){
+                        
+                        //BULLET PATTERN 1
+                        case 0 :{
+                            switch (bulletPhase){
+                                case 0 :{
+                                    timeCooldown = .5f;
+                                    shouldMove = true;
+                                    bufferCounter = 0;
+                                    if(bufferCounter2 > 0) whereToGo = new Vector2((float)Math.random()*600 , (float)Math.random()*100);
+                                    else whereToGo = new Vector2(250,150);
+                                    bulletPhase++;
+                                    break;
+                                }
+                                
+                                case 1 :{
+                                    timeCooldown = .01f;
+                                    if((bufferCounter += .2f) <= 20)try{
+                                        Global.Game.enemyBullets[Global.counter()].append(
+                                            new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter) , (float)Math.cos(bufferCounter))
+                                        );
+                                        if(bufferCounter2 >0){
+                                            Global.Game.enemyBullets[Global.counter()].append(
+                                                new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(Math.PI-bufferCounter) , (float)Math.cos(Math.PI-bufferCounter))
+                                            );
+                                        }
+                                    } catch(Throwable e ){e.printStackTrace();}
+                                    else {
+                                        bulletPhase++;
+                                    }
+                                    break;
+                                }
+
+                                case 2 : {
+                                    timeCooldown = .5f;
+                                    shouldMove = true;
+                                    bufferCounter = 0;
+                                    if(bufferCounter2 > 0) whereToGo = new Vector2((float)Math.random()*600 , (float)Math.random()*100);
+                                    else whereToGo = new Vector2(500,200);
+                                    bulletPhase++;
+                                    break;
+                                }
+
+                                case 3 :{
+                                    timeCooldown = .01f;
+                                    if((bufferCounter -= .2f) >= -20)try{
+                                        Global.Game.enemyBullets[Global.counter()].append(
+                                            new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(bufferCounter) , (float)Math.cos(bufferCounter))
+                                        );
+
+                                        if(bufferCounter2 >0){
+                                            Global.Game.enemyBullets[Global.counter()].append(
+                                                new EnemyBulletBasic(position.x+(SPRITE_WIDTH-EnemyBulletBasic.BULLET_WIDTH)/2,position.y+(SPRITE_HEIGHT-EnemyBulletBasic.BULLET_HEIGHT)/2,(float)Math.sin(Math.PI-bufferCounter) , (float)Math.cos(Math.PI-bufferCounter))
+                                            );
+                                        }
+                                    } catch(Throwable e ){e.printStackTrace();}
+                                    else if(bufferCounter2 == 0){
+                                        bufferCounter2++;
+                                        bulletPhase = 0;
+                                    } else {
+                                        bulletPattern++;
+                                        parent.switchTurns();
+                                        bulletPhase = 0;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void activate(){
+            isActive = true;
+            bulletPhase = 0;
+            timeCooldown = .5f;
+        }
+
+        public void deactivate(){
+            isActive = false;
+            shouldMove = false;
         }
 
         @Override
@@ -314,6 +442,8 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         public static final int SPRITE_WIDTH = 100;
         public static final int SPRITE_HEIGHT = 100;
 
+        public EnemyEntityShooterFinalBoss parent;
+
         public Dasher(float x , float y){
             position = new Vector2(x,y);
             velocity = new Vector2(1,1);
@@ -339,6 +469,14 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
             // move(dt);
             // shoot(dt);
             // velocity.rotate(dt);
+        }
+
+        public void activate(){
+            isActive = true;
+        }
+
+        public void deactivate(){
+            isActive = false;
         }
 
 
@@ -370,15 +508,18 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
     public EnemyEntityShooterFinalBoss(){
 
         shooter = new Shooter(-100, -100);
+        shooter.parent = this;
         Global.Game.enemyShips.append(shooter);
         summoner = new Summoner(-100, -100);
+        summoner.parent = this;
         Global.Game.enemyShips.append(summoner);
         dasher = new Dasher(-100, -100);
+        dasher.parent = this;
         Global.Game.enemyShips.append(dasher);
 
         whoseTurn = Math.round((float)(Math.random()*3));
         //Temp
-        whoseTurn = 0;
+        whoseTurn = 2;
         switchTurns();
 
 
@@ -390,25 +531,28 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         switch(whoseTurn){
             case 0 : {
                 currentActive = shooter;
-                shooter.isActive = true;
-                summoner.isActive = false;
-                dasher.isActive = false;
+                shooter.activate();
+                summoner.deactivate();
+                dasher.deactivate();
+                timer = 999f;
                 break;
             }
 
             case 1 : {
                 currentActive = summoner;
-                summoner.isActive = true;
-                shooter.isActive = false;
-                dasher.isActive = false;
+                summoner.activate();
+                shooter.deactivate();
+                dasher.deactivate();
+                timer = SWITCH_TIMER;
                 break;
             }
 
             case 2 : {
                 currentActive = dasher;
-                dasher.isActive = true;
-                shooter.isActive = false;
-                summoner.isActive = false;
+                dasher.activate();
+                shooter.deactivate();
+                summoner.deactivate();
+                timer = SWITCH_TIMER;
                 break;
             } 
         }
@@ -437,11 +581,13 @@ public class EnemyEntityShooterFinalBoss extends EnemyEntityBasic{
         timer -= dt;
         if(timer <= 0){
             switchTurns();
-            timer = SWITCH_TIMER;
         }
     }
 
     protected void shoot(float dt){
+        if(shooter.shouldDestroy && summoner.shouldDestroy && dasher.shouldDestroy){
+            shouldDestroy = true;
+        }
     }
 
     @Override

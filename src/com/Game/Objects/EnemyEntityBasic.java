@@ -26,13 +26,14 @@ public class EnemyEntityBasic extends EnemyObject{
     protected Vector2 position;
     protected Vector2 velocity;
     protected Vector2 acceleration;
+    public static int BASE_HP = 50;
     protected boolean colliding = false;
 
     public EnemyEntityBasic(float x , float y , float vX , float vY , float accelX , float accelY){
         position = new Vector2(x, y);
         velocity = new Vector2(vX,vY);
         acceleration = new Vector2(accelX, accelY);
-        HP = 50;
+        HP = BASE_HP;
         hitbox = new HitboxRectangular(x+HITBOX_X_OFFSET, y+HITBOX_Y_OFFSET, HITBOX_WIDTH, HITBOX_HEIGHT);
     }
 

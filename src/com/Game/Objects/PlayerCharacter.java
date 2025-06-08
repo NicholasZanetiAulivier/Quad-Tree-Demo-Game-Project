@@ -36,7 +36,7 @@ public class PlayerCharacter extends PlayerObject{
     public boolean bouncingBullets2 = false;
 
     private float shootCD = .05f;
-    public float invincibleCD = 1f;
+    public float invincibleCD = 2f;
     public boolean autoMoving;
 
     public int bulletCount = 2;

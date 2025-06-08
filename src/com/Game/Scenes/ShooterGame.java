@@ -24,6 +24,7 @@ import com.Game.Objects.EnemyEntityShooterBomb;
 import com.Game.Objects.EnemyEntityShooterFinalBoss;
 import com.Game.Objects.EnemyEntityShooterSpread;
 import com.Game.Objects.EnemyEntityShooterStrafe;
+import com.Game.Objects.Hitbox;
 import com.Game.Objects.PlayerBulletBasic;
 import com.Game.Objects.PlayerBulletBouncing;
 import com.Game.Objects.PlayerCharacter;
@@ -357,19 +358,23 @@ public class ShooterGame extends Scene{
                             eNode = eNode.getNext();
                         }
                     }
+                    Hitbox temp;
                     Denode<PlayerBullet> p = friendlyBullets.getHead();
                     while(p != null){
-                        p.getData().getHitbox().draw(g , Global.DEBUG_CANVAS);
+                        if((temp = p.getData().getHitbox()) != null)
+                        temp.draw(g , Global.DEBUG_CANVAS);
                         p = p.getNext();
                     }
                     Denode<EnemyEntityBasic> e = enemyShips.getHead();
                     while(e != null){
-                        e.getData().getHitbox().draw(g , Global.DEBUG_CANVAS);
+                        if((temp = e.getData().getHitbox()) != null)
+                        temp.draw(g , Global.DEBUG_CANVAS);
                         e = e.getNext();
                     }
                     Denode<Item> i = items.getHead();
                     while(i != null){
-                        i.getData().getHitbox().draw(g , Global.DEBUG_CANVAS);
+                        if((temp = i.getData().getHitbox()) != null)
+                        temp.draw(g , Global.DEBUG_CANVAS);
                         i = i.getNext();
                     }
                     player.getHitbox().draw(g,Global.DEBUG_CANVAS);
@@ -931,6 +936,8 @@ public class ShooterGame extends Scene{
             case 5 :{
                 switch (phase) {
                     case 0 : {
+                        EnemyBulletBasic.BULLET_VELOCITY = 200;
+                        EnemyEntityBasic.BASE_HP = 200;
                         bossDefeated = false;
                         enemyShips.append(new EnemyEntityShooterFinalBoss());
                         phase++;
