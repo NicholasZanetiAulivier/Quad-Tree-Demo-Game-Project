@@ -13,6 +13,7 @@ import com.DataStruct.GameQuadTree;
 import com.Game.Audio.BackGroundMusic;
 import com.Game.Audio.SoundEffects;
 import com.Game.Engine.Global;
+import com.Game.Objects.Cloud;
 import com.Game.Objects.CollisionObject;
 import com.Game.Objects.EnemyBullet;
 import com.Game.Objects.EnemyBulletAccelerating;
@@ -52,6 +53,7 @@ public class ShooterGame extends Scene{
     public DoublyLinkedList<EnemyEntityBasic> enemyShips;
     public DoublyLinkedList<EnemyBullet>[] enemyBullets;
     public DoublyLinkedList<Item> items;
+    public DoublyLinkedList<Cloud> clouds;
 
     public GameQuadTree partition ;
 
@@ -77,6 +79,7 @@ public class ShooterGame extends Scene{
     public int bufferCounter = 0;
     public int bufferCounter2 = 0;
     public float backgroundYLevel = 0;
+    public float cloudTimer=2f;
     static final float backGroundScrollSpeed = 100;
     static int mapHeight;
     static int mapWidth;
@@ -115,6 +118,7 @@ public class ShooterGame extends Scene{
         EnemyBulletExploding.loadSprite();
         EnemyEntityShooterFinalBoss.loadSprite();
         Item_10.loadSprite();
+        Cloud.loadSprite();
 
         //Load objects
         player = new PlayerCharacter();
@@ -125,11 +129,11 @@ public class ShooterGame extends Scene{
             enemyBullets[i] = new DoublyLinkedList<>();
         }
         items = new DoublyLinkedList<>();
+        clouds = new DoublyLinkedList<>();
         EnemyBulletBasic.BULLET_VELOCITY = 400;
 
         Global.GAME_ENVIRONMENT.setUpdateFunction(
             (dt) ->{
-                // bgm.play();
                 if (retry){
                     friendlyBullets = new DoublyLinkedList<>();
                     enemyShips = new DoublyLinkedList<>();
@@ -180,6 +184,7 @@ public class ShooterGame extends Scene{
                 Denode<EnemyEntityBasic> enemy;
                 Denode<EnemyBullet> enemyBullet;
                 Denode<Item> item;
+                Denode<Cloud> cloud;
                 
                 // //Collision Detect enemy-player bullet
                 int checks = 0;
@@ -242,22 +247,22 @@ public class ShooterGame extends Scene{
 
                 //Collision detect player-enemyBullet
                 if(!(player.dead || player.autoMoving) && (player.invincibleCD -= dt) < 0){
-                    // for (int i = 0 ; i < 4 ; i++){
-                    //     enemyBullet = enemyBullets[i].getHead();
-                    //     while(enemyBullet != null){
+                    for (int i = 0 ; i < 4 ; i++){
+                        enemyBullet = enemyBullets[i].getHead();
+                        while(enemyBullet != null){
 
-                    //         CollisionObject p = enemyBullet.getData();
-                    //         player.checkCollision(p);
-                    //         enemyBullet = enemyBullet.getNext();
-                    //     }
-                    // }
-                    // //Collision detect player-enemy
-                    // enemy = enemyShips.getHead();
-                    // while(enemy != null){
-                    //     CollisionObject p = enemy.getData();
-                    //     player.checkCollision(p);
-                    //     enemy = enemy.getNext();
-                    // }
+                            CollisionObject p = enemyBullet.getData();
+                            player.checkCollision(p);
+                            enemyBullet = enemyBullet.getNext();
+                        }
+                    }
+                    //Collision detect player-enemy
+                    enemy = enemyShips.getHead();
+                    while(enemy != null){
+                        CollisionObject p = enemy.getData();
+                        player.checkCollision(p);
+                        enemy = enemy.getNext();
+                    }
 
                     //Collision detect player-item
                     item = items.getHead();
@@ -292,6 +297,17 @@ public class ShooterGame extends Scene{
                         item = temp;
                     } else {
                         item = item.getNext();
+                    }
+                }
+
+                cloud = clouds.getHead();
+                while(cloud != null){
+                    if(cloud.getData().shouldDestroy){
+                        Denode<Cloud> temp = cloud.getNext();
+                        clouds.detachDenode(cloud);
+                        cloud = temp;
+                    } else{
+                        cloud = cloud.getNext();
                     }
                 }
 
@@ -356,11 +372,25 @@ public class ShooterGame extends Scene{
                     }
                 }
 
+                cloudTimer -= dt;
+                if(cloudTimer <= 0){
+                    Cloud temp = new Cloud();
+                    clouds.append(temp);
+                    cloudTimer = (float)Math.random()*1+.2f;
+                }
+                cloud = clouds.getHead();
+                while(cloud != null){
+                    cloud.getData().update(dt);
+                    cloud = cloud.getNext();
+                }
+
                 item = items.getHead();
                 while(item != null){
                     item.getData().update(dt);
                     item = item.getNext();
                 }
+
+                if(debug)System.out.println(checks);
             }
         );
 
@@ -406,6 +436,12 @@ public class ShooterGame extends Scene{
                 if(backgroundYLevel <= -mapHeight+Global.originalHeight )
                     g.drawImage(backgrounds[0], 0, (int)backgroundYLevel+mapHeight, Global.BACKGROUND_CANVAS);
                 g.drawImage(backgrounds[0], 0, (int)backgroundYLevel, Global.BACKGROUND_CANVAS);
+
+                Denode<Cloud> c = clouds.getHead();
+                while(c != null){
+                    c.getData().draw(g,Global.BACKGROUND_CANVAS);
+                    c = c.getNext();
+                }
             }
         );
 
