@@ -11,6 +11,13 @@ public class ArrayList<T> {
         this.currentSize = 0;
     }
 
+    public ArrayList(){
+        int size = 0;
+        this.arr = new Object[size];
+        this.maxSize = size;
+        this.currentSize = 0;
+    }
+
     public int getCurrentSize(){
         return this.currentSize;
     }

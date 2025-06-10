@@ -13,9 +13,9 @@ public class BackGroundMusic extends ArrayList<Clip> implements Sound {
     private boolean playing = true;
 
     public BackGroundMusic(String[] paths) throws Exception{
+        super(paths.length);
         amount = paths.length;
         currentMusic = paths.length-1;
-        super(paths.length);
         for (String name : paths){
             Clip temp = AudioSystem.getClip();
             temp.addLineListener((e)->{
