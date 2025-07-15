@@ -10,8 +10,8 @@ The "Game Engine" will be made entirely in Java, without any imported libraries 
 
 ## TO DO
 
-An animation mechanism needs to be added for basic animations. We need to make an actual game for the actual project. Deadline is June 2025, good luck to us all
+All essentials were finished on time. Though the game itself has no polish.
 
-## Updates
+## How did it go
 
-Sprites, Events, Windowing, Canvas, and Sounds  Finished by 18-5-2025
+Went well. A decent A- on the final score.
